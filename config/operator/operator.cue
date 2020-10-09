@@ -83,7 +83,9 @@ if !parameters.test {
 		}
 	}
 	_command: [
-			"/usr/bin/\(constants.name)",
+			"/usr/local/bin/helm-operator",
+                        "run",
+                        "--watches-file=watches.yaml",
 			"--enable-leader-election",
                         "--leader-election-id=cilium-openshift-operator",
 	]
