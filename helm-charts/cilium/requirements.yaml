@@ -23,6 +23,3 @@ dependencies:
   - name: nodeinit
     version: 1.8.4
     condition: global.nodeinit.enabled
-  - name: prometheus-crd
-    version: 1.8.4
-    condition: global.prometheus.enabled && global.prometheus.serviceMonitor.enabled
