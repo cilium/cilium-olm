@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: cilium-viewer-role
+  name: ciliumconfig-viewer
 rules:
 - apiGroups:
   - cilium.io

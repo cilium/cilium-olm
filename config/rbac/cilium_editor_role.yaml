@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: cilium-editor-role
+  name: ciliumconfig-editor
 rules:
 - apiGroups:
   - cilium.io
