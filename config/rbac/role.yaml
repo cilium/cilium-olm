@@ -34,8 +34,8 @@ rules:
 - apiGroups:
   - cilium.io
   resources:
-  - cilia
-  - cilia/status
+  - ciliumconfigs
+  - ciliumconfigs/status
   verbs:
   - create
   - delete

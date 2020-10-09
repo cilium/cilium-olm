@@ -1,4 +1,4 @@
-# permissions for end users to edit cilia.
+# permissions for end users to edit ciliumconfigs.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -7,7 +7,7 @@ rules:
 - apiGroups:
   - cilium.io
   resources:
-  - cilia
+  - ciliumconfigs
   verbs:
   - create
   - delete
@@ -19,6 +19,6 @@ rules:
 - apiGroups:
   - cilium.io
   resources:
-  - cilia/status
+  - ciliumconfigs/status
   verbs:
   - get

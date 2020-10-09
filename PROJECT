@@ -3,6 +3,6 @@ layout: helm.sdk.operatorframework.io/v1
 projectName: cilium-openshift-operator
 resources:
 - group: cilium
-  kind: Cilium
+  kind: CiliumConfig
   version: v1alpha1
 version: 3-alpha

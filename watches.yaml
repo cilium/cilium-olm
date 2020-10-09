@@ -1,6 +1,6 @@
 # Use the 'create api' subcommand to add watches to this file.
 - group: cilium.io
   version: v1alpha1
-  kind: Cilium
+  kind: CiliumConfig
   chart: helm-charts/cilium
 # +kubebuilder:scaffold:watch
