@@ -10,7 +10,7 @@ spec:
     listKind: CiliumList
     plural: ciliumconfigs
     singular: ciliumconfig
-  scope: Cluster
+  scope: Namespaced
   versions:
   - name: v1alpha1
     schema:
