@@ -1,7 +1,7 @@
 package operator
 
 constants: {
-	name:    "cilium-openshift-operator"
+	name:    "cilium-olm"
 }
 
 _workload: {
@@ -87,7 +87,7 @@ if !parameters.test {
                         "run",
                         "--watches-file=watches.yaml",
 			"--enable-leader-election",
-                        "--leader-election-id=cilium-openshift-operator",
+                        "--leader-election-id=cilium-olm",
 	]
 }
 

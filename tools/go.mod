@@ -1,10 +1,12 @@
-module github.com/cilium/cilium-openshift-operator
+module github.com/cilium/cilium-olm
 
 go 1.15
 
 require (
 	github.com/errordeveloper/imagine v0.0.0-20200907115516-916cbe243ac1
 	github.com/errordeveloper/kue v0.3.0
+	github.com/operator-framework/operator-registry v1.14.3
+	sigs.k8s.io/controller-tools v0.4.0 // indirect
 )
 
 replace github.com/containerd/containerd => github.com/containerd/containerd v1.3.1-0.20200227195959-4d242818bf55

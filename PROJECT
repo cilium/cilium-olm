@@ -1,6 +1,6 @@
 domain: io
 layout: helm.sdk.operatorframework.io/v1
-projectName: cilium-openshift-operator
+projectName: cilium-olm
 resources:
 - group: cilium
   kind: CiliumConfig

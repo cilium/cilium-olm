@@ -24,15 +24,29 @@ images.operator: .buildx_builder
 	$(IMAGINE) build \
 		--builder $$(cat .buildx_builder) \
 		--base ./ \
-		--name cilium-openshift-operator \
+		--name cilium-olm \
 		--registry $(REGISTRY) \
 		$(imagine_push_or_export) \
 		--cleanup
 	$(IMAGINE) image \
 		--base ./ \
-		--name cilium-openshift-operator \
+		--name cilium-olm \
 		--registry $(REGISTRY) \
-		> image-cilium-openshift-operator.tag
+		> image-cilium-olm.tag
+
+images.operator-bundle: .buildx_builder
+	$(IMAGINE) build \
+		--builder $$(cat .buildx_builder) \
+		--base ./ \
+		--name cilium-olm-bundle \
+		--registry $(REGISTRY) \
+		$(imagine_push_or_export) \
+		--cleanup
+	$(IMAGINE) image \
+		--base ./ \
+		--name cilium-olm-bundle \
+		--registry $(REGISTRY) \
+		> image-cilium-olm-bundle.tag
 
 manifests.generate:
-	./generate-manifests.sh "$$(cat image-cilium-openshift-operator.tag)"
+	./generate-manifests.sh "$$(cat image-cilium-olm.tag)"

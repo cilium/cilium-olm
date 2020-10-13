@@ -8,7 +8,7 @@ set -o pipefail
 set -o nounset
 
 operator_image="${1}"
-use_namespace="${NAMESPACE:-cilium-openshift-operator}"
+use_namespace="${NAMESPACE:-cilium-olm}"
 
 cat > config/operator/instances.json << EOF
 {

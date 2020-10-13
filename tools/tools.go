@@ -6,5 +6,6 @@ package main
 import (
 	_ "github.com/errordeveloper/imagine"
 	_ "github.com/errordeveloper/kue/cmd/kg"
+	_ "github.com/operator-framework/operator-registry/cmd/opm"
 	_ "sigs.k8s.io/controller-tools/cmd/controller-gen"
 )
