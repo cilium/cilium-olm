@@ -4,5 +4,5 @@
 *.oci
 *.tag
 config/operator/instances.json
-config/operator/operator-test.yaml
-config/operator/operator.yaml
+operator-test-v*.yaml
+operator-v*.yaml

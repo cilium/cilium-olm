@@ -1,41 +1,31 @@
 package operator
 
 constants: {
-	name:    "cilium-olm"
+	name: "cilium-olm"
 }
 
 _workload: {
 	metadata: {
-		name: "\(constants.name)"
-		labels: name: "\(constants.name)"
-		namespace: "\(parameters.namespace)"
+		name: constants.name
+		labels: name: constants.name
+		namespace: parameters.namespace
 	}
 	spec: _workloadSpec
 }
 
 _workloadSpec: {
 	template: {
-		metadata: labels: name: "\(constants.name)"
+		metadata: labels: name: constants.name
 		spec: {
-			serviceAccount: "\(constants.name)"
-			volumes: [
-				{
-					name: "tmp"
-					emptyDir: {}
-				},
-				{
-					name: "cert"
-					secret: {
-						optional:    true
-						defaultMode: 420
-						secretName:  "\(constants.name)-webhook-server-cert"
-					}
-				},
-			]
+			serviceAccount: constants.name
+			volumes: [{
+				name: "tmp"
+				emptyDir: {}
+			}]
 			containers: [{
 				name:    "operator"
 				command: _command
-				image:   "\(parameters.image)"
+				image:   parameters.image
 				ports: [{
 					containerPort: 9443
 					name:          "https"
@@ -77,17 +67,17 @@ if !parameters.test {
 	}
 	_workloadSpec: {
 		replicas: 1
-		selector: matchLabels: name: "\(constants.name)"
+		selector: matchLabels: name: constants.name
 		template: {
-			metadata: labels: name: "\(constants.name)"
+			metadata: labels: name: constants.name
 		}
 	}
 	_command: [
-			"/usr/local/bin/helm-operator",
-                        "run",
-                        "--watches-file=watches.yaml",
-			"--enable-leader-election",
-                        "--leader-election-id=cilium-olm",
+		"/usr/local/bin/helm-operator",
+		"run",
+		"--watches-file=watches.yaml",
+		"--enable-leader-election",
+		"--leader-election-id=cilium-olm",
 	]
 }
 
@@ -112,9 +102,9 @@ _serviceAccount: {
 	apiVersion: "v1"
 	kind:       "ServiceAccount"
 	metadata: {
-		name: "\(constants.name)"
-		labels: name: "\(constants.name)"
-		namespace: "\(parameters.namespace)"
+		name: constants.name
+		labels: name: constants.name
+		namespace: parameters.namespace
 	}
 }
 
@@ -150,17 +140,17 @@ _rbac_ClusterRoleBinding: {
 	kind:       "ClusterRoleBinding"
 	metadata: {
 		name: "\(parameters.namespace)-\(constants.name)"
-		labels: name: "\(constants.name)"
+		labels: name: constants.name
 	}
 	roleRef: {
 		kind:     "ClusterRole"
-		name:     "\(constants.name)"
+		name:     constants.name
 		apiGroup: "rbac.authorization.k8s.io"
 	}
 	subjects: [{
 		kind:      "ServiceAccount"
-		name:      "\(constants.name)"
-		namespace: "\(parameters.namespace)"
+		name:      constants.name
+		namespace: parameters.namespace
 	}]
 }
 
@@ -168,20 +158,103 @@ _core_items: [
 	_serviceAccount,
 	_workload,
 	_service,
-	_rbac_ClusterRoleBinding,
+	_roles,
+	_roleBindings,
+	_clusterRoles,
+	_clusterRoleBindings,
 ]
 
 #WorkloadTemplate: {
 	kind:       "List"
 	apiVersion: "v1"
-	items: _core_items
+	items:      _core_items
+}
+
+#CSVWorkloadTemplate: {
+	apiVersion: "operators.coreos.com/v1alpha1"
+	kind:       "ClusterServiceVersion"
+	metadata: {
+		annotations: capabilities: "Basic Install"
+		name:      "cilium-v\(parameters.ciliumRelease)"
+		namespace: "placeholder"
+	}
+	spec: {
+		apiservicedefinitions: {}
+		customresourcedefinitions: owned: [{
+			kind:    "CiliumConfig"
+			name:    "ciliumconfigs.cilium.io"
+			version: "v1alpha1"
+		}]
+		displayName: "Cilium"
+		description: "Cilium - eBPF-based Networking, Security, and Observability"
+		icon: [{
+			base64data: ""
+			mediatype:  ""
+		}]
+		install: {
+			spec: {
+				deployments: [{
+					name: constants.name
+					spec: _workloadSpec
+				}]
+				permissions: [{
+					rules:              _leaderElectionRules + _helmOperatorRules
+					serviceAccountName: constants.name
+				}]
+				clusterPermissions: [{
+					rules:              _helmOperatorClusterRules
+					serviceAccountName: constants.name
+				}]
+			}
+			strategy: "deployment"
+		}
+		installModes: [{
+			supported: false
+			type:      "OwnNamespace"
+		}, {
+			supported: false
+			type:      "SingleNamespace"
+		}, {
+			supported: false
+			type:      "MultiNamespace"
+		}, {
+			supported: true
+			type:      "AllNamespaces"
+		}]
+		keywords: [
+			"networking",
+			"security",
+			"observability",
+			"eBPF",
+		]
+		links: [{
+			name: "Cilium Homepage"
+			url:  "https://cilium.io/"
+		}]
+		maturity: "stable"
+		provider: name: "Isovalent"
+		version: parameters.ciliumVersion
+	}
+
 }
 
 #WorkloadParameters: {
-	namespace:      string
-	image:          string
-	test:           bool
+	namespace:     string
+	image:         string
+	test:          bool
+	ciliumRelease: string
+	ciliumVersion: string
+	csv:           bool
 }
 
 parameters: #WorkloadParameters
-template:   #WorkloadTemplate
+
+template: {}
+
+if parameters.csv {
+	template: #CSVWorkloadTemplate
+}
+
+if !parameters.csv {
+	template: #WorkloadTemplate
+}

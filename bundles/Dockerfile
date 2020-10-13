@@ -1,0 +1,16 @@
+FROM scratch
+
+ARG ciliumRelease
+
+LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
+LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
+LABEL operators.operatorframework.io.bundle.metadata.v1=metadata/
+LABEL operators.operatorframework.io.bundle.package.v1=cilium
+LABEL operators.operatorframework.io.bundle.channels.v1=stable
+LABEL operators.operatorframework.io.bundle.channel.default.v1=stable
+LABEL operators.operatorframework.io.metrics.builder=operator-sdk-v1.0.1
+LABEL operators.operatorframework.io.metrics.mediatype.v1=metrics+v1
+LABEL operators.operatorframework.io.metrics.project_layout=helm.sdk.operatorframework.io/v1
+
+COPY cilium-v${ciliumRelease}/manifests /manifests
+COPY cilium-v${ciliumRelease}/metadata /metadata
