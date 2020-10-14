@@ -22,6 +22,9 @@ spec:
         - --watches-file=watches.yaml
         - --enable-leader-election
         - --leader-election-id=cilium-olm
+        env:
+        - name: WATCH_NAMESPACE
+          value: cilium
         image: docker.io/errordeveloper/cilium-olm.v1.8.5:d7a02e23a4b9334ad4643801f8318d556dc6891f-dev
         name: operator
         ports:

@@ -33,6 +33,10 @@ _workloadSpec: {
 					name:          "https"
 					protocol:      "TCP"
 				}]
+				env: [{
+					name: "WATCH_NAMESPACE"
+					value: "cilium"
+				}]
 				volumeMounts: [{
 					name:      "tmp"
 					mountPath: "/tmp"

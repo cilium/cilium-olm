@@ -33,7 +33,7 @@ _leaderElectionRules: [
 
 _helmOperatorClusterRules: [
 	{
-		// Operator needs to get namespaces so that it can read namespaces to ensure they exist
+		// Operator needs to get cilium namespace so that it ensure that it exists
 		apiGroups: [
 			"",
 		]
@@ -43,45 +43,8 @@ _helmOperatorClusterRules: [
 		verbs: [
 			"get",
 		]
-	}, {
-		// Operator needs to manage Helm release secrets
-		apiGroups: [
-			"",
-		]
-		resources: [
-			"secrets",
-		]
-		verbs: [
-			"*",
-		]
-	}, {
-		// Operator needs to create events on CRs about things happening during reconciliation
-		apiGroups: [
-			"",
-		]
-		resources: [
-			"events",
-		]
-		verbs: [
-			"create",
-		]
-	}, {
-		// Operator needs to manage ciliumconfigs
-		apiGroups: [
-			"cilium.io",
-		]
-		resources: [
-			"ciliumconfigs",
-			"ciliumconfigs/status",
-		]
-		verbs: [
-			"create",
-			"delete",
-			"get",
-			"list",
-			"patch",
-			"update",
-			"watch",
+		resourceNames: [
+			"cilium",
 		]
 	}, {
 		// Operator needs to manage cilium RBAC resources
@@ -93,7 +56,11 @@ _helmOperatorClusterRules: [
 			"clusterrolebindings",
 		]
 		verbs: [
-			"*",
+			"create",
+			"get",
+			"patch",
+			"update",
+			"delete",
 		]
 		resourceNames: [
 			"cilium",
@@ -103,6 +70,49 @@ _helmOperatorClusterRules: [
 ]
 
 _helmOperatorRules: [
+	{
+		// Operator needs to manage ciliumconfig
+		apiGroups: [
+			"cilium.io",
+		]
+		resources: [
+			"ciliumconfigs",
+			"ciliumconfigs/status",
+		]
+		verbs: [
+			"get",
+			"patch",
+			"update",
+			"watch",
+		],
+		resourceNames: [
+			"cilium",
+		]
+	},
+	{
+		// Operator needs to create events on ciliumconfig about things happening during reconciliation
+		apiGroups: [
+			"",
+		]
+		resources: [
+			"events",
+		]
+		verbs: [
+			"create",
+		]
+	},
+	{
+		// Operator needs to manage Helm release secrets
+		apiGroups: [
+			"",
+		]
+		resources: [
+			"secrets",
+		]
+		verbs: [
+			"*",
+		]
+	},
 	{ // TODO: reduce this to just the resource Cilium chart ships
 		apiGroups: [
 			"",
@@ -113,7 +123,7 @@ _helmOperatorRules: [
 		verbs: [
 			"*",
 		]
-	}
+	},
 ]
 
 _roles: [
@@ -133,7 +143,7 @@ _roles: [
 		kind:       "Role"
 		metadata: {
 			name:      constants.name
-			namespace: parameters.namespace
+			namespace: "cilium"
 		}
 		rules: _helmOperatorRules
 	},
@@ -141,7 +151,6 @@ _roles: [
 
 _roleBindings: [
 	{
-
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "RoleBinding"
 		metadata: {
@@ -158,15 +167,13 @@ _roleBindings: [
 			name:      constants.name
 			namespace: parameters.namespace
 		}]
-
 	},
 	{
-
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "RoleBinding"
 		metadata: {
 			name:      constants.name
-			namespace: parameters.namespace
+			namespace: "cilium"
 		}
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"

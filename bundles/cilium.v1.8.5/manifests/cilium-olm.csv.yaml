@@ -23,35 +23,12 @@ spec:
       - rules:
         - apiGroups:
           - ""
+          resourceNames:
+          - cilium
           resources:
           - namespaces
           verbs:
           - get
-        - apiGroups:
-          - ""
-          resources:
-          - secrets
-          verbs:
-          - '*'
-        - apiGroups:
-          - ""
-          resources:
-          - events
-          verbs:
-          - create
-        - apiGroups:
-          - cilium.io
-          resources:
-          - ciliumconfigs
-          - ciliumconfigs/status
-          verbs:
-          - create
-          - delete
-          - get
-          - list
-          - patch
-          - update
-          - watch
         - apiGroups:
           - rbac.authorization.k8s.io/v1
           resourceNames:
@@ -61,7 +38,11 @@ spec:
           - clusterroles
           - clusterrolebindings
           verbs:
-          - '*'
+          - create
+          - get
+          - patch
+          - update
+          - delete
         serviceAccountName: cilium-olm
       deployments:
       - name: cilium-olm
@@ -82,6 +63,9 @@ spec:
                 - --watches-file=watches.yaml
                 - --enable-leader-election
                 - --leader-election-id=cilium-olm
+                env:
+                - name: WATCH_NAMESPACE
+                  value: cilium
                 image: docker.io/errordeveloper/cilium-olm.v1.8.5:d7a02e23a4b9334ad4643801f8318d556dc6891f-dev
                 name: operator
                 ports:
@@ -127,6 +111,30 @@ spec:
           verbs:
           - create
           - patch
+        - apiGroups:
+          - cilium.io
+          resourceNames:
+          - cilium
+          resources:
+          - ciliumconfigs
+          - ciliumconfigs/status
+          verbs:
+          - get
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - '*'
         - apiGroups:
           - ""
           resources:
