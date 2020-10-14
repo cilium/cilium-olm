@@ -29,14 +29,14 @@ images.operator-bundle.v1.8.5: generate.bundles.v1.8.5
 images.operator.%: .buildx_builder
 	$(IMAGINE) build \
 		--builder $$(cat .buildx_builder) \
-		--base ./ \
+		--base ./operator \
 		--name cilium-olm.v$(cilium_version) \
 		--args ciliumVersion=$(cilium_version) \
 		--registry $(REGISTRY) \
 		$(imagine_push_or_export) \
 		--cleanup
 	$(IMAGINE) image \
-		--base ./ \
+		--base ./operator \
 		--name cilium-olm.v$(cilium_version) \
 		--registry $(REGISTRY) \
 		> image-cilium-olm.v$(cilium_version).tag

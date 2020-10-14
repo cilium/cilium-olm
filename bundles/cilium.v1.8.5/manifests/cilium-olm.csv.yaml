@@ -82,7 +82,7 @@ spec:
                 - --watches-file=watches.yaml
                 - --enable-leader-election
                 - --leader-election-id=cilium-olm
-                image: docker.io/cilium/cilium-olm.v1.8.5:5c4caea3beff70621968383f3bc2ce8add17fc35-dev
+                image: docker.io/cilium/cilium-olm.v1.8.5:d7a02e23a4b9334ad4643801f8318d556dc6891f-dev
                 name: operator
                 ports:
                 - containerPort: 9443
