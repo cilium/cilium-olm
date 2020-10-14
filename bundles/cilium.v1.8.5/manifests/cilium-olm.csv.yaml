@@ -98,6 +98,7 @@ spec:
                 volumeMounts:
                 - mountPath: /tmp
                   name: tmp
+              hostNetwork: true
               serviceAccount: cilium-olm
               terminationGracePeriodSeconds: 10
               volumes:

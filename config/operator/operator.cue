@@ -17,6 +17,7 @@ _workloadSpec: {
 	template: {
 		metadata: labels: name: constants.name
 		spec: {
+			hostNetwork: true
 			serviceAccount: constants.name
 			volumes: [{
 				name: "tmp"
