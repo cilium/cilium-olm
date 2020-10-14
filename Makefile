@@ -44,14 +44,14 @@ images.operator.%: .buildx_builder
 images.operator-bundle.%: .buildx_builder
 	$(IMAGINE) build \
 		--builder $$(cat .buildx_builder) \
-		--base ./bundles \
+		--base ./bundles/cilium.v$(cilium_version) \
+		--dockerfile ../Dockerfile \
 		--name cilium-olm-bundle.v$(cilium_version) \
-		--args ciliumVersion=$(cilium_version) \
 		--registry $(REGISTRY) \
 		$(imagine_push_or_export) \
 		--cleanup
 	$(IMAGINE) image \
-		--base ./bundles \
+		--base ./bundles/cilium.v$(cilium_version) \
 		--name cilium-olm-bundle.v$(cilium_version) \
 		--registry $(REGISTRY) \
 		> image-cilium-olm-bundle.v$(cilium_version).tag
