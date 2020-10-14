@@ -18,6 +18,7 @@ _workloadSpec: {
 		metadata: labels: name: constants.name
 		spec: {
 			hostNetwork: true
+                        tolerations: [{operator: "Exists"}]
 			serviceAccount: constants.name
 			volumes: [{
 				name: "tmp"

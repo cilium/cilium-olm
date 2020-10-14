@@ -200,7 +200,7 @@ _clusterRoleBindings: [
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"
 			kind:     "ClusterRole"
-			name:     constants.name
+			name:     "\(parameters.namespace)-\(constants.name)"
 		}
 		subjects: [{
 			kind:      "ServiceAccount"

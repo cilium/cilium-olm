@@ -41,6 +41,8 @@ spec:
       hostNetwork: true
       serviceAccount: cilium-olm
       terminationGracePeriodSeconds: 10
+      tolerations:
+      - operator: Exists
       volumes:
       - emptyDir: {}
         name: tmp
