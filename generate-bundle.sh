@@ -17,7 +17,7 @@ cat > config/operator/instances.json << EOF
 {
   "instances": [
     {
-      "output": "manifests/cilium.v${cilium_version}/cluster-network-03-cilium-%s.yaml",
+      "output": "manifests/cilium.v${cilium_version}/cluster-network-06-cilium-%s.yaml",
       "parameters": {
         "namespace": "${use_namespace}",
         "image": "${operator_image}",
@@ -46,9 +46,9 @@ fi
 
 kg -input-directory ./config/operator -output-directory ./
 
-cp ./config/crd/cilium.io_cilumconfigs.yaml "manifests/cilium.v${cilium_version}/cluster-network-04-cilium-ciliumconfigs-crd.yaml"
+cp ./config/crd/cilium.io_cilumconfigs.yaml "manifests/cilium.v${cilium_version}/cluster-network-03-cilium-ciliumconfigs-crd.yaml"
 
-cat > "manifests/cilium.v${cilium_version}/cluster-network-05-cilium-namespace.yaml" << EOF
+cat > "manifests/cilium.v${cilium_version}/cluster-network-04-cilium-namespace.yaml" << EOF
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -66,7 +66,7 @@ metadata:
     openshift.io/cluster-monitoring: "true"
 EOF
 
-cat > "manifests/cilium.v${cilium_version}/cluster-network-06-cilium-ciliumconfig.yaml" << EOF
+cat > "manifests/cilium.v${cilium_version}/cluster-network-05-cilium-ciliumconfig.yaml" << EOF
 apiVersion: cilium.io/v1alpha1
 kind: CiliumConfig
 metadata:
