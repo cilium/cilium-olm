@@ -31,17 +31,10 @@ _workloadSpec: {
 					name:          "https"
 					protocol:      "TCP"
 				}]
-				volumeMounts: [
-					{
-						name:      "tmp"
-						mountPath: "/tmp"
-					},
-					{
-						mountPath: "/run/cert"
-						name:      "cert"
-						readOnly:  true
-					},
-				]
+				volumeMounts: [{
+					name:      "tmp"
+					mountPath: "/tmp"
+				}]
 				resources: {
 					limits: {
 						cpu:    "100m"
@@ -154,15 +147,37 @@ _rbac_ClusterRoleBinding: {
 	}]
 }
 
-_core_items: [
-	_serviceAccount,
-	_workload,
-	_service,
-	_roles,
-	_roleBindings,
-	_clusterRoles,
-	_clusterRoleBindings,
-]
+namespace: [...{}]
+
+if parameters.namespace != "kube-system" {
+	namespace: [{
+		apiVersion: "v1"
+		kind:       "Namespace"
+		metadata: {
+			name: parameters.namespace
+			annotations: {
+				// node selector is required to make cilium-operator run on control plane nodes
+				"openshift.io/node-selector": ""
+			}
+			labels: {
+				name: parameters.namespace
+				// run level sets priority for Cilium to be deployed prior to other components
+				"openshift.io/run-level": "0"
+				// enable cluster logging for Cilium namespace
+				"openshift.io/cluster-logging": "true"
+				// enable cluster monitoring for Cilium namespace
+				"openshift.io/cluster-monitoring": "true"
+			}
+		}
+	}]
+}
+_rbac_items: _roles + _roleBindings + _clusterRoles + _clusterRoleBindings
+
+_core_items: namespace + [
+		_serviceAccount,
+		_workload,
+		_service,
+] + _rbac_items
 
 #WorkloadTemplate: {
 	kind:       "List"
