@@ -3,6 +3,8 @@ GOBIN = $(shell go env GOPATH)/bin
 IMAGINE ?= $(GOBIN)/imagine
 KG ?= $(GOBIN)/kg
 
+OPM ?= $(GOBIN)/opm
+
 ifeq ($(MAKER_CONTAINER),true)
   IMAGINE=imagine
   KG=kg
@@ -17,9 +19,10 @@ endif
 
 images.all: images.operator.v1.8.5 images.operator-bundle.v1.8.5
 
-images.operator.v1.8.5 images.operator-bundle.v1.8.5 generate.bundles.v1.8.5: cilium_version=1.8.5
+images.operator.v1.8.5 images.operator-bundle.v1.8.5 generate.bundles.v1.8.5 validate.bundles.v1.8.5: cilium_version=1.8.5
 
 images.operator-bundle.v1.8.5: generate.bundles.v1.8.5
+validate.bundles.v1.8.5: images.operator-bundle.v1.8.5
 
 .buildx_builder:
 	# see https://github.com/docker/buildx/issues/308
@@ -56,5 +59,8 @@ images.operator-bundle.%: .buildx_builder
 		--registry $(REGISTRY) \
 		> image-cilium-olm-bundle.v$(cilium_version).tag
 
-generate.bundles.%: images.operator.%
+generate.bundles.%:
 	./generate-bundle.sh "$$(cat image-cilium-olm.v$(cilium_version).tag)" $(cilium_version)
+
+validate.bundles.%:
+	$(OPM) alpha bundle validate --tag $$(cat image-cilium-olm-bundle.v$(cilium_version).tag)
