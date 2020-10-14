@@ -1,6 +1,6 @@
 FROM scratch
 
-ARG ciliumRelease
+ARG ciliumVersion
 
 LABEL operators.operatorframework.io.bundle.mediatype.v1=registry+v1
 LABEL operators.operatorframework.io.bundle.manifests.v1=manifests/
@@ -12,5 +12,5 @@ LABEL operators.operatorframework.io.metrics.builder=operator-sdk-v1.0.1
 LABEL operators.operatorframework.io.metrics.mediatype.v1=metrics+v1
 LABEL operators.operatorframework.io.metrics.project_layout=helm.sdk.operatorframework.io/v1
 
-COPY cilium-v${ciliumRelease}/manifests /manifests
-COPY cilium-v${ciliumRelease}/metadata /metadata
+COPY cilium.v${ciliumVersion}/manifests /manifests
+COPY cilium.v${ciliumVersion}/metadata /metadata

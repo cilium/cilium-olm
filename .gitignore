@@ -4,5 +4,6 @@
 *.oci
 *.tag
 config/operator/instances.json
-operator-test-v*.yaml
-operator-v*.yaml
+operator-test.v*.yaml
+operator.v*.yaml
+buildx-*.json

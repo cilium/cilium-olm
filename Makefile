@@ -15,42 +15,46 @@ ifeq ($(PUSH),true)
 imagine_push_or_export = --push
 endif
 
+images.all: images.operator.v1.8.5 images.operator-bundle.v1.8.5
+
+images.operator.v1.8.5 images.operator-bundle.v1.8.5 generate.bundles.v1.8.5: cilium_version=1.8.5
+
+images.operator-bundle.v1.8.5: generate.bundles.v1.8.5
+
 .buildx_builder:
 	# see https://github.com/docker/buildx/issues/308
 	mkdir -p ../.buildx
 	docker buildx create --platform linux/amd64 > $@
 
-images.all: images.operator-v1.8 images.operator-bundle-v1.8
-
-images.operator-v1.8: .buildx_builder
+images.operator.%: .buildx_builder
 	$(IMAGINE) build \
 		--builder $$(cat .buildx_builder) \
 		--base ./ \
-		--name cilium-olm-v1.8 \
-		--args ciliumVersion=1.8.5,ciliumRelease=1.8 \
+		--name cilium-olm.v$(cilium_version) \
+		--args ciliumVersion=$(cilium_version) \
 		--registry $(REGISTRY) \
 		$(imagine_push_or_export) \
 		--cleanup
 	$(IMAGINE) image \
 		--base ./ \
-		--name cilium-olm-v1.8 \
+		--name cilium-olm.v$(cilium_version) \
 		--registry $(REGISTRY) \
-		> image-cilium-olm-v1.8.tag
+		> image-cilium-olm.v$(cilium_version).tag
 
-images.operator-bundle-v1.8: .buildx_builder
+images.operator-bundle.%: .buildx_builder
 	$(IMAGINE) build \
 		--builder $$(cat .buildx_builder) \
 		--base ./bundles \
-		--name cilium-olm-bundle-v1.8 \
-		--args ciliumVersion=1.8.5,ciliumRelease=1.8 \
+		--name cilium-olm-bundle.v$(cilium_version) \
+		--args ciliumVersion=$(cilium_version) \
 		--registry $(REGISTRY) \
 		$(imagine_push_or_export) \
 		--cleanup
 	$(IMAGINE) image \
 		--base ./bundles \
-		--name cilium-olm-bundle-v1.8 \
+		--name cilium-olm-bundle.v$(cilium_version) \
 		--registry $(REGISTRY) \
-		> image-cilium-olm-bundle-v1.8.tag
+		> image-cilium-olm-bundle.v$(cilium_version).tag
 
-generate.bundles:
-	./generate-bundle.sh "$$(cat image-cilium-olm-v1.8.tag)" 1.8 1.8.5
+generate.bundles.%: images.operator.%
+	./generate-bundle.sh "$$(cat image-cilium-olm.v$(cilium_version).tag)" $(cilium_version)

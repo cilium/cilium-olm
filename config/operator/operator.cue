@@ -175,7 +175,7 @@ _core_items: [
 	kind:       "ClusterServiceVersion"
 	metadata: {
 		annotations: capabilities: "Basic Install"
-		name:      "cilium-v\(parameters.ciliumRelease)"
+		name:      "cilium.v\(parameters.ciliumVersion)"
 		namespace: "placeholder"
 	}
 	spec: {
@@ -242,7 +242,6 @@ _core_items: [
 	namespace:     string
 	image:         string
 	test:          bool
-	ciliumRelease: string
 	ciliumVersion: string
 	csv:           bool
 }
