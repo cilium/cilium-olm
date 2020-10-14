@@ -1,0 +1,158 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    capabilities: Basic Install
+  name: cilium.v1.8.5
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - kind: CiliumConfig
+      name: ciliumconfigs.cilium.io
+      version: v1alpha1
+  description: Cilium - eBPF-based Networking, Security, and Observability
+  displayName: Cilium
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      clusterPermissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+        - apiGroups:
+          - cilium.io
+          resources:
+          - ciliumconfigs
+          - ciliumconfigs/status
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - rbac.authorization.k8s.io/v1
+          resourceNames:
+          - cilium
+          - cilium-operator
+          resources:
+          - clusterroles
+          - clusterrolebindings
+          verbs:
+          - '*'
+        serviceAccountName: cilium-olm
+      deployments:
+      - name: cilium-olm
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              name: cilium-olm
+          template:
+            metadata:
+              labels:
+                name: cilium-olm
+            spec:
+              containers:
+              - command:
+                - /usr/local/bin/helm-operator
+                - run
+                - --watches-file=watches.yaml
+                - --enable-leader-election
+                - --leader-election-id=cilium-olm
+                image: docker.io/errordeveloper/cilium-olm.v1.8.5:3a3620476e2389f79c224d47b0086373cd130245-dev
+                name: operator
+                ports:
+                - containerPort: 9443
+                  name: https
+                  protocol: TCP
+                resources:
+                  limits:
+                    cpu: 100m
+                    memory: 100Mi
+                  requests:
+                    cpu: 100m
+                    memory: 100Mi
+                volumeMounts:
+                - mountPath: /tmp
+                  name: tmp
+                - mountPath: /run/cert
+                  name: cert
+                  readOnly: true
+              serviceAccount: cilium-olm
+              terminationGracePeriodSeconds: 10
+              volumes:
+              - emptyDir: {}
+                name: tmp
+      permissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        serviceAccountName: cilium-olm
+    strategy: deployment
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - networking
+  - security
+  - observability
+  - eBPF
+  links:
+  - name: Cilium Homepage
+    url: https://cilium.io/
+  maturity: stable
+  provider:
+    name: Isovalent
+  version: 1.8.5
