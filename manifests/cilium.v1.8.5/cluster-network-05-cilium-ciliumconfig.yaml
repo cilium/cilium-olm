@@ -17,5 +17,5 @@ spec:
       operator:
         clusterPoolIPv4PodCIDR: "10.128.0.0/14"
         clusterPoolIPv4MaskSize: "23"
-    prometheus: 
+    prometheus:
       serviceMonitor: {enabled: false}
