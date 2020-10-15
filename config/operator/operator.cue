@@ -77,6 +77,7 @@ if !parameters.test {
 		"--watches-file=watches.yaml",
 		"--enable-leader-election",
 		"--leader-election-id=cilium-olm",
+		"--zap-devel",
 	]
 }
 
@@ -223,7 +224,7 @@ _core_items: namespace + [
 					serviceAccountName: constants.name
 				}]
 				clusterPermissions: [{
-					rules:              _helmOperatorClusterRules
+					rules:              _helmOperatorClusterRules + _ciliumClusterRules
 					serviceAccountName: constants.name
 				}]
 			}
