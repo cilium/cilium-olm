@@ -47,9 +47,9 @@ hubble-relay:
   #   # repository of the docker image
   #   name: hubble-relay
   #   # tag is the container image tag to use
-  #   tag: v1.8.4
+  #   tag: v1.8
   #   # pullPolicy is the container image pull policy
-  #   pullPolicy: IfNotPresent
+  #   pullPolicy: Always
   #
   # # Specifies the resources for the hubble-relay pods
   # resources: {}
@@ -86,10 +86,10 @@ global:
   registry: docker.io/cilium
 
   # tag is the container image tag to use
-  tag: v1.8.4
+  tag: v1.8
 
   # pullPolicy is the container image pull policy
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
   # etcd is the etcd configuration
   etcd:
@@ -485,6 +485,9 @@ global:
 
   # remoteNodeIdentity enables use of the remote node identity
   remoteNodeIdentity: true
+
+  # enableAPIRateLimit enables the use of API rate limiting
+  enableAPIRateLimit: false
 
   # psp creates and binds PodSecurityPolicies for the components that require it
   psp:
