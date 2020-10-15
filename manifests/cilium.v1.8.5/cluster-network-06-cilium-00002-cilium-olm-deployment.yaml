@@ -22,6 +22,7 @@ spec:
         - --watches-file=watches.yaml
         - --enable-leader-election
         - --leader-election-id=cilium-olm
+        - --zap-devel
         env:
         - name: WATCH_NAMESPACE
           value: cilium

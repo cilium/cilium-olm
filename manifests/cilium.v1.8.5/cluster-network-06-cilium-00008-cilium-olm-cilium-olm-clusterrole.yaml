@@ -12,10 +12,7 @@ rules:
   verbs:
   - get
 - apiGroups:
-  - rbac.authorization.k8s.io/v1
-  resourceNames:
-  - cilium
-  - cilium-operator
+  - rbac.authorization.k8s.io
   resources:
   - clusterroles
   - clusterrolebindings
@@ -25,3 +22,5 @@ rules:
   - patch
   - update
   - delete
+  - list
+  - watch

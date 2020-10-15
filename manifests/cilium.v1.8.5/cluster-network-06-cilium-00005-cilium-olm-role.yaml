@@ -6,16 +6,26 @@ metadata:
 rules:
 - apiGroups:
   - cilium.io
+  resources:
+  - ciliumconfigs
+  - ciliumconfigs/status
+  verbs:
+  - list
+- apiGroups:
+  - cilium.io
   resourceNames:
   - cilium
   resources:
   - ciliumconfigs
   - ciliumconfigs/status
+  - ciliumconfigs/finalizers
   verbs:
   - get
   - patch
   - update
   - watch
+  - list
+  - delete
 - apiGroups:
   - ""
   resources:
@@ -31,6 +41,16 @@ rules:
 - apiGroups:
   - ""
   resources:
+  - serviceaccounts
+  - configmaps
+  - secrets
+  - services
+  verbs:
   - '*'
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - daemonsets
   verbs:
   - '*'
