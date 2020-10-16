@@ -66,29 +66,20 @@ metadata:
     openshift.io/cluster-monitoring: "true"
 EOF
 
-cat > "manifests/cilium.v${cilium_version}/cluster-network-05-cilium-ciliumconfig.yaml" << EOF
-apiVersion: cilium.io/v1alpha1
-kind: CiliumConfig
-metadata:
-  name: cilium
-  namespace: cilium
-spec:
-  config:
-    ipam: "cluster-pool"
-    bpfMasquerade: false
-  global:
-    nativeRoutingCIDR: "10.128.0.0/14"
-    endpointRoutes: {enabled: true}
-    cni:
-      binPath: "/var/lib/cni/bin"
-      confPath: "/var/run/multus/cni/net.d"
-    ipam:
-      operator:
-        clusterPoolIPv4PodCIDR: "10.128.0.0/14"
-        clusterPoolIPv4MaskSize: "23"
-    prometheus:
-      serviceMonitor: {enabled: false}
-EOF
+case "${cilium_version}" in
+  1.8.*)
+    ciliumconfig="ciliumconfig.v1.8.yaml"
+    ;;
+  1.9.*)
+    ciliumconfig="ciliumconfig.v1.9.yaml"
+    ;;
+  *)
+  echo "ciliumconfig example missing for ${cilium_version}"
+  exit 1
+  ;;
+esac
+
+cp "${ciliumconfig}" "manifests/cilium.v${cilium_version}/cluster-network-05-cilium-ciliumconfig.yaml"
 
 cp ./config/crd/cilium.io_cilumconfigs.yaml "bundles/cilium.v${cilium_version}/manifests/ciliumconfigs.crd.yaml"
 mkdir -p "bundles/cilium.v${cilium_version}/metadata"
