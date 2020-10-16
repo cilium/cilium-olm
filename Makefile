@@ -34,17 +34,31 @@ validate.bundles.v1.9.0-rc1: images.operator-bundle.v1.9.0-rc1
 	mkdir -p ../.buildx
 	docker buildx create --platform linux/amd64 > $@
 
+images.operator-base: .buildx_builder
+	$(IMAGINE) build \
+		--builder $$(cat .buildx_builder) \
+		--base ./operator/base \
+		--name cilium-olm-base \
+		--registry $(REGISTRY) \
+		$(imagine_push_or_export) \
+		--cleanup
+	$(IMAGINE) image \
+		--base ./operator/base \
+		--name cilium-olm-base \
+		--registry $(REGISTRY) \
+		> image-cilium-olm-base.tag
+
 images.operator.%: .buildx_builder
 	$(IMAGINE) build \
 		--builder $$(cat .buildx_builder) \
-		--base ./operator \
+		--base ./operator/cilium.v$(cilium_version) \
 		--name cilium-olm.v$(cilium_version) \
 		--args ciliumVersion=$(cilium_version) \
 		--registry $(REGISTRY) \
 		$(imagine_push_or_export) \
 		--cleanup
 	$(IMAGINE) image \
-		--base ./operator \
+		--base ./operator/cilium.v$(cilium_version) \
 		--name cilium-olm.v$(cilium_version) \
 		--registry $(REGISTRY) \
 		> image-cilium-olm.v$(cilium_version).tag

@@ -136,7 +136,7 @@ spec:
                 env:
                 - name: WATCH_NAMESPACE
                   value: cilium
-                image: docker.io/errordeveloper/cilium-olm.v1.8.5:28fcfc7af6d5a13fe94c25bc315ef7f5deb81c69-dev
+                image: docker.io/errordeveloper/cilium-olm.v1.8.5:e3cc50a2897272d39229bad7a6b40d17f407d7c4-dev
                 name: operator
                 ports:
                 - containerPort: 9443

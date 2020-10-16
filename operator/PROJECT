@@ -1,8 +1,0 @@
-domain: io
-layout: helm.sdk.operatorframework.io/v1
-projectName: cilium-olm
-resources:
-- group: cilium
-  kind: CiliumConfig
-  version: v1alpha1
-version: 3-alpha
