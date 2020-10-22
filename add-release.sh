@@ -58,4 +58,10 @@ EOF
 
 git add Makefile.releases "${chart_dir}"
 
-git commit -m "Add Cilium v${cilium_version}"
+git commit --message "Add Cilium v${cilium_version}"
+
+make images.operator.v${cilium_version}
+make generate.bundles.v${cilium_version}
+git add manifests/cilium.v${cilium_version} bundles/cilium.v${cilium_version}
+
+git commit --amend --all --message "Add Cilium v${cilium_version}"
