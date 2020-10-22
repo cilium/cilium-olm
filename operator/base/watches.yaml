@@ -1,6 +1,7 @@
-# Use the 'create api' subcommand to add watches to this file.
+# Copyright 2017-2020 Authors of Cilium
+# SPDX-License-Identifier: Apache-2.0
+
 - group: cilium.io
   version: v1alpha1
   kind: CiliumConfig
   chart: helm-charts/cilium
-# +kubebuilder:scaffold:watch

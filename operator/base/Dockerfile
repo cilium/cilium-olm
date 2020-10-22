@@ -1,3 +1,6 @@
+# Copyright 2017-2020 Authors of Cilium
+# SPDX-License-Identifier: Apache-2.0
+
 FROM quay.io/operator-framework/helm-operator:v1.0.1
 
 # Required Licenses
