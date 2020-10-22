@@ -46,7 +46,6 @@ images.operator.%: .buildx_builder
 		--builder $$(cat .buildx_builder) \
 		--base ./operator/cilium.v$(cilium_version) \
 		--name cilium-olm.v$(cilium_version) \
-		--args ciliumVersion=$(cilium_version) \
 		--registry $(REGISTRY) \
 		$(imagine_push_or_export) \
 		--cleanup
