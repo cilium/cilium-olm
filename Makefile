@@ -1,3 +1,6 @@
+# Copyright 2017-2020 Authors of Cilium
+# SPDX-License-Identifier: Apache-2.0
+
 GOBIN = $(shell go env GOPATH)/bin
 
 IMAGINE ?= $(GOBIN)/imagine
@@ -17,17 +20,7 @@ ifeq ($(PUSH),true)
 imagine_push_or_export = --push
 endif
 
-images.all: images.operator.v1.8.5 images.operator-bundle.v1.8.5 images.operator.v1.9.0-rc1 images.operator-bundle.v1.9.0-rc1
-
-images.operator.v1.8.5 images.operator-bundle.v1.8.5 generate.bundles.v1.8.5 validate.bundles.v1.8.5: cilium_version=1.8.5
-
-images.operator-bundle.v1.8.5: generate.bundles.v1.8.5
-validate.bundles.v1.8.5: images.operator-bundle.v1.8.5
-
-images.operator.v1.9.0-rc1 images.operator-bundle.v1.9.0-rc1 generate.bundles.v1.9.0-rc1 validate.bundles.v1.9.0-rc1: cilium_version=1.9.0-rc1
-
-images.operator-bundle.v1.9.0-rc1: generate.bundles.v1.9.0-rc1
-validate.bundles.v1.9.0-rc1: images.operator-bundle.v1.9.0-rc1
+include Makefile.releases
 
 .buildx_builder:
 	# see https://github.com/docker/buildx/issues/308

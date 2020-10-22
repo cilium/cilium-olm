@@ -1,0 +1,20 @@
+# Copyright 2017-2020 Authors of Cilium
+# SPDX-License-Identifier: Apache-2.0
+
+# Cilium v1.8.5
+
+images.all: images.operator.v1.8.5 images.operator-bundle.v1.8.5
+
+images.operator-bundle.v1.8.5: generate.bundles.v1.8.5
+validate.bundles.v1.8.5: images.operator-bundle.v1.8.5
+
+images.operator.v1.8.5 images.operator-bundle.v1.8.5 generate.bundles.v1.8.5 validate.bundles.v1.8.5: cilium_version=1.8.5
+
+# Cilium v1.9.0-rc1
+
+images.all: images.operator.v1.9.0-rc1 images.operator-bundle.v1.9.0-rc1
+
+images.operator.v1.9.0-rc1 images.operator-bundle.v1.9.0-rc1 generate.bundles.v1.9.0-rc1 validate.bundles.v1.9.0-rc1: cilium_version=1.9.0-rc1
+
+images.operator-bundle.v1.9.0-rc1: generate.bundles.v1.9.0-rc1
+validate.bundles.v1.9.0-rc1: images.operator-bundle.v1.9.0-rc1
