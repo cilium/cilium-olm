@@ -1,6 +1,8 @@
 # Copyright 2017-2020 Authors of Cilium
 # SPDX-License-Identifier: Apache-2.0
 
+# NB: this file should be updated via add-release.sh
+
 # Cilium v1.8.5
 
 images.all: images.operator.v1.8.5 images.operator-bundle.v1.8.5
