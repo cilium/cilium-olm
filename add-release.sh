@@ -55,3 +55,7 @@ images.operator.v${cilium_version} images.operator-bundle.v${cilium_version} gen
 images.operator-bundle.v${cilium_version}: generate.bundles.v${cilium_version}
 validate.bundles.v${cilium_version}: images.operator-bundle.v${cilium_version}
 EOF
+
+git add Makefile.releases "${chart_dir}"
+
+git commit -m "Add Cilium v${cilium_version}"
