@@ -20,3 +20,12 @@ images.operator.v1.9.0-rc1 images.operator-bundle.v1.9.0-rc1 generate.bundles.v1
 
 images.operator-bundle.v1.9.0-rc1: generate.bundles.v1.9.0-rc1
 validate.bundles.v1.9.0-rc1: images.operator-bundle.v1.9.0-rc1
+
+# Cilium v1.9.0-rc2
+
+images.all: images.operator.v1.9.0-rc2 images.operator-bundle.v1.9.0-rc2
+
+images.operator.v1.9.0-rc2 images.operator-bundle.v1.9.0-rc2 generate.bundles.v1.9.0-rc2 validate.bundles.v1.9.0-rc2: cilium_version=1.9.0-rc2
+
+images.operator-bundle.v1.9.0-rc2: generate.bundles.v1.9.0-rc2
+validate.bundles.v1.9.0-rc2: images.operator-bundle.v1.9.0-rc2
