@@ -37,7 +37,7 @@ _olm_items: [
 	metadata: {
 		annotations: capabilities: "Basic Install"
 		name:      "cilium.v\(parameters.ciliumVersion)"
-		namespace: "placeholder"
+		namespace: parameters.namespace
 	}
 	spec: {
 		apiservicedefinitions: {}
@@ -70,16 +70,16 @@ _olm_items: [
 			strategy: "deployment"
 		}
 		installModes: [{
-			supported: false
+			supported: true
 			type:      "OwnNamespace"
 		}, {
-			supported: false
+			supported: true
 			type:      "SingleNamespace"
 		}, {
 			supported: false
 			type:      "MultiNamespace"
 		}, {
-			supported: true
+			supported: false
 			type:      "AllNamespaces"
 		}]
 		keywords: [
