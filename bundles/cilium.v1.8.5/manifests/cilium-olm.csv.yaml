@@ -4,7 +4,7 @@ metadata:
   annotations:
     capabilities: Basic Install
   name: cilium.v1.8.5
-  namespace: placeholder
+  namespace: cilium-olm
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
@@ -234,13 +234,13 @@ spec:
         serviceAccountName: cilium-olm
     strategy: deployment
   installModes:
-  - supported: false
+  - supported: true
     type: OwnNamespace
-  - supported: false
+  - supported: true
     type: SingleNamespace
   - supported: false
     type: MultiNamespace
-  - supported: true
+  - supported: false
     type: AllNamespaces
   keywords:
   - networking
