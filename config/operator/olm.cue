@@ -29,6 +29,7 @@ _olm_items: [
 			sourceNamespace:     "openshift-marketplace"
 		}
 	},
+        #CSVWorkloadTemplate,
 ]
 
 #CSVWorkloadTemplate: {
