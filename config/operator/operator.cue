@@ -7,21 +7,23 @@ constants: {
 	name: "cilium-olm"
 }
 
+_commonMetadata: {
+	name: constants.name
+	labels: name: constants.name
+	namespace: parameters.namespace
+}
+
 _workload: {
-	metadata: {
-		name: constants.name
-		labels: name: constants.name
-		namespace: parameters.namespace
-	}
-	spec: _workloadSpec
+	metadata: _commonMetadata
+	spec:     _workloadSpec
 }
 
 _workloadSpec: {
 	template: {
-		metadata: labels: name: constants.name
+		metadata: labels: _commonMetadata.labels
 		spec: {
 			hostNetwork: true
-                        tolerations: [{operator: "Exists"}]
+			tolerations: [{operator: "Exists"}]
 			serviceAccount: constants.name
 			volumes: [{
 				name: "tmp"
@@ -37,7 +39,7 @@ _workloadSpec: {
 					protocol:      "TCP"
 				}]
 				env: [{
-					name: "WATCH_NAMESPACE"
+					name:  "WATCH_NAMESPACE"
 					value: "cilium"
 				}]
 				volumeMounts: [{
@@ -69,9 +71,9 @@ if !parameters.test {
 	}
 	_workloadSpec: {
 		replicas: 1
-		selector: matchLabels: name: constants.name
+		selector: matchLabels: _commonMetadata.labels
 		template: {
-			metadata: labels: name: constants.name
+			metadata: labels: _commonMetadata.labels
 		}
 	}
 	_command: [
@@ -104,11 +106,7 @@ if parameters.test {
 _serviceAccount: {
 	apiVersion: "v1"
 	kind:       "ServiceAccount"
-	metadata: {
-		name: constants.name
-		labels: name: constants.name
-		namespace: parameters.namespace
-	}
+	metadata:   _commonMetadata
 }
 
 _serviceSelector: {
@@ -123,11 +121,7 @@ _serviceSelector: {
 _service: {
 	apiVersion: "v1"
 	kind:       "Service"
-	metadata: {
-		name: constants.name
-		labels: name: constants.name
-		namespace: parameters.namespace
-	}
+	metadata:   _commonMetadata
 	spec: {
 		selector: _serviceSelector
 		ports: [{
@@ -142,8 +136,8 @@ _rbac_ClusterRoleBinding: {
 	apiVersion: "rbac.authorization.k8s.io/v1beta1"
 	kind:       "ClusterRoleBinding"
 	metadata: {
-		name: "\(parameters.namespace)-\(constants.name)"
-		labels: name: constants.name
+		name:   "\(parameters.namespace)-\(constants.name)"
+		labels: _commonMetadata.labels
 	}
 	roleRef: {
 		kind:     "ClusterRole"
@@ -187,80 +181,12 @@ _core_items: namespace + [
 		_serviceAccount,
 		_workload,
 		_service,
-] + _rbac_items
+] + _rbac_items + _olm_items
 
 #WorkloadTemplate: {
 	kind:       "List"
 	apiVersion: "v1"
 	items:      _core_items
-}
-
-#CSVWorkloadTemplate: {
-	apiVersion: "operators.coreos.com/v1alpha1"
-	kind:       "ClusterServiceVersion"
-	metadata: {
-		annotations: capabilities: "Basic Install"
-		name:      "cilium.v\(parameters.ciliumVersion)"
-		namespace: "placeholder"
-	}
-	spec: {
-		apiservicedefinitions: {}
-		customresourcedefinitions: owned: [{
-			kind:    "CiliumConfig"
-			name:    "ciliumconfigs.cilium.io"
-			version: "v1alpha1"
-		}]
-		displayName: "Cilium"
-		description: "Cilium - eBPF-based Networking, Security, and Observability"
-		icon: [{
-			base64data: ""
-			mediatype:  ""
-		}]
-		install: {
-			spec: {
-				deployments: [{
-					name: constants.name
-					spec: _workloadSpec
-				}]
-				permissions: [{
-					rules:              _leaderElectionRules + _helmOperatorRules
-					serviceAccountName: constants.name
-				}]
-				clusterPermissions: [{
-					rules:              _helmOperatorClusterRules + _ciliumClusterRules
-					serviceAccountName: constants.name
-				}]
-			}
-			strategy: "deployment"
-		}
-		installModes: [{
-			supported: false
-			type:      "OwnNamespace"
-		}, {
-			supported: false
-			type:      "SingleNamespace"
-		}, {
-			supported: false
-			type:      "MultiNamespace"
-		}, {
-			supported: true
-			type:      "AllNamespaces"
-		}]
-		keywords: [
-			"networking",
-			"security",
-			"observability",
-			"eBPF",
-		]
-		links: [{
-			name: "Cilium Homepage"
-			url:  "https://cilium.io/"
-		}]
-		maturity: "stable"
-		provider: name: "Isovalent"
-		version: parameters.ciliumVersion
-	}
-
 }
 
 #WorkloadParameters: {
