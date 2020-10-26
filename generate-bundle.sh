@@ -20,7 +20,7 @@ cat > config/operator/instances.json << EOF
       "parameters": {
         "image": "${operator_image}",
         "test": false,
-        "csv": false,
+        "onlyCSV": false,
         "ciliumVersion": "${cilium_version}"
       }
     },
@@ -29,7 +29,7 @@ cat > config/operator/instances.json << EOF
       "parameters": {
         "image": "${operator_image}",
         "test": false,
-        "csv": true,
+        "onlyCSV": true,
         "ciliumVersion": "${cilium_version}"
       }
     }
