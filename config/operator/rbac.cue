@@ -70,10 +70,10 @@ _helmOperatorClusterRules: [
 			"watch",
 		]
 		// resourceNames: [
-		// 	"cilium",
-		// 	"cilium-operator",
-		// 	"hubble-relay",
-		// 	"hubble-ui",
+		//  "cilium",
+		//  "cilium-operator",
+		//  "hubble-relay",
+		//  "hubble-ui",
 		// ]
 	},
 ]
@@ -138,7 +138,7 @@ _ciliumClusterRules: [
 		verbs: [
 			"get",
 			"list",
-  			"watch",
+			"watch",
 			"update",
 			"delete",
 		]
@@ -155,7 +155,7 @@ _ciliumClusterRules: [
 		verbs: [
 			"get",
 			"list",
-  			"watch",
+			"watch",
 			"update",
 			"patch",
 		]
@@ -177,7 +177,7 @@ _ciliumClusterRules: [
 			"watch",
 		]
 	},
- 	{
+	{
 		// Read-only access to endpointslices
 		apiGroups: [
 			"discovery.k8s.io",
@@ -191,7 +191,7 @@ _ciliumClusterRules: [
 			"watch",
 		]
 	},
-		{
+	{
 		// Read-only access to networkpolicies
 		apiGroups: [
 			"networking.k8s.io",
@@ -238,7 +238,7 @@ _helmOperatorRules: [
 			"watch",
 			"list",
 			"delete",
-		],
+		]
 		resourceNames: [
 			"cilium",
 		]
@@ -267,7 +267,7 @@ _helmOperatorRules: [
 			"*",
 		]
 	},
-	{ // Cilium installation comprises of these resources
+	{// Cilium installation comprises of these resources
 		apiGroups: [
 			"",
 		]
@@ -281,7 +281,7 @@ _helmOperatorRules: [
 			"*",
 		]
 	},
-		{ // Cilium installation comprises of these resources
+	{// Cilium installation comprises of these resources
 		apiGroups: [
 			"apps",
 		]
@@ -352,7 +352,6 @@ _roleBindings: [
 			name:     constants.name
 		}
 		subjects: _commonSubjects
-
 	},
 ]
 

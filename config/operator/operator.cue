@@ -4,8 +4,8 @@
 package operator
 
 constants: {
-	name: "cilium-olm"
-        namespace: "cilium"
+	name:      "cilium-olm"
+	namespace: "cilium"
 }
 
 _commonMetadata: {
@@ -194,7 +194,7 @@ _core_items: namespace + [
 	image:         string
 	test:          bool
 	ciliumVersion: string
-	onlyCSV:           bool
+	onlyCSV:       bool
 }
 
 parameters: #WorkloadParameters
