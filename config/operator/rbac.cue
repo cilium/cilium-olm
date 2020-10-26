@@ -21,6 +21,19 @@ _leaderElectionRules: [
 			"delete",
 		]
 	},
+        {
+                apiGroups: [
+                        "",
+                ]
+                resources: [
+                        "configmaps/status",
+                ]
+                verbs: [
+                        "get",
+                        "update",
+                        "patch",
+                ]
+        },
 	{
 		apiGroups: [
 			"",
@@ -30,7 +43,6 @@ _leaderElectionRules: [
 		]
 		verbs: [
 			"create",
-			"patch",
 		]
 	},
 ]
