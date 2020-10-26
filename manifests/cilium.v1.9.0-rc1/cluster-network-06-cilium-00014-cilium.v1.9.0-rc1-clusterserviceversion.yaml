@@ -4,7 +4,7 @@ metadata:
   annotations:
     capabilities: Basic Install
   name: cilium.v1.9.0-rc1
-  namespace: cilium-olm
+  namespace: cilium
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions:

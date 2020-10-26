@@ -2,7 +2,7 @@ apiVersion: operators.coreos.com/v1alpha2
 kind: OperatorGroup
 metadata:
   name: cilium-olm
-  namespace: cilium-olm
+  namespace: cilium
 spec:
   targetNamespaces:
-  - cilium-olm
+  - cilium

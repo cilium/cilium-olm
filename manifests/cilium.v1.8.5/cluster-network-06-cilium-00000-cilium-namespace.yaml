@@ -4,8 +4,8 @@ metadata:
   annotations:
     openshift.io/node-selector: ""
   labels:
-    name: cilium-olm
+    name: cilium
     openshift.io/cluster-logging: "true"
     openshift.io/cluster-monitoring: "true"
     openshift.io/run-level: "0"
-  name: cilium-olm
+  name: cilium
