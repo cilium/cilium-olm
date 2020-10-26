@@ -45,24 +45,6 @@ kg -input-directory ./config/operator -output-directory ./
 
 cp ./config/crd/cilium.io_cilumconfigs.yaml "manifests/cilium.v${cilium_version}/cluster-network-03-cilium-ciliumconfigs-crd.yaml"
 
-cat > "manifests/cilium.v${cilium_version}/cluster-network-04-cilium-namespace.yaml" << EOF
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: cilium
-  annotations:
-    # node selector is required to make cilium-operator run on control plane nodes
-    openshift.io/node-selector: ""
-  labels:
-    name: cilium
-    # run level sets priority for Cilium to be deployed prior to other components
-    openshift.io/run-level: "0"
-    # enable cluster logging for Cilium namespace
-    openshift.io/cluster-logging: "true"
-    # enable cluster monitoring for Cilium namespace
-    openshift.io/cluster-monitoring: "true"
-EOF
-
 case "${cilium_version}" in
   1.8.*)
     ciliumconfig="ciliumconfig.v1.8.yaml"
@@ -76,7 +58,7 @@ case "${cilium_version}" in
   ;;
 esac
 
-cp "${ciliumconfig}" "manifests/cilium.v${cilium_version}/cluster-network-05-cilium-ciliumconfig.yaml"
+cp "${ciliumconfig}" "manifests/cilium.v${cilium_version}/cluster-network-07-cilium-ciliumconfig.yaml"
 
 cp ./config/crd/cilium.io_cilumconfigs.yaml "bundles/cilium.v${cilium_version}/manifests/ciliumconfigs.crd.yaml"
 mkdir -p "bundles/cilium.v${cilium_version}/metadata"
