@@ -5,12 +5,13 @@ package operator
 
 constants: {
 	name: "cilium-olm"
+        namespace: "cilium"
 }
 
 _commonMetadata: {
 	name: constants.name
 	labels: name: constants.name
-	namespace: parameters.namespace
+	namespace: constants.namespace
 }
 
 _workload: {
@@ -136,7 +137,7 @@ _rbac_ClusterRoleBinding: {
 	apiVersion: "rbac.authorization.k8s.io/v1beta1"
 	kind:       "ClusterRoleBinding"
 	metadata: {
-		name:   "\(parameters.namespace)-\(constants.name)"
+		name:   "\(constants.namespace)-\(constants.name)"
 		labels: _commonMetadata.labels
 	}
 	roleRef: {
@@ -147,24 +148,24 @@ _rbac_ClusterRoleBinding: {
 	subjects: [{
 		kind:      "ServiceAccount"
 		name:      constants.name
-		namespace: parameters.namespace
+		namespace: constants.namespace
 	}]
 }
 
 namespace: [...{}]
 
-if parameters.namespace != "kube-system" {
+if constants.namespace != "kube-system" {
 	namespace: [{
 		apiVersion: "v1"
 		kind:       "Namespace"
 		metadata: {
-			name: parameters.namespace
+			name: constants.namespace
 			annotations: {
 				// node selector is required to make cilium-operator run on control plane nodes
 				"openshift.io/node-selector": ""
 			}
 			labels: {
-				name: parameters.namespace
+				name: constants.namespace
 				// run level sets priority for Cilium to be deployed prior to other components
 				"openshift.io/run-level": "0"
 				// enable cluster logging for Cilium namespace
@@ -190,21 +191,20 @@ _core_items: namespace + [
 }
 
 #WorkloadParameters: {
-	namespace:     string
 	image:         string
 	test:          bool
 	ciliumVersion: string
-	csv:           bool
+	onlyCSV:           bool
 }
 
 parameters: #WorkloadParameters
 
 template: {}
 
-if parameters.csv {
+if parameters.onlyCSV {
 	template: #CSVWorkloadTemplate
 }
 
-if !parameters.csv {
+if !parameters.onlyCSV {
 	template: #WorkloadTemplate
 }

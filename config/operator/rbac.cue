@@ -298,7 +298,7 @@ _helmOperatorRules: [
 _commonSubjects: [{
 	kind:      "ServiceAccount"
 	name:      constants.name
-	namespace: parameters.namespace
+	namespace: constants.namespace
 }]
 
 _roles: [
@@ -307,8 +307,8 @@ _roles: [
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "Role"
 		metadata: {
-			name:      "leader-election"
-			namespace: parameters.namespace
+			name:      "\(constants.name)-leader-election"
+			namespace: constants.namespace
 		}
 		rules: _leaderElectionRules
 	},
@@ -318,7 +318,7 @@ _roles: [
 		kind:       "Role"
 		metadata: {
 			name:      constants.name
-			namespace: "cilium"
+			namespace: constants.namespace
 		}
 		rules: _helmOperatorRules
 	},
@@ -330,7 +330,7 @@ _roleBindings: [
 		kind:       "RoleBinding"
 		metadata: {
 			name:      "leader-election"
-			namespace: parameters.namespace
+			namespace: constants.namespace
 		}
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"
@@ -344,7 +344,7 @@ _roleBindings: [
 		kind:       "RoleBinding"
 		metadata: {
 			name:      constants.name
-			namespace: "cilium"
+			namespace: constants.namespace
 		}
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"
@@ -361,14 +361,14 @@ _clusterRoles: [
 
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "ClusterRole"
-		metadata: name: "\(parameters.namespace)-\(constants.name)"
+		metadata: name: "\(constants.namespace)-\(constants.name)"
 		rules: _helmOperatorClusterRules
 	},
 	{
 
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "ClusterRole"
-		metadata: name: "\(parameters.namespace)-cilium"
+		metadata: name: "\(constants.namespace)-cilium"
 		rules: _ciliumClusterRules
 	},
 ]
@@ -377,22 +377,22 @@ _clusterRoleBindings: [
 	{
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "ClusterRoleBinding"
-		metadata: name: "\(parameters.namespace)-\(constants.name)"
+		metadata: name: "\(constants.namespace)-\(constants.name)"
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"
 			kind:     "ClusterRole"
-			name:     "\(parameters.namespace)-\(constants.name)"
+			name:     "\(constants.namespace)-\(constants.name)"
 		}
 		subjects: _commonSubjects
 	},
 	{
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "ClusterRoleBinding"
-		metadata: name: "\(parameters.namespace)-cilium"
+		metadata: name: "\(constants.namespace)-cilium"
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"
 			kind:     "ClusterRole"
-			name:     "\(parameters.namespace)-cilium"
+			name:     "\(constants.namespace)-cilium"
 		}
 		subjects: _commonSubjects
 	},

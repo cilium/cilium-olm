@@ -9,7 +9,6 @@ set -o nounset
 
 operator_image="${1}"
 cilium_version="${2}"
-use_namespace="${NAMESPACE:-cilium-olm}"
 
 rm -rf "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}"
 
@@ -19,7 +18,6 @@ cat > config/operator/instances.json << EOF
     {
       "output": "manifests/cilium.v${cilium_version}/cluster-network-06-cilium-%s.yaml",
       "parameters": {
-        "namespace": "${use_namespace}",
         "image": "${operator_image}",
         "test": false,
         "csv": false,
@@ -29,7 +27,6 @@ cat > config/operator/instances.json << EOF
     {
       "output": "bundles/cilium.v${cilium_version}/manifests/cilium-olm.csv.yaml",
       "parameters": {
-        "namespace": "${use_namespace}",
         "image": "${operator_image}",
         "test": false,
         "csv": true,
