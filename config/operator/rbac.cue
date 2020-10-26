@@ -21,19 +21,19 @@ _leaderElectionRules: [
 			"delete",
 		]
 	},
-        {
-                apiGroups: [
-                        "",
-                ]
-                resources: [
-                        "configmaps/status",
-                ]
-                verbs: [
-                        "get",
-                        "update",
-                        "patch",
-                ]
-        },
+	// {
+	//         apiGroups: [
+	//                 "",
+	//         ]
+	//         resources: [
+	//                 "configmaps/status",
+	//         ]
+	//         verbs: [
+	//                 "get",
+	//                 "update",
+	//                 "patch",
+	//         ]
+	// },
 	{
 		apiGroups: [
 			"",
@@ -279,7 +279,8 @@ _helmOperatorRules: [
 			"*",
 		]
 	},
-	{// Cilium installation comprises of these resources
+	{
+		// Cilium installation comprises of these resources
 		apiGroups: [
 			"",
 		]
@@ -293,7 +294,8 @@ _helmOperatorRules: [
 			"*",
 		]
 	},
-	{// Cilium installation comprises of these resources
+	{
+		// Cilium installation comprises of these resources
 		apiGroups: [
 			"apps",
 		]
