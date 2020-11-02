@@ -47,9 +47,9 @@ hubble-relay:
   #   # repository of the docker image
   #   name: hubble-relay
   #   # tag is the container image tag to use
-  #   tag: v1.8
+  #   tag: v1.8.5
   #   # pullPolicy is the container image pull policy
-  #   pullPolicy: Always
+  #   pullPolicy: IfNotPresent
   #
   # # Specifies the resources for the hubble-relay pods
   # resources: {}
@@ -86,10 +86,10 @@ global:
   registry: docker.io/cilium
 
   # tag is the container image tag to use
-  tag: v1.8
+  tag: v1.8.5
 
   # pullPolicy is the container image pull policy
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
   # etcd is the etcd configuration
   etcd:
@@ -524,13 +524,12 @@ global:
       #   - drop
       #   - tcp
       #   - flow
-      #   - port-distribution
       #   - icmp
       #   - http
       #
       # You can specify the list of metrics from the helm CLI:
       #
-      #   --set metrics.enabled="{dns:query;ignoreAAAA,drop,tcp,flow,port-distribution,icmp,http}"
+      #   --set metrics.enabled="{dns:query;ignoreAAAA,drop,tcp,flow,icmp,http}"
       #
       enabled: ~
       # Specifies the port the metric server listens on (e.g. 9091).
