@@ -1,6 +1,10 @@
 # Copyright 2017-2020 Authors of Cilium
 # SPDX-License-Identifier: Apache-2.0
 
+REGISTRY ?= docker.io/cilium
+
+PUSH ?= false
+
 GOBIN = $(shell go env GOPATH)/bin
 
 IMAGINE ?= $(GOBIN)/imagine
@@ -11,13 +15,6 @@ OPM ?= $(GOBIN)/opm
 ifeq ($(MAKER_CONTAINER),true)
   IMAGINE=imagine
   KG=kg
-endif
-
-REGISTRY ?= docker.io/cilium
-
-imagine_push_or_export = --export
-ifeq ($(PUSH),true)
-imagine_push_or_export = --push
 endif
 
 include Makefile.releases
@@ -33,7 +30,7 @@ images.operator-base: .buildx_builder
 		--base ./operator/base \
 		--name cilium-olm-base \
 		--registry $(REGISTRY) \
-		$(imagine_push_or_export) \
+		--push=$(PUSH) \
 		--cleanup
 	$(IMAGINE) image \
 		--base ./operator/base \
@@ -47,7 +44,7 @@ images.operator.%: .buildx_builder
 		--base ./operator/cilium.v$(cilium_version) \
 		--name cilium-olm.v$(cilium_version) \
 		--registry $(REGISTRY) \
-		$(imagine_push_or_export) \
+		--push=$(PUSH) \
 		--cleanup
 	$(IMAGINE) image \
 		--base ./operator/cilium.v$(cilium_version) \
@@ -62,7 +59,7 @@ images.operator-bundle.%: .buildx_builder
 		--dockerfile ../Dockerfile \
 		--name cilium-olm-bundle.v$(cilium_version) \
 		--registry $(REGISTRY) \
-		$(imagine_push_or_export) \
+		--push=$(PUSH) \
 		--cleanup
 	$(IMAGINE) image \
 		--base ./bundles/cilium.v$(cilium_version) \
