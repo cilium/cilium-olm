@@ -230,6 +230,10 @@ data:
   bpf-map-dynamic-size-ratio: {{ $defaultBpfMapDynamicSizeRatio | quote }}
 {{- end }}
 
+{{- if hasKey .Values.bpf "hostRouting" }}
+  enable-host-legacy-routing: {{ .Values.bpf.hostRouting | quote }}
+{{- end }}
+
 {{- if or $bpfCtTcpMax $bpfCtAnyMax }}
   # bpf-ct-global-*-max specifies the maximum number of connections
   # supported across all endpoints, split by protocol: tcp or other. One pair
@@ -543,7 +547,7 @@ data:
 {{- if hasKey .Values "healthChecking" }}
   enable-health-checking: {{ .Values.healthChecking | quote }}
 {{- end }}
-{{- if or .Values.wellKnownIdentities.enabled .Values.etcd.managed }}
+{{- if .Values.etcd.managed }}
   enable-well-known-identities: "true"
 {{- else }}
   enable-well-known-identities: "false"
@@ -573,8 +577,12 @@ data:
   hubble-event-queue-size: {{ .Values.hubble.eventQueueSize | quote }}
 {{- end }}
 {{- if hasKey .Values.hubble "flowBufferSize" }}
-  # Size of the buffer to store recent flows.
+  # DEPRECATED: this block should be removed in 1.11
   hubble-flow-buffer-size: {{ .Values.hubble.flowBufferSize | quote }}
+{{- end }}
+{{- if hasKey .Values.hubble "eventBufferCapacity" }}
+  # Capacity of the buffer to store recent events.
+  hubble-event-buffer-capacity: {{ .Values.hubble.eventBufferCapacity | quote }}
 {{- end }}
 {{- if .Values.hubble.metrics.enabled }}
   # Address to expose Hubble metrics (e.g. ":7070"). Metrics server will be disabled if this
