@@ -38,19 +38,6 @@ lint:
 	mkdir -p .buildx
 	docker buildx create --platform linux/amd64 > $@
 
-images.operator-base: .buildx_builder
-	$(IMAGINE) build \
-		--builder=$$(cat .buildx_builder) \
-		--base=./operator/base \
-		--name=cilium-olm-base \
-		--registry=$(REGISTRY) \
-		--push=$(PUSH)
-	$(IMAGINE) image \
-		--base=./operator/base \
-		--name=cilium-olm-base \
-		--registry=$(REGISTRY) \
-		> image-cilium-olm-base.tag
-
 images.operator.%: .buildx_builder
 	$(IMAGINE) build \
 		--builder=$$(cat .buildx_builder) \

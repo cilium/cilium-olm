@@ -39,11 +39,37 @@ tar -xf /tmp/cilium-chart.tgz -C "${chart_dir}"
 
 rm -f /tmp/cilium-chart.tgz
 
+cp LICENSE "${chart_dir}/LICENSE"
+
+cat > "${chart_dir}/watches.yaml" << EOF
+# Copyright 2017-2020 Authors of Cilium
+# SPDX-License-Identifier: Apache-2.0
+
+- group: cilium.io
+  version: v1alpha1
+  kind: CiliumConfig
+  chart: helm-charts/cilium
+EOF
+
 cat > "${chart_dir}/Dockerfile" << EOF
-FROM $(cat image-cilium-olm-base.tag)
+# Copyright 2017-2020 Authors of Cilium
+# SPDX-License-Identifier: Apache-2.0
+
+FROM quay.io/operator-framework/helm-operator:v1.2.0
+
+# Required Licenses
+COPY LICENSE /licenses/LICENSE.cilium-olm
 
 # Required OpenShift Labels
-LABEL version="v${cilium_version}"
+LABEL name="Cilium" \\
+      version="v${cilium_version}" \\
+      vendor="Isovalent" \\
+      release="1" \\
+      summary="Cilium OLM operator"
+
+ENV HOME=/opt/helm
+COPY watches.yaml \${HOME}/watches.yaml
+WORKDIR \${HOME}
 
 COPY cilium \${HOME}/helm-charts/cilium
 EOF
