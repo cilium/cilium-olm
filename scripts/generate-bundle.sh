@@ -10,6 +10,10 @@ set -o nounset
 operator_image="${1}"
 cilium_version="${2}"
 
+root_dir="$(git rev-parse --show-toplevel)"
+
+cd "${root_dir}"
+
 rm -rf "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}"
 
 cat > config/operator/instances.json << EOF

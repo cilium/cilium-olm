@@ -18,6 +18,10 @@ cilium_version="${1}"
 chart_url="https://github.com/cilium/charts/raw/master/cilium-${cilium_version}.tgz"
 chart_dir="operator/cilium.v${cilium_version}"
 
+root_dir="$(git rev-parse --show-toplevel)"
+
+cd "${root_dir}"
+
 if ! [ -f image-cilium-olm-base.tag ] ; then
   echo "run 'make images.operator-base' first"
   exit 2
@@ -50,6 +54,9 @@ cat >> Makefile.releases << EOF
 
 images.all: images.operator.v${cilium_version} images.operator-bundle.v${cilium_version}
 
+images.operator.all: images.operator.v${cilium_version}
+images.operator-bundle.all: images.operator-bundle.v${cilium_version}
+
 images.operator.v${cilium_version} images.operator-bundle.v${cilium_version} generate.bundles.v${cilium_version} validate.bundles.v${cilium_version}: cilium_version=${cilium_version}
 
 images.operator-bundle.v${cilium_version}: generate.bundles.v${cilium_version}
@@ -60,8 +67,8 @@ git add Makefile.releases "${chart_dir}"
 
 git commit --message "Add Cilium v${cilium_version}"
 
-make images.operator.v${cilium_version}
-make generate.bundles.v${cilium_version}
-git add manifests/cilium.v${cilium_version} bundles/cilium.v${cilium_version}
+make "images.operator.v${cilium_version}"
+make "generate.bundles.v${cilium_version}"
+git add "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}"
 
 git commit --amend --all --message "Add Cilium v${cilium_version}"

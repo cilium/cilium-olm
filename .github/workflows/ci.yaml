@@ -1,0 +1,47 @@
+name: CI
+on:
+  pull_request:
+    types: [opened, reopened]
+  push:
+    branches: [master]
+
+jobs:
+  lint:
+    if: github.repository == 'cilium/cilium-olm'
+    name: Lint image build logic
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: docker://docker.io/cilium/image-maker:60c02a5e6cb057f462739f2b7b19f5c3f6a22933
+        name: Run make lint
+        with:
+          entrypoint: make
+          args: lint
+  build-and-push:
+    if: (github.repository == 'cilium/cilium-olm' && github.event_name != 'pull_request')
+    name: Build and push all images
+    runs-on: ubuntu-20.04
+    needs: lint
+    steps:
+      - uses: actions/checkout@v1
+      - uses: docker://docker.io/cilium/image-maker:60c02a5e6cb057f462739f2b7b19f5c3f6a22933
+        name: Run make images.operator.all
+        env:
+          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+          DOCKER_HUB_PUBLIC_ACCESS_ONLY: "true"
+          # scan.connect.redhat.com
+          # ANY_REGISTRY_USERNAME: unused
+          # ANY_REGISTRY_PASSWORD: ${{ secrets.RHCONNECT_CERTIFICATION_REGISTRY_PASSWORD_FOR_CILIUM_OLM_OPERATOR_IMAGE }}
+        with:
+          entrypoint: make
+          args: images.operator.all PUSH=true
+      - uses: docker://docker.io/cilium/image-maker:60c02a5e6cb057f462739f2b7b19f5c3f6a22933
+        name: Run make images.operator-bundle.all
+        env:
+          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+          DOCKER_HUB_PUBLIC_ACCESS_ONLY: "true"
+        with:
+          entrypoint: make
+          args: images.operator-bundle.all PUSH=true

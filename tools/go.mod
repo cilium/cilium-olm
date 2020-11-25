@@ -3,7 +3,7 @@ module github.com/cilium/cilium-olm
 go 1.15
 
 require (
-	github.com/errordeveloper/imagine v0.0.0-20201013191633-45183892735e
+	github.com/errordeveloper/imagine v0.0.0-20201105145720-12dd93640ef0
 	github.com/errordeveloper/kue v0.3.1-0.20201014144342-209ddfde99c5
 	github.com/operator-framework/operator-registry v1.14.3
 	sigs.k8s.io/controller-tools v0.4.0 // indirect

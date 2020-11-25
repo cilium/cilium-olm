@@ -1,9 +1,5 @@
-.buildx_builder
-*.test
-*.out
-*.oci
-*.tag
-config/operator/instances.json
-operator-test.v*.yaml
-operator.v*.yaml
-buildx-*.json
+/.buildx_builder
+/.buildx
+/*.tag
+/config/operator/instances.json
+/buildx-*.json

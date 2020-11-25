@@ -348,6 +348,9 @@ github.com/errordeveloper/imagine v0.0.0-20200907115516-916cbe243ac1 h1:IaMU/B45
 github.com/errordeveloper/imagine v0.0.0-20200907115516-916cbe243ac1/go.mod h1:WvLU5V18P3mwp4F9ER88e9O7GvWQorOuvsDn+M7xM9I=
 github.com/errordeveloper/imagine v0.0.0-20201013191633-45183892735e h1:4B8eEucVYIG2vnthhETk8hsFHW7BoK7xlNyCZLLKz/A=
 github.com/errordeveloper/imagine v0.0.0-20201013191633-45183892735e/go.mod h1:WvLU5V18P3mwp4F9ER88e9O7GvWQorOuvsDn+M7xM9I=
+github.com/errordeveloper/imagine v0.0.0-20201029113538-97024922900e/go.mod h1:WvLU5V18P3mwp4F9ER88e9O7GvWQorOuvsDn+M7xM9I=
+github.com/errordeveloper/imagine v0.0.0-20201105145720-12dd93640ef0 h1:4Sqa8GoJmungd9WiWsXpT/ZQgaZuFpUlc4qTV9Mzn/E=
+github.com/errordeveloper/imagine v0.0.0-20201105145720-12dd93640ef0/go.mod h1:WvLU5V18P3mwp4F9ER88e9O7GvWQorOuvsDn+M7xM9I=
 github.com/errordeveloper/kue v0.3.0 h1:hZz4Y8x9nbd3QKs17K6IOXTkvba3MuthfLGqq3JN55w=
 github.com/errordeveloper/kue v0.3.0/go.mod h1:fq1IBSbKXyGxnamsVBDqoScY/zWtqHB7XC2QgI6eGQ8=
 github.com/errordeveloper/kue v0.3.1-0.20201014143420-1183ffc34819 h1:KsjwoPryBIcm5AIvVsrqbvxh/3HmziRnplSl3AR8xOw=
