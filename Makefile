@@ -38,7 +38,7 @@ lint:
 	mkdir -p .buildx
 	docker buildx create --platform linux/amd64 > $@
 
-images.operator.%: .buildx_builder
+images.operator.v%: .buildx_builder
 	$(IMAGINE) build \
 		--builder=$$(cat .buildx_builder) \
 		--base=./operator/cilium.v$(cilium_version) \
@@ -53,7 +53,7 @@ images.operator.%: .buildx_builder
 		--registry=$(REGISTRY) \
 		> image-cilium-olm-v$(cilium_version).tag
 
-images.operator-bundle.%: .buildx_builder
+images.operator-bundle.v%: .buildx_builder
 	$(IMAGINE) build \
 		--builder=$$(cat .buildx_builder) \
 		--base=./bundles/cilium.v$(cilium_version) \
@@ -69,8 +69,8 @@ images.operator-bundle.%: .buildx_builder
 		--registry=$(REGISTRY) \
 		> image-cilium-olm-bundle-v$(cilium_version).tag
 
-generate.bundles.%:
+generate.bundles.v%:
 	scripts/generate-bundle.sh "$$(cat image-cilium-olm-v$(cilium_version).tag | head -1)" $(cilium_version)
 
-validate.bundles.%:
+validate.bundles.v%:
 	$(OPM) alpha bundle validate --tag $$(cat image-cilium-olm-bundle-v$(cilium_version).tag)
