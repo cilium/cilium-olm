@@ -11,7 +11,8 @@ LABEL name="Cilium" \
       version="v1.9.0-rc2" \
       vendor="Isovalent" \
       release="1" \
-      summary="Cilium OLM operator"
+      summary="Cilium OLM operator" \
+      description="This operator mamaged Cilium installation and it is OLM-compliant"
 
 ENV HOME=/opt/helm
 COPY watches.yaml ${HOME}/watches.yaml
