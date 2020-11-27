@@ -4,6 +4,7 @@
 REGISTRY ?= quay.io/cilium
 
 RHCONNECT_CERTIFICATION_REGISTRY_PREFIX_FOR_CILIUM_OLM_OPERATOR_IMAGE := scan.connect.redhat.com/ospid-104ec1da-384c-4d7c-bd27-9dbfd8377f5b
+RHCONNECT_CERTIFICATION_REGISTRY_PREFIX_FOR_CILIUM_OLM_OPERATOR_BUNDLE_IMAGE := scan.connect.redhat.com/ospid-c3cd8e7a-1577-4dac-bc32-cfce4a207813
 
 PUSH ?= false
 
@@ -62,12 +63,13 @@ images.operator-bundle.v%: .buildx_builder
 		--name=cilium-olm-bundle \
 		--custom-tag-suffix=v$(cilium_version) \
 		--registry=$(REGISTRY) \
+		--registry=$(RHCONNECT_CERTIFICATION_REGISTRY_PREFIX_FOR_CILIUM_OLM_OPERATOR_BUNDLE_IMAGE) \
 		--push=$(PUSH)
 	$(IMAGINE) image \
 		--base=./bundles/cilium.v$(cilium_version) \
 		--name=cilium-olm-bundle \
 		--custom-tag-suffix=v$(cilium_version) \
-		--registry=$(REGISTRY) \
+		--registry=$(RHCONNECT_CERTIFICATION_REGISTRY_PREFIX_FOR_CILIUM_OLM_OPERATOR_BUNDLE_IMAGE) \
 		> image-cilium-olm-bundle-v$(cilium_version).tag
 
 generate.bundles.v%:

@@ -42,6 +42,9 @@ jobs:
           QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
           DOCKER_HUB_PUBLIC_ACCESS_ONLY: "true"
+          # scan.connect.redhat.com
+          ANY_REGISTRY_USERNAME: unused
+          ANY_REGISTRY_PASSWORD: ${{ secrets.RHCONNECT_CERTIFICATION_REGISTRY_PASSWORD_FOR_CILIUM_OLM_OPERATOR_BUNDLE_IMAGE }}
         with:
           entrypoint: make
           args: images.operator-bundle.all PUSH=true
