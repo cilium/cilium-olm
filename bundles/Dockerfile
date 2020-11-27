@@ -10,5 +10,9 @@ LABEL operators.operatorframework.io.metrics.builder=operator-sdk-v1.0.1
 LABEL operators.operatorframework.io.metrics.mediatype.v1=metrics+v1
 LABEL operators.operatorframework.io.metrics.project_layout=helm.sdk.operatorframework.io/v1
 
+LABEL com.redhat.openshift.versions="v4.6,v4.5"
+LABEL com.redhat.delivery.operator.bundle=true
+LABEL com.redhat.delivery.backport=true
+
 COPY /manifests /manifests
 COPY /metadata /metadata
