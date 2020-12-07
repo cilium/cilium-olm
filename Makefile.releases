@@ -74,3 +74,15 @@ images.operator.v1.8.6 images.operator-bundle.v1.8.6 generate.bundles.v1.8.6 val
 
 images.operator-bundle.v1.8.6: generate.bundles.v1.8.6
 validate.bundles.v1.8.6: images.operator-bundle.v1.8.6
+
+# Cilium v1.9.1
+
+images.all: images.operator.v1.9.1 images.operator-bundle.v1.9.1
+
+images.operator.all: images.operator.v1.9.1
+images.operator-bundle.all: images.operator-bundle.v1.9.1
+
+images.operator.v1.9.1 images.operator-bundle.v1.9.1 generate.bundles.v1.9.1 validate.bundles.v1.9.1: cilium_version=1.9.1
+
+images.operator-bundle.v1.9.1: generate.bundles.v1.9.1
+validate.bundles.v1.9.1: images.operator-bundle.v1.9.1
