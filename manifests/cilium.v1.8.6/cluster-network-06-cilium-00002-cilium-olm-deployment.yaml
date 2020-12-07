@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: cilium-olm
+  name: cilium-olm
+  namespace: cilium
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: cilium-olm
+  template:
+    metadata:
+      labels:
+        name: cilium-olm
+    spec:
+      containers:
+      - command:
+        - /usr/local/bin/helm-operator
+        - run
+        - --watches-file=watches.yaml
+        - --enable-leader-election
+        - --leader-election-id=cilium-olm
+        - --zap-devel
+        env:
+        - name: WATCH_NAMESPACE
+          value: cilium
+        image: quay.io/cilium/cilium-olm:f0a0779259574d3cf595c7de772bdb18015e3f2f-dev-v1.8.6
+        name: operator
+        ports:
+        - containerPort: 9443
+          name: https
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+      hostNetwork: true
+      serviceAccount: cilium-olm
+      terminationGracePeriodSeconds: 10
+      tolerations:
+      - operator: Exists
+      volumes:
+      - emptyDir: {}
+        name: tmp
