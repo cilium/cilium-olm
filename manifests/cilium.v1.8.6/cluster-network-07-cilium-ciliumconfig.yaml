@@ -6,7 +6,6 @@ metadata:
 spec:
   config:
     ipam: "cluster-pool"
-    bpfMasquerade: false
   global:
     nativeRoutingCIDR: "10.128.0.0/14"
     endpointRoutes: {enabled: true}
