@@ -34,8 +34,6 @@ lint:
 	scripts/lint.sh
 
 .buildx_builder:
-	# see https://github.com/docker/buildx/issues/308
-	mkdir -p .buildx
 	docker buildx create --platform linux/amd64 > $@
 
 images.operator.v%: .buildx_builder
