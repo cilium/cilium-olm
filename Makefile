@@ -67,11 +67,12 @@ images.operator-bundle.v%: .buildx_builder
 		--base=./bundles/cilium.v$(cilium_version) \
 		--name=cilium-olm-bundle \
 		--custom-tag-suffix=v$(cilium_version) \
+		--registry=$(REGISTRY) \
 		--registry=$(RHCONNECT_CERTIFICATION_REGISTRY_PREFIX_FOR_CILIUM_OLM_OPERATOR_BUNDLE_IMAGE) \
 		> image-cilium-olm-bundle-v$(cilium_version).tag
 
 generate.bundles.v%:
-	scripts/generate-bundle.sh "$$(cat image-cilium-olm-v$(cilium_version).tag | head -1)" $(cilium_version)
+	scripts/generate-bundle.sh "$$(cat image-cilium-olm-v$(cilium_version).tag | head -1)" "$(cilium_version)"
 
 validate.bundles.v%:
-	$(OPM) alpha bundle validate --tag $$(cat image-cilium-olm-bundle-v$(cilium_version).tag)
+	$(OPM) alpha bundle validate --tag "$$(cat image-cilium-olm-bundle-v$(cilium_version).tag)"
