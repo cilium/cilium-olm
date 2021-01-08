@@ -72,7 +72,7 @@ images.operator-bundle.v%: .buildx_builder
 		> image-cilium-olm-bundle-v$(cilium_version).tag
 
 generate.bundles.v%:
-	scripts/generate-bundle.sh "$$(cat image-cilium-olm-v$(cilium_version).tag | head -1)" "$(cilium_version)"
+	scripts/generate-bundle.sh "$$(cat image-cilium-olm-v$(cilium_version).tag | tail -1)" "$(cilium_version)"
 
 validate.bundles.v%:
 	$(OPM) alpha bundle validate --tag "$$(cat image-cilium-olm-bundle-v$(cilium_version).tag)"
