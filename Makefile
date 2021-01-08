@@ -75,4 +75,4 @@ generate.bundles.v%:
 	scripts/generate-bundle.sh "image-cilium-olm-v$(cilium_version).tag" "$(cilium_version)"
 
 validate.bundles.v%:
-	$(OPM) alpha bundle validate --tag "$$(cat image-cilium-olm-bundle-v$(cilium_version).tag)"
+	$(OPM) alpha bundle validate --tag "$$(cat image-cilium-olm-bundle-v$(cilium_version).tag | head -1)"
