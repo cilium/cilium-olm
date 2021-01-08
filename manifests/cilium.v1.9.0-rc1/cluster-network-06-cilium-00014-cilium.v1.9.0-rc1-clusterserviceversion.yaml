@@ -136,7 +136,7 @@ spec:
                 env:
                 - name: WATCH_NAMESPACE
                   value: cilium
-                image: quay.io/cilium/cilium-olm:f460fb334a36d24b9101f6620e6f592e7ca4a893-v1.9.0-rc1
+                image: scan.connect.redhat.com/ospid-104ec1da-384c-4d7c-bd27-9dbfd8377f5b/cilium-olm:f460fb334a36d24b9101f6620e6f592e7ca4a893-v1.9.0-rc1
                 name: operator
                 ports:
                 - containerPort: 9443
