@@ -58,9 +58,8 @@ images.operator-bundle.v%: .buildx_builder
 		--builder=$$(cat .buildx_builder) \
 		--base=./bundles/cilium.v$(cilium_version) \
 		--dockerfile=../Dockerfile \
-		--name=cilium-olm-bundle \
+		--name=cilium-olm-metadata \
 		--custom-tag-suffix=v$(cilium_version) \
-		--registry=$(REGISTRY) \
 		--registry=$(RHCONNECT_CERTIFICATION_REGISTRY_PREFIX_FOR_CILIUM_OLM_OPERATOR_BUNDLE_IMAGE) \
 		--push=$(PUSH)
 	$(IMAGINE) image \
