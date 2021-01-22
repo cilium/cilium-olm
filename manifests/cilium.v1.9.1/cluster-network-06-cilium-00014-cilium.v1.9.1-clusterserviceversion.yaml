@@ -139,7 +139,7 @@ spec:
                 env:
                 - name: WATCH_NAMESPACE
                   value: cilium
-                image: registry.connect.redhat.com/isovalent/cilium-olm:52d1e8c7bd99ef373e3987fba4f555fe4e201c23-v1.9.1
+                image: registry.connect.redhat.com/isovalent/cilium-olm:35f2126c8fbf1aab3358ed3d8c2d05ff47ead0fa-v1.9.1
                 name: operator
                 ports:
                 - containerPort: 9443
