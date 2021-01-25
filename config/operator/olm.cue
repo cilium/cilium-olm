@@ -92,7 +92,10 @@ _logoEncoded: base64.Encode(null, _logoString)
 			base64data: _logoEncoded
 			mediatype:  "image/svg+xml"
 		}]
-		maintainers: "Cilium <maintainer@cilium.io>"
+		maintainers: [{
+			name:  "Cilium"
+			email: "maintainer@cilium.io"
+		}]
 		install: {
 			spec: {
 				deployments: [{
