@@ -91,7 +91,7 @@ _logoEncoded: base64.Encode(null, _logoString)
 		description: "Cilium - eBPF-based Networking, Security, and Observability"
 		icon: [{
 			base64data: _logoEncoded
-			mediatype:  "image/svg"
+			mediatype:  "image/svg+xml"
 		}]
 		maintainers: "Cilium <maintainer@cilium.io>"
 		install: {
