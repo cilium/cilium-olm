@@ -16,3 +16,5 @@ spec:
     confPath: "/var/run/multus/cni/net.d"
   prometheus:
     serviceMonitor: {enabled: false}
+  hubble:
+    tls: {enabled: false}
