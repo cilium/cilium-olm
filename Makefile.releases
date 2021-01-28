@@ -9,11 +9,12 @@ images.all: images.operator.v1.8.5 images.operator-bundle.v1.8.5
 
 images.operator.all: images.operator.v1.8.5
 images.operator-bundle.all: images.operator-bundle.v1.8.5
+generate.configs.all: generate.configs.v1.8.5
 
-images.operator-bundle.v1.8.5: generate.bundles.v1.8.5
+images.operator-bundle.v1.8.5: generate.configs.v1.8.5
 validate.bundles.v1.8.5: images.operator-bundle.v1.8.5
 
-images.operator.v1.8.5 images.operator-bundle.v1.8.5 generate.bundles.v1.8.5 validate.bundles.v1.8.5: cilium_version=1.8.5
+images.operator.v1.8.5 images.operator-bundle.v1.8.5 generate.configs.v1.8.5 validate.bundles.v1.8.5: cilium_version=1.8.5
 
 # Cilium v1.9.0
 
@@ -21,10 +22,11 @@ images.all: images.operator.v1.9.0 images.operator-bundle.v1.9.0
 
 images.operator.all: images.operator.v1.9.0
 images.operator-bundle.all: images.operator-bundle.v1.9.0
+generate.configs.all: generate.configs.v1.9.0
 
-images.operator.v1.9.0 images.operator-bundle.v1.9.0 generate.bundles.v1.9.0 validate.bundles.v1.9.0: cilium_version=1.9.0
+images.operator.v1.9.0 images.operator-bundle.v1.9.0 generate.configs.v1.9.0 validate.bundles.v1.9.0: cilium_version=1.9.0
 
-images.operator-bundle.v1.9.0: generate.bundles.v1.9.0
+images.operator-bundle.v1.9.0: generate.configs.v1.9.0
 validate.bundles.v1.9.0: images.operator-bundle.v1.9.0
 
 # Cilium v1.8.6
@@ -33,10 +35,11 @@ images.all: images.operator.v1.8.6 images.operator-bundle.v1.8.6
 
 images.operator.all: images.operator.v1.8.6
 images.operator-bundle.all: images.operator-bundle.v1.8.6
+generate.configs.all: generate.configs.v1.8.6
 
-images.operator.v1.8.6 images.operator-bundle.v1.8.6 generate.bundles.v1.8.6 validate.bundles.v1.8.6: cilium_version=1.8.6
+images.operator.v1.8.6 images.operator-bundle.v1.8.6 generate.configs.v1.8.6 validate.bundles.v1.8.6: cilium_version=1.8.6
 
-images.operator-bundle.v1.8.6: generate.bundles.v1.8.6
+images.operator-bundle.v1.8.6: generate.configs.v1.8.6
 validate.bundles.v1.8.6: images.operator-bundle.v1.8.6
 
 # Cilium v1.9.1
@@ -45,10 +48,11 @@ images.all: images.operator.v1.9.1 images.operator-bundle.v1.9.1
 
 images.operator.all: images.operator.v1.9.1
 images.operator-bundle.all: images.operator-bundle.v1.9.1
+generate.configs.all: generate.configs.v1.9.1
 
-images.operator.v1.9.1 images.operator-bundle.v1.9.1 generate.bundles.v1.9.1 validate.bundles.v1.9.1: cilium_version=1.9.1
+images.operator.v1.9.1 images.operator-bundle.v1.9.1 generate.configs.v1.9.1 validate.bundles.v1.9.1: cilium_version=1.9.1
 
-images.operator-bundle.v1.9.1: generate.bundles.v1.9.1
+images.operator-bundle.v1.9.1: generate.configs.v1.9.1
 validate.bundles.v1.9.1: images.operator-bundle.v1.9.1
 
 # Cilium v1.9.3
@@ -57,8 +61,9 @@ images.all: images.operator.v1.9.3 images.operator-bundle.v1.9.3
 
 images.operator.all: images.operator.v1.9.3
 images.operator-bundle.all: images.operator-bundle.v1.9.3
+generate.configs.all: generate.configs.v1.9.3
 
-images.operator.v1.9.3 images.operator-bundle.v1.9.3 generate.bundles.v1.9.3 validate.bundles.v1.9.3: cilium_version=1.9.3
+images.operator.v1.9.3 images.operator-bundle.v1.9.3 generate.configs.v1.9.3 validate.bundles.v1.9.3: cilium_version=1.9.3
 
-images.operator-bundle.v1.9.3: generate.bundles.v1.9.3
+images.operator-bundle.v1.9.3: generate.configs.v1.9.3
 validate.bundles.v1.9.3: images.operator-bundle.v1.9.3

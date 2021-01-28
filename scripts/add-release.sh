@@ -83,10 +83,11 @@ images.all: images.operator.v${cilium_version} images.operator-bundle.v${cilium_
 
 images.operator.all: images.operator.v${cilium_version}
 images.operator-bundle.all: images.operator-bundle.v${cilium_version}
+generate.configs.all: images.configs.v${cilium_version}
 
-images.operator.v${cilium_version} images.operator-bundle.v${cilium_version} generate.bundles.v${cilium_version} validate.bundles.v${cilium_version}: cilium_version=${cilium_version}
+images.operator.v${cilium_version} images.operator-bundle.v${cilium_version} generate.configs.v${cilium_version} validate.bundles.v${cilium_version}: cilium_version=${cilium_version}
 
-images.operator-bundle.v${cilium_version}: generate.bundles.v${cilium_version}
+images.operator-bundle.v${cilium_version}: generate.configs.v${cilium_version}
 validate.bundles.v${cilium_version}: images.operator-bundle.v${cilium_version}
 EOF
 
@@ -95,7 +96,7 @@ git add Makefile.releases "${chart_dir}"
 git commit --message "Add Cilium v${cilium_version}"
 
 make "images.operator.v${cilium_version}"
-make "generate.bundles.v${cilium_version}"
+make "generate.configs.v${cilium_version}"
 git add "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}"
 
 git commit --amend --all --message "Add Cilium v${cilium_version}"

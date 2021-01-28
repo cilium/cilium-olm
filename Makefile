@@ -71,8 +71,8 @@ images.operator-bundle.v%: .buildx_builder
 		--registry=$(RHCONNECT_CERTIFICATION_REGISTRY_PREFIX_FOR_CILIUM_OLM_OPERATOR_BUNDLE_IMAGE) \
 		> image-cilium-olm-metadata-v$(cilium_version).tag
 
-generate.bundles.v%:
-	scripts/generate-bundle.sh "image-cilium-olm-v$(cilium_version).tag" "$(cilium_version)"
+generate.configs.v%:
+	scripts/generate-configs.sh "image-cilium-olm-v$(cilium_version).tag" "$(cilium_version)"
 
 validate.bundles.v%:
 	$(OPM) alpha bundle validate --tag "$$(cat image-cilium-olm-metadata-v$(cilium_version).tag | head -1)"
