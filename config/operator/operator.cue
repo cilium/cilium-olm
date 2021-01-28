@@ -176,9 +176,36 @@ if constants.namespace != "kube-system" {
 		}
 	}]
 }
+
+_openshift_tuned: {
+	apiVersion: "tuned.openshift.io/v1"
+	kind:       "Tuned"
+	metadata: {
+		name:      "openshift-node-rpfilter-cilium"
+		namespace: "openshift-cluster-node-tuning-operator"
+	}
+	spec: {
+		profile: [{
+			data: """
+				[main]
+				summary=Ensure correct rp_filter setting is used for Cilium
+				include=openshift-node
+				[sysctl]
+				net.ipv4.conf.lxc*.rp_filter=0
+				"""
+			name: "openshift-node-rpfilter-cilium"
+		}]
+		recommend: [{
+			profile:  "openshift-node-rpfilter-cilium"
+			priority: 10
+		}]
+	}
+}
+
 _rbac_items: _roles + _roleBindings + _clusterRoles + _clusterRoleBindings
 
 _core_items: namespace + [
+		_openshift_tuned,
 		_serviceAccount,
 		_workload,
 		_service,
