@@ -35,7 +35,7 @@ _olm_items: [
 ]
 
 _csv_annotations: {
-	categories:   "Networking,Policy Enforcement,Security"
+	categories:   "Networking,Security"
 	support:      "support@isovalent.com"
 	#certified:   "true"
 	capabilities: "Basic Install"
