@@ -3,7 +3,7 @@ kind: ClusterServiceVersion
 metadata:
   annotations:
     capabilities: Basic Install
-    categories: Networking,Policy Enforcement,Security
+    categories: Networking,Security
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
   name: cilium.v1.9.1
