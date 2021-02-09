@@ -25,6 +25,14 @@ spec:
       clusterPermissions:
       - rules:
         - apiGroups:
+          - security.openshift.io
+          resources:
+          - securitycontextconstraints
+          resourceNames:
+          - hostnetwork
+          verbs:
+          - use
+        - apiGroups:
           - ""
           resourceNames:
           - placeholder
