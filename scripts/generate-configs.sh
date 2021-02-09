@@ -81,3 +81,6 @@ annotations:
   operators.operatorframework.io.test.config.v1: tests/scorecard/
   operators.operatorframework.io.test.mediatype.v1: scorecard+v1
 EOF
+
+mkdir -p "bundles/cilium.v${cilium_version}/tests/scorecard"
+cp scorecard-tests.yaml "bundles/cilium.v${cilium_version}/tests/scorecard"
