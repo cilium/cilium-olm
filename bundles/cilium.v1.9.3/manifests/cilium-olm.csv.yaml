@@ -26,16 +26,16 @@ spec:
       - rules:
         - apiGroups:
           - security.openshift.io
-          resources:
-          - securitycontextconstraints
           resourceNames:
           - hostnetwork
+          resources:
+          - securitycontextconstraints
           verbs:
           - use
         - apiGroups:
           - ""
           resourceNames:
-          - placeholder
+          - cilium
           resources:
           - namespaces
           verbs:
@@ -146,7 +146,7 @@ spec:
                 - --zap-devel
                 env:
                 - name: WATCH_NAMESPACE
-                  value: placeholder
+                  value: cilium
                 image: registry.connect.redhat.com/isovalent/cilium-olm:051ca339a4ee3c423786a68d445174e8859a8e2f-v1.9.3
                 name: operator
                 ports:

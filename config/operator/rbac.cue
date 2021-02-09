@@ -49,6 +49,22 @@ _leaderElectionRules: [
 
 _helmOperatorClusterRules: [
 	{
+		// Operator is deployed with `hostNetwork: true`, so it needs to use the
+		// hostnetwork SCC
+		apiGroups: [
+			"security.openshift.io",
+		]
+		resources: [
+			"securitycontextconstraints",
+		]
+		resourceNames: [
+			"hostnetwork",
+		]
+		verbs: [
+			"use",
+		]
+	},
+	{
 		// Operator needs to get cilium namespace so that it ensure that it exists
 		apiGroups: [
 			"",
@@ -312,7 +328,7 @@ _helmOperatorRules: [
 _commonSubjects: [{
 	kind:      "ServiceAccount"
 	name:      constants.name
-	namespace: constants.namespace
+	namespace: parameters.namespace
 }]
 
 _roles: [
@@ -322,7 +338,7 @@ _roles: [
 		kind:       "Role"
 		metadata: {
 			name:      "\(constants.name)-leader-election"
-			namespace: constants.namespace
+			namespace: parameters.namespace
 		}
 		rules: _leaderElectionRules
 	},
@@ -332,7 +348,7 @@ _roles: [
 		kind:       "Role"
 		metadata: {
 			name:      constants.name
-			namespace: constants.namespace
+			namespace: parameters.namespace
 		}
 		rules: _helmOperatorRules
 	},
@@ -344,7 +360,7 @@ _roleBindings: [
 		kind:       "RoleBinding"
 		metadata: {
 			name:      "leader-election"
-			namespace: constants.namespace
+			namespace: parameters.namespace
 		}
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"
@@ -358,7 +374,7 @@ _roleBindings: [
 		kind:       "RoleBinding"
 		metadata: {
 			name:      constants.name
-			namespace: constants.namespace
+			namespace: parameters.namespace
 		}
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"
@@ -374,14 +390,14 @@ _clusterRoles: [
 
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "ClusterRole"
-		metadata: name: "\(constants.namespace)-\(constants.name)"
+		metadata: name: "\(parameters.namespace)-\(constants.name)"
 		rules: _helmOperatorClusterRules
 	},
 	{
 
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "ClusterRole"
-		metadata: name: "\(constants.namespace)-cilium"
+		metadata: name: "\(parameters.namespace)-cilium"
 		rules: _ciliumClusterRules
 	},
 ]
@@ -390,22 +406,22 @@ _clusterRoleBindings: [
 	{
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "ClusterRoleBinding"
-		metadata: name: "\(constants.namespace)-\(constants.name)"
+		metadata: name: "\(parameters.namespace)-\(constants.name)"
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"
 			kind:     "ClusterRole"
-			name:     "\(constants.namespace)-\(constants.name)"
+			name:     "\(parameters.namespace)-\(constants.name)"
 		}
 		subjects: _commonSubjects
 	},
 	{
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "ClusterRoleBinding"
-		metadata: name: "\(constants.namespace)-cilium"
+		metadata: name: "\(parameters.namespace)-cilium"
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"
 			kind:     "ClusterRole"
-			name:     "\(constants.namespace)-cilium"
+			name:     "\(parameters.namespace)-cilium"
 		}
 		subjects: _commonSubjects
 	},

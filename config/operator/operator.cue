@@ -11,7 +11,7 @@ constants: {
 _commonMetadata: {
 	name: constants.name
 	labels: name: constants.name
-	namespace: constants.namespace
+	namespace: parameters.namespace
 }
 
 _workload: {
@@ -137,7 +137,7 @@ _rbac_ClusterRoleBinding: {
 	apiVersion: "rbac.authorization.k8s.io/v1beta1"
 	kind:       "ClusterRoleBinding"
 	metadata: {
-		name:   "\(constants.namespace)-\(constants.name)"
+		name:   "\(parameters.namespace)-\(constants.name)"
 		labels: _commonMetadata.labels
 	}
 	roleRef: {
@@ -148,24 +148,24 @@ _rbac_ClusterRoleBinding: {
 	subjects: [{
 		kind:      "ServiceAccount"
 		name:      constants.name
-		namespace: constants.namespace
+		namespace: parameters.namespace
 	}]
 }
 
 namespace: [...{}]
 
-if constants.namespace != "kube-system" {
+if parameters.namespace != "kube-system" {
 	namespace: [{
 		apiVersion: "v1"
 		kind:       "Namespace"
 		metadata: {
-			name: constants.namespace
+			name: parameters.namespace
 			annotations: {
 				// node selector is required to make cilium-operator run on control plane nodes
 				"openshift.io/node-selector": ""
 			}
 			labels: {
-				name: constants.namespace
+				name: parameters.namespace
 				// run level sets priority for Cilium to be deployed prior to other components
 				"openshift.io/run-level": "0"
 				// enable cluster logging for Cilium namespace
@@ -195,6 +195,7 @@ _core_items: namespace + [
 	test:          bool
 	ciliumVersion: string
 	onlyCSV:       bool
+	namespace:     string | *"cilium"
 }
 
 parameters: #WorkloadParameters

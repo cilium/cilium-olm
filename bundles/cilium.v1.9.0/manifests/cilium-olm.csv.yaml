@@ -7,7 +7,7 @@ metadata:
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
   name: cilium.v1.9.0
-  namespace: cilium
+  namespace: placeholder
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
@@ -24,6 +24,14 @@ spec:
     spec:
       clusterPermissions:
       - rules:
+        - apiGroups:
+          - security.openshift.io
+          resourceNames:
+          - hostnetwork
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - use
         - apiGroups:
           - ""
           resourceNames:

@@ -1,5 +1,5 @@
 /.buildx_builder
 /.buildx
 /*.tag
-/config/operator/instances.json
+/config/operator/instances.cue
 /buildx-*.json

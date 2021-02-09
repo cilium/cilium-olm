@@ -16,29 +16,30 @@ cd "${root_dir}"
 
 rm -rf "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}"
 
-cat > config/operator/instances.json << EOF
-{
-  "instances": [
-    {
-      "output": "manifests/cilium.v${cilium_version}/cluster-network-06-cilium-%s.yaml",
-      "parameters": {
-        "image": "${operator_image}",
-        "test": false,
-        "onlyCSV": false,
-        "ciliumVersion": "${cilium_version}"
-      }
-    },
-    {
-      "output": "bundles/cilium.v${cilium_version}/manifests/cilium-olm.csv.yaml",
-      "parameters": {
-        "image": "${operator_image}",
-        "test": false,
-        "onlyCSV": true,
-        "ciliumVersion": "${cilium_version}"
-      }
+cat > config/operator/instances.cue << EOF
+package operator
+
+instances: [
+  {
+    output: "manifests/cilium.v${cilium_version}/cluster-network-06-cilium-%s.yaml"
+    parameters: {
+      image: "${operator_image}"
+      test: false
+      onlyCSV: false
+      ciliumVersion: "${cilium_version}"
     }
-  ]
-}
+  },
+  {
+    output: "bundles/cilium.v${cilium_version}/manifests/cilium-olm.csv.yaml"
+    parameters: {
+      namespace: "placeholder"
+      image: "${operator_image}"
+      test: false
+      onlyCSV: true
+      ciliumVersion: "${cilium_version}"
+    }
+  },
+]
 EOF
 
 if [ -n "${GOPATH+x}" ] ; then

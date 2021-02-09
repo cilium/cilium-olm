@@ -11,16 +11,16 @@ _olm_items: [
 		kind:       "OperatorGroup"
 		metadata: {
 			name:      constants.name
-			namespace: constants.namespace
+			namespace: parameters.namespace
 		}
-		spec: targetNamespaces: [constants.namespace]
+		spec: targetNamespaces: [parameters.namespace]
 	},
 	{
 		apiVersion: "operators.coreos.com/v1alpha1"
 		kind:       "Subscription"
 		metadata: {
 			name:      constants.name
-			namespace: constants.namespace
+			namespace: parameters.namespace
 		}
 		spec: {
 			channel:             "stable"
@@ -77,7 +77,7 @@ _logoEncoded: base64.Encode(null, _logoString)
 	metadata: {
 		annotations: _csv_annotations
 		name:        "cilium.v\(parameters.ciliumVersion)"
-		namespace:   constants.namespace
+		namespace:   parameters.namespace
 	}
 	spec: {
 		apiservicedefinitions: {}

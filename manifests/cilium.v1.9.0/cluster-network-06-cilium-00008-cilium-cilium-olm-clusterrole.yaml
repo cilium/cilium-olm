@@ -4,6 +4,14 @@ metadata:
   name: cilium-cilium-olm
 rules:
 - apiGroups:
+  - security.openshift.io
+  resourceNames:
+  - hostnetwork
+  resources:
+  - securitycontextconstraints
+  verbs:
+  - use
+- apiGroups:
   - ""
   resourceNames:
   - cilium
