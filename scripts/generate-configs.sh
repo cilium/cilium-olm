@@ -83,4 +83,4 @@ annotations:
 EOF
 
 mkdir -p "bundles/cilium.v${cilium_version}/tests/scorecard"
-cp scorecard-tests.yaml "bundles/cilium.v${cilium_version}/tests/scorecard"
+cp scorecard-config.yaml "bundles/cilium.v${cilium_version}/tests/scorecard/config.yaml"
