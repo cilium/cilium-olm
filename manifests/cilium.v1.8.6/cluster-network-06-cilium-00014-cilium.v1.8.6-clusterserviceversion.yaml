@@ -2,6 +2,8 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
+    alm-examples: '[{"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"cilium"},"spec":{"config":{"ipam":{"mode":"cluster-pool"}},"global":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"}},"prometheus":{"serviceMonitor":{"enabled":false}}}}}]'
+    alm-examples-metadata: '{"cilium-openshift-default":{"description":"Default CiliumConfig CR for OpenShift"}}'
     capabilities: Basic Install
     categories: Networking,Security
     repository: http://github.com/cilium/cilium
