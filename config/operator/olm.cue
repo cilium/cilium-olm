@@ -3,7 +3,11 @@
 
 package operator
 
-import "encoding/base64"
+import (
+	"encoding/base64"
+	"encoding/json"
+	"strings"
+)
 
 _olm_items: [
 	{
@@ -34,12 +38,56 @@ _olm_items: [
 	#CSVWorkloadTemplate,
 ]
 
+_alm_examples_metadata: {
+	"cilium-openshift-default": description: "Default CiliumConfig CR for OpenShift"
+}
+
+_example_config_opts_common: {
+	nativeRoutingCIDR: "10.128.0.0/14"
+	endpointRoutes: enabled: true
+	cni: {
+		binPath:  "/var/lib/cni/bin"
+		confPath: "/var/run/multus/cni/net.d"
+	}
+	ipam: operator: {
+		clusterPoolIPv4PodCIDR:  "10.128.0.0/14"
+		clusterPoolIPv4MaskSize: "23"
+	}
+	prometheus: serviceMonitor: enabled: false
+}
+
+_example_config_opts_ipam_mode: ipam: mode: "cluster-pool"
+
+_alm_examples: [
+	{
+		apiVersion: "cilium.io/v1alpha1"
+		kind:       "CiliumConfig"
+		metadata: {
+			name:      "cilium-openshift-default"
+			namespace: parameters.namespace
+		}
+		spec: {
+			if strings.HasPrefix(parameters.ciliumVersion, "1.8") {
+				config: _example_config_opts_ipam_mode
+				global: _example_config_opts_common
+			}
+			if strings.HasPrefix(parameters.ciliumVersion, "1.9") {
+				_example_config_opts_common & _example_config_opts_ipam_mode & {
+					hubble: tls: enabled: false
+				}
+			}
+		}
+	},
+]
+
 _csv_annotations: {
-	categories:   "Networking,Security"
-	support:      "support@isovalent.com"
-	#certified:   "true"
-	capabilities: "Basic Install"
-	repository:   "http://github.com/cilium/cilium"
+	categories:              "Networking,Security"
+	support:                 "support@isovalent.com"
+	#certified:              "true"
+	capabilities:            "Basic Install"
+	repository:              "http://github.com/cilium/cilium"
+	"alm-examples-metadata": json.Marshal(_alm_examples_metadata)
+	"alm-examples":          json.Marshal(_alm_examples)
 }
 
 _logoString: """
