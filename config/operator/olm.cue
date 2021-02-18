@@ -130,9 +130,27 @@ _logoEncoded: base64.Encode(null, _logoString)
 	spec: {
 		apiservicedefinitions: {}
 		customresourcedefinitions: owned: [{
-			kind:    "CiliumConfig"
+			group:   "cilium.io"
 			name:    "ciliumconfigs.cilium.io"
+			kind:    "CiliumConfig"
 			version: "v1alpha1"
+			resources: [
+				{
+					kind:    "DaemonSet"
+					name:    "cilium"
+					version: "v1"
+				},
+				{
+					kind:    "Deployment"
+					name:    "cilium-operator"
+					version: "v1"
+				},
+				{
+					kind:    "ConfigMap"
+					name:    "cilium-config"
+					version: "v1"
+				},
+			]
 		}]
 		displayName: "Cilium"
 		description: "Cilium - eBPF-based Networking, Security, and Observability"
