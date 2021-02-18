@@ -2,7 +2,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
-    alm-examples: '[{"status":{},"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"cilium"},"spec":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"},"mode":"cluster-pool"},"prometheus":{"serviceMonitor":{"enabled":false}},"hubble":{"tls":{"enabled":false}}}}]'
+    alm-examples: '[{"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"cilium"},"spec":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"},"mode":"cluster-pool"},"prometheus":{"serviceMonitor":{"enabled":false}},"hubble":{"tls":{"enabled":false}}}}]'
     alm-examples-metadata: '{"cilium-openshift-default":{"description":"Default CiliumConfig CR for OpenShift"}}'
     capabilities: Basic Install
     categories: Networking,Security
@@ -27,6 +27,13 @@ spec:
       - kind: ConfigMap
         name: cilium-config
         version: v1
+      statusDescriptors:
+      - description: Helm release conditions
+        displayName: Conditions
+        path: conditions
+      - description: Name of deployed Helm release
+        displayName: Deployed release
+        path: deployedRelease
       version: v1alpha1
   description: Cilium - eBPF-based Networking, Security, and Observability
   displayName: Cilium
