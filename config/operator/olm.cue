@@ -77,6 +77,7 @@ _alm_examples: [
 				}
 			}
 		}
+                status: {}
 	},
 ]
 
