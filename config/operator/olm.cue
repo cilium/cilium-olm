@@ -77,7 +77,6 @@ _alm_examples: [
 				}
 			}
 		}
-                status: {}
 	},
 ]
 
@@ -150,6 +149,18 @@ _logoEncoded: base64.Encode(null, _logoString)
 					kind:    "ConfigMap"
 					name:    "cilium-config"
 					version: "v1"
+				},
+			]
+			statusDescriptors: [
+                                {
+                                        description: "Helm release conditions"
+                                        displayName: "Conditions"
+                                        path:        "conditions"
+                                },
+				{
+					description: "Name of deployed Helm release"
+					displayName: "Deployed release"
+					path:        "deployedRelease"
 				},
 			]
 		}]
