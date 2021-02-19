@@ -130,7 +130,6 @@ _logoEncoded: base64.Encode(null, _logoString)
 	spec: {
 		apiservicedefinitions: {}
 		customresourcedefinitions: owned: [{
-			group:   "cilium.io"
 			name:    "ciliumconfigs.cilium.io"
 			kind:    "CiliumConfig"
 			version: "v1alpha1"
