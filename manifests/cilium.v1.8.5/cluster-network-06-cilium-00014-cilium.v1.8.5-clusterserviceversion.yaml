@@ -14,8 +14,7 @@ spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
     owned:
-    - group: cilium.io
-      kind: CiliumConfig
+    - kind: CiliumConfig
       name: ciliumconfigs.cilium.io
       resources:
       - kind: DaemonSet
