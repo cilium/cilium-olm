@@ -9,7 +9,7 @@ spec:
   group: cilium.io
   names:
     kind: CiliumConfig
-    listKind: CiliumList
+    listKind: CiliumConfigList
     plural: ciliumconfigs
     singular: ciliumconfig
   scope: Namespaced
