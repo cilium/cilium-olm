@@ -76,3 +76,5 @@ generate.configs.v%:
 
 validate.bundles.v%:
 	$(OPM) alpha bundle validate --tag "$$(cat image-cilium-olm-metadata-v$(cilium_version).tag | head -1)"
+	operator-sdk bundle validate "$$(cat image-cilium-olm-metadata-v$(cilium_version).tag | head -1)"
+	operator-sdk scorecard "$$(cat image-cilium-olm-metadata-v$(cilium_version).tag | head -1)"
