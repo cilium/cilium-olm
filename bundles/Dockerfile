@@ -16,4 +16,4 @@ LABEL com.redhat.delivery.backport=true
 
 COPY /manifests /manifests
 COPY /metadata /metadata
-COPY /tests /metadata
+COPY /tests /tests
