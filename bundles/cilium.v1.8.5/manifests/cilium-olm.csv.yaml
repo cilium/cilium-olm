@@ -54,7 +54,7 @@ spec:
         - apiGroups:
           - ""
           resourceNames:
-          - cilium
+          - placeholder
           resources:
           - namespaces
           verbs:
@@ -165,7 +165,7 @@ spec:
                 - --zap-devel
                 env:
                 - name: WATCH_NAMESPACE
-                  value: cilium
+                  value: placeholder
                 image: registry.connect.redhat.com/isovalent/cilium-olm:1603e026b455605cb128cef3502c25fc0f2c076f-v1.8.5
                 name: operator
                 ports:
@@ -219,8 +219,6 @@ spec:
           - list
         - apiGroups:
           - cilium.io
-          resourceNames:
-          - cilium
           resources:
           - ciliumconfigs
           - ciliumconfigs/status

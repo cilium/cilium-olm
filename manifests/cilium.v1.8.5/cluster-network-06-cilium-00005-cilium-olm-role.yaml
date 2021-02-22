@@ -13,8 +13,6 @@ rules:
   - list
 - apiGroups:
   - cilium.io
-  resourceNames:
-  - cilium
   resources:
   - ciliumconfigs
   - ciliumconfigs/status
