@@ -5,7 +5,6 @@ package operator
 
 constants: {
 	name:      "cilium-olm"
-	namespace: "cilium"
 }
 
 _commonMetadata: {
@@ -41,7 +40,7 @@ _workloadSpec: {
 				}]
 				env: [{
 					name:  "WATCH_NAMESPACE"
-					value: "cilium"
+					value: parameters.namespace
 				}]
 				volumeMounts: [{
 					name:      "tmp"
@@ -82,7 +81,7 @@ if !parameters.test {
 		"run",
 		"--watches-file=watches.yaml",
 		"--enable-leader-election",
-		"--leader-election-id=cilium-olm",
+		"--leader-election-id=\(constants.name)",
 		"--zap-devel",
 	]
 }

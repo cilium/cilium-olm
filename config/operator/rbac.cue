@@ -65,7 +65,7 @@ _helmOperatorClusterRules: [
 		]
 	},
 	{
-		// Operator needs to get cilium namespace so that it ensure that it exists
+		// Operator needs to get own namespace to check that it actually exists
 		apiGroups: [
 			"",
 		]
@@ -76,7 +76,7 @@ _helmOperatorClusterRules: [
 			"get",
 		]
 		resourceNames: [
-			"cilium",
+			parameters.namespace,
 		]
 	},
 	{
@@ -267,9 +267,9 @@ _helmOperatorRules: [
 			"list",
 			"delete",
 		]
-		resourceNames: [
-			"cilium",
-		]
+		// resourceNames: [
+		// 	"cilium",
+		// ]
 	},
 	{
 		// Operator needs to create events on ciliumconfig about things happening during reconciliation
