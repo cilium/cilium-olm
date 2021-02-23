@@ -5,6 +5,12 @@ metadata:
   namespace: cilium
 rules:
 - apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+- apiGroups:
   - cilium.io
   resources:
   - ciliumconfigs

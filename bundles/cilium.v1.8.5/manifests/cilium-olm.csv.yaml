@@ -52,14 +52,6 @@ spec:
           verbs:
           - use
         - apiGroups:
-          - ""
-          resourceNames:
-          - placeholder
-          resources:
-          - namespaces
-          verbs:
-          - get
-        - apiGroups:
           - rbac.authorization.k8s.io
           resources:
           - clusterroles
@@ -165,7 +157,9 @@ spec:
                 - --zap-devel
                 env:
                 - name: WATCH_NAMESPACE
-                  value: placeholder
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
                 image: registry.connect.redhat.com/isovalent/cilium-olm:1603e026b455605cb128cef3502c25fc0f2c076f-v1.8.5
                 name: operator
                 ports:
@@ -210,6 +204,12 @@ spec:
           - events
           verbs:
           - create
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
         - apiGroups:
           - cilium.io
           resources:

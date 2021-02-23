@@ -12,14 +12,6 @@ rules:
   verbs:
   - use
 - apiGroups:
-  - ""
-  resourceNames:
-  - cilium
-  resources:
-  - namespaces
-  verbs:
-  - get
-- apiGroups:
   - rbac.authorization.k8s.io
   resources:
   - clusterroles
