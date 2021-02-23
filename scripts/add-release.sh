@@ -22,11 +22,6 @@ root_dir="$(git rev-parse --show-toplevel)"
 
 cd "${root_dir}"
 
-if ! [ -f image-cilium-olm-base.tag ] ; then
-  echo "run 'make images.operator-base' first"
-  exit 2
-fi
-
 if ! mkdir "${chart_dir}" 2> /dev/null ; then
   echo "version ${cilium_version} has already been added"
   echo "if you want to re-add it, you can to run 'rm -rf ${chart_dir}' and edit 'Makefile.releases'"
