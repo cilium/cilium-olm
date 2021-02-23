@@ -65,21 +65,6 @@ _helmOperatorClusterRules: [
 		]
 	},
 	{
-		// Operator needs to get own namespace to check that it actually exists
-		apiGroups: [
-			"",
-		]
-		resources: [
-			"namespaces",
-		]
-		verbs: [
-			"get",
-		]
-		resourceNames: [
-			parameters.namespace,
-		]
-	},
-	{
 		// Operator needs to manage cilium RBAC resources
 		apiGroups: [
 			"rbac.authorization.k8s.io",
@@ -236,6 +221,18 @@ _ciliumClusterRules: [
 ]
 
 _helmOperatorRules: [
+        {
+                // Operator needs to get own namespace to check that it actually exists
+                apiGroups: [
+                        "",
+                ]
+                resources: [
+                        "namespaces",
+                ]
+                verbs: [
+                        "get",
+                ]
+        },
 	{
 		// Operator needs to list all ciliumconfig
 		apiGroups: [
