@@ -40,7 +40,7 @@ _workloadSpec: {
 				}]
 				env: [{
 					name:  "WATCH_NAMESPACE"
-					value: parameters.namespace
+					valueFrom: fieldRef: fieldPath: "metadata.namespace"
 				}]
 				volumeMounts: [{
 					name:      "tmp"
