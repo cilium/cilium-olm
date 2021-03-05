@@ -78,7 +78,7 @@ images.all: images.operator.v${cilium_version} images.operator-bundle.v${cilium_
 
 images.operator.all: images.operator.v${cilium_version}
 images.operator-bundle.all: images.operator-bundle.v${cilium_version}
-generate.configs.all: images.configs.v${cilium_version}
+generate.configs.all: generate.configs.v${cilium_version}
 
 images.operator.v${cilium_version} images.operator-bundle.v${cilium_version} generate.configs.v${cilium_version} validate.bundles.v${cilium_version}: cilium_version=${cilium_version}
 
