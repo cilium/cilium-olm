@@ -27,8 +27,8 @@ jobs:
       - uses: docker://docker.io/cilium/image-maker:8fb8f8325d966505552183f756eae4e3cb60d195
         name: Run make images.operator.all
         env:
-          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME_OLM }}
+          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD_OLM }}
           DOCKER_HUB_PUBLIC_ACCESS_ONLY: "true"
           # scan.connect.redhat.com
           ANY_REGISTRY_USERNAME: unused
@@ -39,8 +39,8 @@ jobs:
       - uses: docker://docker.io/cilium/image-maker:8fb8f8325d966505552183f756eae4e3cb60d195
         name: Run make images.operator-bundle.all
         env:
-          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME_OLM }}
+          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD_OLM }}
           DOCKER_HUB_PUBLIC_ACCESS_ONLY: "true"
           # scan.connect.redhat.com
           ANY_REGISTRY_USERNAME: unused
