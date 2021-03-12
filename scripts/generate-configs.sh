@@ -16,7 +16,8 @@ cd "${root_dir}"
 
 rm -rf "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}"
 
-cat > config/operator/instances.cue << EOF
+generate_instaces_cue() {
+cat << EOF
 package operator
 
 instances: [
@@ -27,6 +28,7 @@ instances: [
       test: false
       onlyCSV: false
       ciliumVersion: "${cilium_version}"
+      configVersionSuffix: "${1:-}"
     }
   },
   {
@@ -37,10 +39,16 @@ instances: [
       test: false
       onlyCSV: true
       ciliumVersion: "${cilium_version}"
+      configVersionSuffix: "${1:-}"
     }
   },
 ]
 EOF
+}
+
+config_version_suffix_hash="$(generate_instaces_cue | git hash-object --stdin)"
+
+generate_instaces_cue "${config_version_suffix_hash:0:7}" > config/operator/instances.cue
 
 if [ -n "${GOPATH+x}" ] ; then
   export PATH="${PATH}:${GOPATH}/bin"

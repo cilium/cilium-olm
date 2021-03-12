@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+_csv_version: "\(parameters.ciliumVersion)-\(parameters.configVersionSuffix)"
+
 _olm_items: [
 	{
 		apiVersion: "operators.coreos.com/v1alpha2"
@@ -124,7 +126,7 @@ _logoEncoded: base64.Encode(null, _logoString)
 	kind:       "ClusterServiceVersion"
 	metadata: {
 		annotations: _csv_annotations
-		name:        "cilium.v\(parameters.ciliumVersion)"
+		name:        "cilium.v\(_csv_version)"
 		namespace:   parameters.namespace
 	}
 	spec: {
@@ -215,7 +217,7 @@ _logoEncoded: base64.Encode(null, _logoString)
 		}]
 		maturity: "stable"
 		provider: name: "Isovalent"
-		version: parameters.ciliumVersion
+		version: _csv_version
 	}
 
 }

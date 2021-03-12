@@ -190,11 +190,12 @@ _core_items: namespace + [
 }
 
 #WorkloadParameters: {
-	image:         string
-	test:          bool
-	ciliumVersion: string
-	onlyCSV:       bool
-	namespace:     string | *"cilium"
+	image:               string
+	test:                bool
+	ciliumVersion:       string
+	onlyCSV:             bool
+	namespace:           string | *"cilium"
+        configVersionSuffix: string
 }
 
 parameters: #WorkloadParameters
