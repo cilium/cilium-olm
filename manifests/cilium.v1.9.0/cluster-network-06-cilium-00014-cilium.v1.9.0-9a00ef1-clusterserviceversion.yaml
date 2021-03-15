@@ -8,7 +8,7 @@ metadata:
     categories: Networking,Security
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
-  name: cilium.v1.9.1
+  name: cilium.v1.9.0-9a00ef1
   namespace: cilium
 spec:
   apiservicedefinitions: {}
@@ -160,7 +160,7 @@ spec:
                   valueFrom:
                     fieldRef:
                       fieldPath: metadata.namespace
-                image: registry.connect.redhat.com/isovalent/cilium-olm:543de8146ea2bc463ceacffaf383250d54dd3945-v1.9.1
+                image: registry.connect.redhat.com/isovalent/cilium-olm:1fcfb5345a83f812bd2aff4ef548acb2f1845304-v1.9.0
                 name: operator
                 ports:
                 - containerPort: 9443
@@ -283,4 +283,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.9.1
+  version: 1.9.0-9a00ef1

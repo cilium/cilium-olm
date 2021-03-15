@@ -28,7 +28,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: registry.connect.redhat.com/isovalent/cilium-olm:ff410411f8e4ecd7552510c4d0378aa597dce5a6-v1.9.0
+        image: registry.connect.redhat.com/isovalent/cilium-olm:1fcfb5345a83f812bd2aff4ef548acb2f1845304-v1.9.0
         name: operator
         ports:
         - containerPort: 9443
