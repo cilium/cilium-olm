@@ -7,10 +7,18 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-operator_image="registry.connect.redhat.com/isovalent/cilium-olm:$(head -1 "${1}" | cut -d ':' -f 2)"
 cilium_version="${2}"
 
 root_dir="$(git rev-parse --show-toplevel)"
+
+case "${cilium_version}" in
+  *-rc*)
+    operator_image="$(head -1 "${1}")"
+    ;;
+  *)
+    operator_image="registry.connect.redhat.com/isovalent/cilium-olm:$(head -1 "${1}" | cut -d ':' -f 2)"
+    ;;
+esac
 
 cd "${root_dir}"
 
