@@ -3,6 +3,7 @@
 
 REGISTRY ?= quay.io/cilium
 
+WITHOUT_TAG_SUFFIX ?= false
 PUSH ?= false
 
 GOBIN = $(shell go env GOPATH)/bin
@@ -40,12 +41,14 @@ images.operator.v%: .buildx_builder
 		--name=cilium-olm \
 		--custom-tag-suffix=v$(cilium_version) \
 		--registry=$(REGISTRY) \
+		--without-tag-suffix=$(WITHOUT_TAG_SUFFIX) \
 		--push=$(PUSH)
 	$(IMAGINE) image \
 		--base=./operator/cilium.v$(cilium_version) \
 		--name=cilium-olm \
 		--custom-tag-suffix=v$(cilium_version) \
 		--registry=$(REGISTRY) \
+		--without-tag-suffix=$(WITHOUT_TAG_SUFFIX) \
 		> image-cilium-olm-v$(cilium_version).tag
 
 images.operator-bundle.v%: .buildx_builder
@@ -56,12 +59,14 @@ images.operator-bundle.v%: .buildx_builder
 		--name=cilium-olm-metadata \
 		--custom-tag-suffix=v$(cilium_version) \
 		--registry=$(REGISTRY) \
+		--without-tag-suffix=$(WITHOUT_TAG_SUFFIX) \
 		--push=$(PUSH)
 	$(IMAGINE) image \
 		--base=./bundles/cilium.v$(cilium_version) \
 		--name=cilium-olm-metadata \
 		--custom-tag-suffix=v$(cilium_version) \
 		--registry=$(REGISTRY) \
+		--without-tag-suffix=$(WITHOUT_TAG_SUFFIX) \
 		> image-cilium-olm-metadata-v$(cilium_version).tag
 
 generate.configs.v%:

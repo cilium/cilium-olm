@@ -90,8 +90,9 @@ git add Makefile.releases "${chart_dir}"
 
 git commit --message "Add Cilium v${cilium_version}"
 
-make "images.operator.v${cilium_version}"
-make "generate.configs.v${cilium_version}"
+make "images.operator.v${cilium_version}" WITHOUT_TAG_SUFFIX=true
+make "generate.configs.v${cilium_version}" WITHOUT_TAG_SUFFIX=true
+
 git add "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}"
 
 git commit --amend --all --message "Add Cilium v${cilium_version}"
