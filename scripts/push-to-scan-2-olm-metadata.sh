@@ -50,7 +50,10 @@ olm_metadata_source_image="$(imagine image "--base=./bundles/cilium.v${cilium_ve
 
 olm_metadata_digest="$(crane digest "${olm_metadata_source_image}" 2> /dev/nul)"
 
-test -n "${olm_operator_digest}" || exit 3
+if [ -z "${olm_metadata_digest}" ] ; then
+  echo "${olm_metadata_source_image} was not published yet, if you already pushed to master, check status in GitHub Actions"
+  exit 3
+fi
 
 olm_metadata_scan_image="${olm_metadata_scan_registry}${olm_metadata_source_image/${main_registry}/}"
 
