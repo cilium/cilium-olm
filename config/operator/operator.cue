@@ -49,11 +49,11 @@ _workloadSpec: {
 				resources: {
 					limits: {
 						cpu:    "100m"
-						memory: "100Mi"
+						memory: "150Mi"
 					}
 					requests: {
 						cpu:    "100m"
-						memory: "100Mi"
+						memory: "150Mi"
 					}
 				}
 			}]
