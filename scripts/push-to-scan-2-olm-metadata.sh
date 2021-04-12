@@ -57,7 +57,7 @@ fi
 
 olm_metadata_scan_image="${olm_metadata_scan_registry}${olm_metadata_source_image/${main_registry}/}"
 
-if ! env ANY_REGISTRY_USERNAME="${RHPC_USERNAME_FOR_PUBLISHED_IMAGES}" ANY_REGISTRY_PASSWORD="${}" crane digest "${olm_operator_rhpc_image}" 2> /dev/null ; then
+if ! env ANY_REGISTRY_USERNAME="${RHPC_USERNAME_FOR_PUBLISHED_IMAGES}" ANY_REGISTRY_PASSWORD="${RHPC_PASSWORD_FOR_PUBLISHED_IMAGES}" crane digest "${olm_operator_rhpc_image}" 2> /dev/null ; then
   echo "${olm_operator_rhpc_image} was not published yet, if you already ran 'push-to-scan-1-olm-operator.sh' for it, check the results & publish it"
   exit 3
 fi
