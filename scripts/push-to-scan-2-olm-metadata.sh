@@ -33,7 +33,7 @@ fi
 root_dir="$(git rev-parse --show-toplevel)"
 
 if [ -z "${MAKER_CONTAINER+x}" ] ; then
-   exec docker run --env RHPC_PASSWORD_FOR_OLM_METADATA_IMAGE --rm --volume "${root_dir}:/src" --workdir /src "${MAKER_IMAGE}" "/src/scripts/$(basename "${0}")" "${1}"
+   exec docker run --env RHPC_PASSWORD_FOR_OLM_METADATA_IMAGE --env RHPC_USERNAME_FOR_PUBLISHED_IMAGES --env RHPC_PASSWORD_FOR_PUBLISHED_IMAGES --rm --volume "${root_dir}:/src" --workdir /src "${MAKER_IMAGE}" "/src/scripts/$(basename "${0}")" "${1}"
 fi
 
 export QUAY_PUBLIC_ACCESS_ONLY="true" ANY_REGISTRY_USERNAME="unused" ANY_REGISTRY_PASSWORD="${RHPC_PASSWORD_FOR_OLM_METADATA_IMAGE}"
