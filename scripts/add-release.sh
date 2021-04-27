@@ -52,6 +52,13 @@ cat > "${chart_dir}/Dockerfile" << EOF
 
 FROM quay.io/operator-framework/helm-operator:v1.6.2
 
+# This make the build time-variant, but there is not easy
+# way around this yet, as the helm-operator image does
+# often have outdatated packages
+# (For a potneial solution see https://github.com/errordeveloper/imagine/issues/27)
+USER root
+RUN microdnf update
+
 # Required Licenses
 COPY LICENSE /licenses/LICENSE.cilium-olm
 
@@ -63,6 +70,7 @@ LABEL name="Cilium" \\
       summary="Cilium OLM operator" \\
       description="This operator mamaged Cilium installation and it is OLM-compliant"
 
+USER helm
 ENV HOME=/opt/helm
 COPY watches.yaml \${HOME}/watches.yaml
 WORKDIR \${HOME}
