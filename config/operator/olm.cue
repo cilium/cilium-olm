@@ -9,7 +9,6 @@ import (
 	"strings"
 )
 
-_csv_version: "\(parameters.ciliumVersion)-\(parameters.configVersionSuffix)"
 
 _olm_items: [
 	{
@@ -126,7 +125,7 @@ _logoEncoded: base64.Encode(null, _logoString)
 	kind:       "ClusterServiceVersion"
 	metadata: {
 		annotations: _csv_annotations
-		name:        "cilium.v\(_csv_version)"
+		name:        "cilium.v\(parameters.ciliumVersion)-\(parameters.configVersionSuffix)"
 		namespace:   parameters.namespace
 	}
 	spec: {
@@ -217,7 +216,7 @@ _logoEncoded: base64.Encode(null, _logoString)
 		}]
 		maturity: "stable"
 		provider: name: "Isovalent"
-		version: _csv_version
+		version: "\(parameters.ciliumVersion)+\(parameters.configVersionSuffix)"
 	}
 
 }
