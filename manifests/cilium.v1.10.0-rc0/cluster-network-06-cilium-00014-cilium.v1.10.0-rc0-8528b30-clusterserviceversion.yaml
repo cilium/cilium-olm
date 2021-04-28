@@ -283,4 +283,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.10.0-rc0-8528b30
+  version: 1.10.0-rc0+8528b30

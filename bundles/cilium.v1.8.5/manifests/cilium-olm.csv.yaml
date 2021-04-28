@@ -283,4 +283,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.8.5-09fdad7
+  version: 1.8.5+09fdad7

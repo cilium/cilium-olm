@@ -283,4 +283,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.9.5-23bfefc
+  version: 1.9.5+23bfefc

@@ -283,4 +283,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.8.8-7100b4c
+  version: 1.8.8+7100b4c
