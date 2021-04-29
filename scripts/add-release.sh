@@ -50,7 +50,7 @@ cat > "${chart_dir}/Dockerfile" << EOF
 # Copyright 2017-2020 Authors of Cilium
 # SPDX-License-Identifier: Apache-2.0
 
-FROM quay.io/operator-framework/helm-operator:v1.6.2
+FROM quay.io/operator-framework/helm-operator:v1.5.0
 
 # This make the build time-variant, but there is not easy
 # way around this yet, as the helm-operator image does
