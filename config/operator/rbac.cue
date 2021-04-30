@@ -138,6 +138,18 @@ _ciliumClusterRules: [
 			"update",
 		]
 	},
+        {
+                // Write access to services/status (needed for BGP as of Cilium 1.10.0)
+                apiGroups: [
+                        "",
+                ]
+                resources: [
+                        "services/status",
+                ]
+                verbs: [
+                        "update",
+                ]
+        },
 	{
 		// Read-write access to pods as Cilium sets ownerRerfernces on pods
 		apiGroups: [
