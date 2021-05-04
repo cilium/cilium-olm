@@ -1,4 +1,4 @@
-# Copyright 2017-2020 Authors of Cilium
+# Copyright 2017-2021 Authors of Cilium
 # SPDX-License-Identifier: Apache-2.0
 
 REGISTRY ?= quay.io/cilium
@@ -55,7 +55,6 @@ images.operator-bundle.v%: .buildx_builder
 	$(IMAGINE) build \
 		--builder=$$(cat .buildx_builder) \
 		--base=./bundles/cilium.v$(cilium_version) \
-		--dockerfile=../Dockerfile \
 		--name=cilium-olm-metadata \
 		--custom-tag-suffix=v$(cilium_version) \
 		--registry=$(REGISTRY) \

@@ -22,7 +22,7 @@ esac
 
 cd "${root_dir}"
 
-rm -rf "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}"
+rm -rf "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}/manifests" "bundles/cilium.v${cilium_version}/metadata" "bundles/cilium.v${cilium_version}/tests"
 
 generate_instaces_cue() {
 cat << EOF
