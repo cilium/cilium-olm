@@ -1,4 +1,4 @@
-// Copyright 2017-2020 Authors of Cilium
+// Copyright 2017-2021 Authors of Cilium
 // SPDX-License-Identifier: Apache-2.0
 
 package operator
@@ -15,7 +15,7 @@ _olm_items: [
 		apiVersion: "operators.coreos.com/v1alpha2"
 		kind:       "OperatorGroup"
 		metadata: {
-			name:      constants.name
+			name:      "cilium"
 			namespace: parameters.namespace
 		}
 		spec: targetNamespaces: [parameters.namespace]
@@ -24,13 +24,13 @@ _olm_items: [
 		apiVersion: "operators.coreos.com/v1alpha1"
 		kind:       "Subscription"
 		metadata: {
-			name:      constants.name
+			name:      "cilium"
 			namespace: parameters.namespace
 		}
 		spec: {
 			channel:             "stable"
-			name:                constants.name
-			startingCSV:         "cilium.v\(parameters.ciliumVersion)"
+			name:                "cilium"
+			startingCSV:         "cilium.v\(parameters.ciliumVersion)-\(parameters.configVersionSuffix)"
 			installPlanApproval: "Automatic"
 			source:              "certified-operators"
 			sourceNamespace:     "openshift-marketplace"
