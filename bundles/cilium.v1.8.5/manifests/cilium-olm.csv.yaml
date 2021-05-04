@@ -8,7 +8,7 @@ metadata:
     categories: Networking,Security
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
-  name: cilium.v1.8.5-09fdad7
+  name: cilium.v1.8.5-d3a6dc1
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -289,4 +289,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.8.5+09fdad7
+  version: 1.8.5+d3a6dc1
