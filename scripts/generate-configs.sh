@@ -54,7 +54,15 @@ instances: [
 EOF
 }
 
-config_version_suffix_hash="$(generate_instaces_cue | git hash-object --stdin)"
+combined_hash() {
+  generate_instaces_cue
+  cat "bundles/cilium.v${cilium_version}/Dockerfile"
+  cat "config/operator/operator.cue"
+  cat "config/operator/rbac.cue"
+  cat "config/operator/olm.cue"
+}
+
+config_version_suffix_hash="$(combined_hash | git hash-object --stdin)"
 
 generate_instaces_cue "${config_version_suffix_hash:0:7}" > config/operator/instances.cue
 
