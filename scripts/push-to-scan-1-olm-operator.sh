@@ -35,7 +35,7 @@ olm_operator_scan_registry="scan.connect.redhat.com/ospid-104ec1da-384c-4d7c-bd2
 
 olm_operator_source_image="$(imagine image "--base=./operator/cilium.v${cilium_version}" "--name=cilium-olm" "--custom-tag-suffix=v${cilium_version}" "--without-tag-suffix" "--registry=${main_registry}")"
 
-olm_operator_digest="$(crane digest "${olm_operator_source_image}" 2> /dev/nul)"
+olm_operator_digest="$(crane digest "${olm_operator_source_image}" 2> /dev/nul || true)"
 
 if [ -z "${olm_operator_digest}" ] ; then
   echo "${olm_operator_source_image} was not published yet, if you already pushed to master, check status in GitHub Actions"

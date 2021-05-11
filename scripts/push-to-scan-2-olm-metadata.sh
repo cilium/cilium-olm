@@ -48,7 +48,7 @@ olm_operator_rhpc_image="$(imagine image "--base=./operator/cilium.v${cilium_ver
 
 olm_metadata_source_image="$(imagine image "--base=./bundles/cilium.v${cilium_version}" "--name=cilium-olm-metadata" "--custom-tag-suffix=v${cilium_version}" "--without-tag-suffix" "--registry=${main_registry}")"
 
-olm_metadata_digest="$(crane digest "${olm_metadata_source_image}" 2> /dev/nul)"
+olm_metadata_digest="$(crane digest "${olm_metadata_source_image}" 2> /dev/nul || true)"
 
 if [ -z "${olm_metadata_digest}" ] ; then
   echo "${olm_metadata_source_image} was not published yet, if you already pushed to master, check status in GitHub Actions"
