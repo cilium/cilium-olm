@@ -112,7 +112,7 @@ All releases and release candidates should be published at this stage, but the m
 
 It can take some time, but often just a few hours. Sometimes the image doesn't show up in UI right away, you will need to check back every couple of hours.
 
-If an image scan fails, file an issue in this repository and address it issue. Once the chages are in master and [GitHub Actions][] build finished, re-run `scripts/push-to-scan-1-olm-operator.sh` and monitor the scan results.
+If an image scan fails, file an issue in this repository and work to address the issue. Once the chages are in master and [GitHub Actions][] build finished, re-run `scripts/push-to-scan-1-olm-operator.sh` and monitor the scan results.
 
 Now it's time for the second step. Once operator application image has passed certification scan successfully and had been published, the metadata bundle can be pushed RedHat Partner Connect Registry also. To "promote" the metadata bundle run:
 
