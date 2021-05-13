@@ -89,7 +89,7 @@ This will do the following:
 - download Helm chart tarball and unpack it to 
 - create a local commit that has all the changes that can be pushed to the repo
 
-Once changes are on the master branch of this repo, new images will be built in [GitHub Actions][].
+Now push changes to a branch and open a PR. Once changes are on the master branch of this repo, new images will be built in [GitHub Actions][].
 
 Next, images need to be copied from Quay to RedHat Partner Connect registry. This is a two-step process.
 
