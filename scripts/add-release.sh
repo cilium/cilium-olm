@@ -80,7 +80,7 @@ COPY cilium \${HOME}/helm-charts/cilium
 EOF
 
 mkdir -p "${bundle_dir}"
-cat > "${operator_dir}/Dockerfile" << EOF
+cat > "${bundle_dir}/Dockerfile" << EOF
 # Copyright 2017-2021 Authors of Cilium
 # SPDX-License-Identifier: Apache-2.0
 
