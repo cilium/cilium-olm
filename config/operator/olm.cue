@@ -30,7 +30,7 @@ _olm_items: [
 		spec: {
 			channel:             "stable"
 			name:                "cilium"
-			startingCSV:         "cilium.v\(parameters.ciliumVersion)-\(parameters.configVersionSuffix)"
+			startingCSV:         "cilium.v\(parameters.ciliumVersion)-x\(parameters.configVersionSuffix)"
 			installPlanApproval: "Automatic"
 			source:              "certified-operators"
 			sourceNamespace:     "openshift-marketplace"
@@ -125,7 +125,7 @@ _logoEncoded: base64.Encode(null, _logoString)
 	kind:       "ClusterServiceVersion"
 	metadata: {
 		annotations: _csv_annotations
-		name:        "cilium.v\(parameters.ciliumVersion)-\(parameters.configVersionSuffix)"
+		name:        "cilium.v\(parameters.ciliumVersion)-x\(parameters.configVersionSuffix)"
 		namespace:   parameters.namespace
 	}
 	spec: {
@@ -216,7 +216,7 @@ _logoEncoded: base64.Encode(null, _logoString)
 		}]
 		maturity: "stable"
 		provider: name: "Isovalent"
-		version: "\(parameters.ciliumVersion)+\(parameters.configVersionSuffix)"
+		version: "\(parameters.ciliumVersion)+x\(parameters.configVersionSuffix)"
 	}
 
 }
