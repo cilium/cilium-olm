@@ -2,13 +2,13 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
-    alm-examples: '[{"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"cilium"},"spec":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"},"mode":"cluster-pool"},"prometheus":{"serviceMonitor":{"enabled":false}},"hubble":{"tls":{"enabled":false}}}}]'
+    alm-examples: '[{"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"cilium"},"spec":{"config":{"ipam":{"mode":"cluster-pool"}},"global":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"}},"prometheus":{"serviceMonitor":{"enabled":false}}}}}]'
     alm-examples-metadata: '{"cilium-openshift-default":{"description":"Default CiliumConfig CR for OpenShift"}}'
     capabilities: Basic Install
     categories: Networking,Security
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
-  name: cilium.v1.9.1-893c7e0
+  name: cilium.v1.8.5-x1d6afec
   namespace: cilium
 spec:
   apiservicedefinitions: {}
@@ -166,7 +166,7 @@ spec:
                   valueFrom:
                     fieldRef:
                       fieldPath: metadata.namespace
-                image: registry.connect.redhat.com/isovalent/cilium-olm:907101acc29b8e06c196aee5357dda70406bdba8-v1.9.1
+                image: registry.connect.redhat.com/isovalent/cilium-olm:f927e8afabd1465478b9a75efede7ac429518661-v1.8.5
                 name: operator
                 ports:
                 - containerPort: 9443
@@ -289,4 +289,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.9.1+893c7e0
+  version: 1.8.5+x1d6afec
