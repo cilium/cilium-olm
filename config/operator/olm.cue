@@ -46,6 +46,7 @@ _alm_examples_metadata: {
 _example_config_opts_common: {
 	nativeRoutingCIDR: "10.128.0.0/14"
 	endpointRoutes: enabled: true
+	kubeProxyReplacement: "probe"
 	cni: {
 		binPath:  "/var/lib/cni/bin"
 		confPath: "/var/run/multus/cni/net.d"
@@ -72,7 +73,7 @@ _alm_examples: [
 				config: _example_config_opts_ipam_mode
 				global: _example_config_opts_common
 			}
-			if strings.HasPrefix(parameters.ciliumVersion, "1.9") {
+			if strings.HasPrefix(parameters.ciliumVersion, "1.9") || strings.HasPrefix(parameters.ciliumVersion, "1.10") {
 				_example_config_opts_common & _example_config_opts_ipam_mode & {
 					hubble: tls: enabled: false
 				}
