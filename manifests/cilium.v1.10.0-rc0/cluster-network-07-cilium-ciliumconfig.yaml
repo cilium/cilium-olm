@@ -11,6 +11,7 @@ spec:
       clusterPoolIPv4MaskSize: "23"
   nativeRoutingCIDR: "10.128.0.0/14"
   endpointRoutes: {enabled: true}
+  kubeProxyReplacement: "probe"
   cni:
     binPath: "/var/lib/cni/bin"
     confPath: "/var/run/multus/cni/net.d"
