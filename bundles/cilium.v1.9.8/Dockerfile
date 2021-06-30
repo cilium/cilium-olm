@@ -13,7 +13,12 @@ LABEL operators.operatorframework.io.metrics.builder=operator-sdk-v1.0.1
 LABEL operators.operatorframework.io.metrics.mediatype.v1=metrics+v1
 LABEL operators.operatorframework.io.metrics.project_layout=helm.sdk.operatorframework.io/v1
 
-LABEL com.redhat.openshift.versions="v4.5,v4.6,v4.7"
+# NB: setting "v4.5" here implies that versions 4.5 and above are supported,
+# it's possible to use "=v4.5" syntax to specify exactly one version, and
+# it's also possible to say "v4.5-v4.7" to specify a range of version;
+# for the timebeing it's assumed that all versions should be supportable,
+# if that proves wrong using range syntax maybe desirable.
+LABEL com.redhat.openshift.versions="v4.5"
 LABEL com.redhat.delivery.operator.bundle=true
 LABEL com.redhat.delivery.backport=true
 
