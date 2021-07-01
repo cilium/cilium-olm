@@ -2,13 +2,13 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
-    alm-examples: '[{"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"cilium"},"spec":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"},"mode":"cluster-pool"},"prometheus":{"serviceMonitor":{"enabled":false}},"hubble":{"tls":{"enabled":false}}}}]'
+    alm-examples: '[{"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"cilium"},"spec":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"kubeProxyReplacement":"probe","cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"},"mode":"cluster-pool"},"prometheus":{"serviceMonitor":{"enabled":false}},"hubble":{"tls":{"enabled":false}}}}]'
     alm-examples-metadata: '{"cilium-openshift-default":{"description":"Default CiliumConfig CR for OpenShift"}}'
     capabilities: Basic Install
     categories: Networking,Security
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
-  name: cilium.v1.9.6-x50bcec5
+  name: cilium.v1.9.7-xfc4a021
   namespace: cilium
 spec:
   apiservicedefinitions: {}
@@ -166,7 +166,7 @@ spec:
                   valueFrom:
                     fieldRef:
                       fieldPath: metadata.namespace
-                image: registry.connect.redhat.com/isovalent/cilium-olm:df0f1a45dbbfa7f19d8ba995861730000c877f02-v1.9.6
+                image: registry.connect.redhat.com/isovalent/cilium-olm:22851181394e07068dd349a671706ffe8ebe5025-v1.9.7
                 name: operator
                 ports:
                 - containerPort: 9443
@@ -289,4 +289,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.9.6+x50bcec5
+  version: 1.9.7+xfc4a021
