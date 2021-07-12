@@ -32,7 +32,12 @@ export ANY_REGISTRY_USERNAME="${RHPC_USERNAME_FOR_PUBLISHED_IMAGES}" ANY_REGISTR
 
 docker pull "${index_image}"
 
-docker run --rm --entrypoint sh --user root "${index_image}" -c "
-  yum install -q -y sqlite
-  sqlite3 -column /database/index.db \"select distinct operatorbundle_name from related_image where operatorbundle_name like 'cilium.v${cilium_version}-%';\"
-"
+db_container="$(docker create "${index_image}")"
+
+db_file="operators-${openshift_version}-$(date +%s).db"
+
+docker cp "${db_container}:/database/index.db" "${db_file}"
+
+docker rm -vf "${db_container}"
+
+sqlite3 -column "${db_file}" "select distinct operatorbundle_name from related_image where operatorbundle_name like 'cilium.v${cilium_version}-%';"
