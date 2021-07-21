@@ -28,6 +28,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: KUBERNETES_SERVICE_HOST
+          value: 127.0.0.1
+        - name: KUBERNETES_SERVICE_PORT
+          value: "6443"
         image: registry.connect.redhat.com/isovalent/cilium-olm:f84c774e00d42a3d17ed7e608e20f69d5a4666f3-v1.10.1
         name: operator
         ports:
@@ -45,6 +49,8 @@ spec:
         - mountPath: /tmp
           name: tmp
       hostNetwork: true
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
       serviceAccount: cilium-olm
       terminationGracePeriodSeconds: 10
       tolerations:
