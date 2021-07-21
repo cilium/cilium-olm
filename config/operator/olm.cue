@@ -9,7 +9,6 @@ import (
 	"strings"
 )
 
-
 _olm_items: [
 	{
 		apiVersion: "operators.coreos.com/v1alpha2"
@@ -153,11 +152,11 @@ _logoEncoded: base64.Encode(null, _logoString)
 				},
 			]
 			statusDescriptors: [
-                                {
-                                        description: "Helm release conditions"
-                                        displayName: "Conditions"
-                                        path:        "conditions"
-                                },
+				{
+					description: "Helm release conditions"
+					displayName: "Conditions"
+					path:        "conditions"
+				},
 				{
 					description: "Name of deployed Helm release"
 					displayName: "Deployed release"

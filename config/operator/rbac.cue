@@ -138,18 +138,18 @@ _ciliumClusterRules: [
 			"update",
 		]
 	},
-        {
-                // Write access to services/status (needed for BGP as of Cilium 1.10.0)
-                apiGroups: [
-                        "",
-                ]
-                resources: [
-                        "services/status",
-                ]
-                verbs: [
-                        "update",
-                ]
-        },
+	{
+		// Write access to services/status (needed for BGP as of Cilium 1.10.0)
+		apiGroups: [
+			"",
+		]
+		resources: [
+			"services/status",
+		]
+		verbs: [
+			"update",
+		]
+	},
 	{
 		// Read-write access to pods as Cilium sets ownerRerfernces on pods
 		apiGroups: [
@@ -233,18 +233,18 @@ _ciliumClusterRules: [
 ]
 
 _helmOperatorRules: [
-        {
-                // Operator needs to get own namespace to check that it actually exists
-                apiGroups: [
-                        "",
-                ]
-                resources: [
-                        "namespaces",
-                ]
-                verbs: [
-                        "get",
-                ]
-        },
+	{
+		// Operator needs to get own namespace to check that it actually exists
+		apiGroups: [
+			"",
+		]
+		resources: [
+			"namespaces",
+		]
+		verbs: [
+			"get",
+		]
+	},
 	{
 		// Operator needs to list all ciliumconfig
 		apiGroups: [
@@ -277,7 +277,7 @@ _helmOperatorRules: [
 			"delete",
 		]
 		// resourceNames: [
-		// 	"cilium",
+		//  "cilium",
 		// ]
 	},
 	{

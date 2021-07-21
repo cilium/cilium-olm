@@ -4,7 +4,7 @@
 package operator
 
 constants: {
-	name:      "cilium-olm"
+	name: "cilium-olm"
 }
 
 _commonMetadata: {
@@ -39,7 +39,7 @@ _workloadSpec: {
 					protocol:      "TCP"
 				}]
 				env: [{
-					name:  "WATCH_NAMESPACE"
+					name: "WATCH_NAMESPACE"
 					valueFrom: fieldRef: fieldPath: "metadata.namespace"
 				}]
 				volumeMounts: [{
@@ -195,7 +195,7 @@ _core_items: namespace + [
 	ciliumVersion:       string
 	onlyCSV:             bool
 	namespace:           string | *"cilium"
-        configVersionSuffix: string
+	configVersionSuffix: string
 }
 
 parameters: #WorkloadParameters
