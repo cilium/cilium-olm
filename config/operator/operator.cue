@@ -4,7 +4,7 @@
 package operator
 
 constants: {
-	name:      "cilium-olm"
+	name: "cilium-olm"
 }
 
 _commonMetadata: {
@@ -22,7 +22,11 @@ _workloadSpec: {
 	template: {
 		metadata: labels: _commonMetadata.labels
 		spec: {
+			// required to launch the operator before Cilium is installed
 			hostNetwork: true
+			// required to launch the operator on the master, so that the API
+			// can be accessed on localhost (see KUBERNETES_SERVICE_HOST setting below)
+			nodeSelector: "node-role.kubernetes.io/master": ""
 			tolerations: [{operator: "Exists"}]
 			serviceAccount: constants.name
 			volumes: [{
@@ -38,10 +42,21 @@ _workloadSpec: {
 					name:          "https"
 					protocol:      "TCP"
 				}]
-				env: [{
-					name:  "WATCH_NAMESPACE"
-					valueFrom: fieldRef: fieldPath: "metadata.namespace"
-				}]
+				env: [
+					{
+						name: "WATCH_NAMESPACE"
+						valueFrom: fieldRef: fieldPath: "metadata.namespace"
+					},
+					// access the API on the master to enable KPR use-cases
+					{
+						name:  "KUBERNETES_SERVICE_HOST"
+						value: "127.0.0.1"
+					},
+					{
+						name:  "KUBERNETES_SERVICE_PORT"
+						value: "6443"
+					},
+				]
 				volumeMounts: [{
 					name:      "tmp"
 					mountPath: "/tmp"
@@ -195,7 +210,7 @@ _core_items: namespace + [
 	ciliumVersion:       string
 	onlyCSV:             bool
 	namespace:           string | *"cilium"
-        configVersionSuffix: string
+	configVersionSuffix: string
 }
 
 parameters: #WorkloadParameters
