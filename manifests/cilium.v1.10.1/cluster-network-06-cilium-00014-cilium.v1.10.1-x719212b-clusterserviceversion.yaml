@@ -8,7 +8,7 @@ metadata:
     categories: Networking,Security
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
-  name: cilium.v1.10.0-x23e8c8a
+  name: cilium.v1.10.1-x719212b
   namespace: cilium
 spec:
   apiservicedefinitions: {}
@@ -166,11 +166,7 @@ spec:
                   valueFrom:
                     fieldRef:
                       fieldPath: metadata.namespace
-                - name: KUBERNETES_SERVICE_HOST
-                  value: 127.0.0.1
-                - name: KUBERNETES_SERVICE_PORT
-                  value: "6443"
-                image: registry.connect.redhat.com/isovalent/cilium-olm:ea0e7bc814709d62610ffa514b4efb962da04886-v1.10.0
+                image: registry.connect.redhat.com/isovalent/cilium-olm:f84c774e00d42a3d17ed7e608e20f69d5a4666f3-v1.10.1
                 name: operator
                 ports:
                 - containerPort: 9443
@@ -187,8 +183,6 @@ spec:
                 - mountPath: /tmp
                   name: tmp
               hostNetwork: true
-              nodeSelector:
-                node-role.kubernetes.io/master: ""
               serviceAccount: cilium-olm
               terminationGracePeriodSeconds: 10
               tolerations:
@@ -295,4 +289,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.10.0+x23e8c8a
+  version: 1.10.1+x719212b

@@ -2,13 +2,13 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
-    alm-examples: '[{"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"cilium"},"spec":{"config":{"ipam":{"mode":"cluster-pool"}},"global":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"kubeProxyReplacement":"probe","cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"}},"prometheus":{"serviceMonitor":{"enabled":false}}}}}]'
+    alm-examples: '[{"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"cilium"},"spec":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"kubeProxyReplacement":"probe","cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"},"mode":"cluster-pool"},"prometheus":{"serviceMonitor":{"enabled":false}},"hubble":{"tls":{"enabled":false}}}}]'
     alm-examples-metadata: '{"cilium-openshift-default":{"description":"Default CiliumConfig CR for OpenShift"}}'
     capabilities: Basic Install
     categories: Networking,Security
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
-  name: cilium.v1.8.8-x74a98ca
+  name: cilium.v1.9.9-x58223d5
   namespace: cilium
 spec:
   apiservicedefinitions: {}
@@ -166,11 +166,7 @@ spec:
                   valueFrom:
                     fieldRef:
                       fieldPath: metadata.namespace
-                - name: KUBERNETES_SERVICE_HOST
-                  value: 127.0.0.1
-                - name: KUBERNETES_SERVICE_PORT
-                  value: "6443"
-                image: registry.connect.redhat.com/isovalent/cilium-olm:e4f5e6607108b8bf173d873d02738d014760429a-v1.8.8
+                image: registry.connect.redhat.com/isovalent/cilium-olm:c212d3ebaaad7113fe85b9eea68da2233d753f47-v1.9.9
                 name: operator
                 ports:
                 - containerPort: 9443
@@ -187,8 +183,6 @@ spec:
                 - mountPath: /tmp
                   name: tmp
               hostNetwork: true
-              nodeSelector:
-                node-role.kubernetes.io/master: ""
               serviceAccount: cilium-olm
               terminationGracePeriodSeconds: 10
               tolerations:
@@ -295,4 +289,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.8.8+x74a98ca
+  version: 1.9.9+x58223d5
