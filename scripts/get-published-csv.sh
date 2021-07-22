@@ -9,7 +9,7 @@ set -o nounset
 
 if [ "$#" -ne 2 ] ; then
   echo "$0 supports exactly 2 argument"
-  echo "example: '$0 1.9 4.7'"
+  echo "example: '$0 1.10.% 4.7'"
   exit 1
 fi
 
