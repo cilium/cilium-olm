@@ -83,6 +83,8 @@ if !parameters.test {
 		"--enable-leader-election",
 		"--leader-election-id=\(constants.name)",
 		"--zap-devel",
+		"--metrics-addr=localhost:8082",
+		"--health-probe-bind-address=localhost:8081",
 	]
 }
 
