@@ -2,14 +2,14 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
-    alm-examples: '[{"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"placeholder"},"spec":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"kubeProxyReplacement":"probe","cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"},"mode":"cluster-pool"},"prometheus":{"serviceMonitor":{"enabled":false}},"hubble":{"tls":{"enabled":false}}}}]'
+    alm-examples: '[{"apiVersion":"cilium.io/v1alpha1","kind":"CiliumConfig","metadata":{"name":"cilium-openshift-default","namespace":"cilium"},"spec":{"nativeRoutingCIDR":"10.128.0.0/14","endpointRoutes":{"enabled":true},"kubeProxyReplacement":"probe","cni":{"binPath":"/var/lib/cni/bin","confPath":"/var/run/multus/cni/net.d"},"ipam":{"operator":{"clusterPoolIPv4PodCIDR":"10.128.0.0/14","clusterPoolIPv4MaskSize":"23"},"mode":"cluster-pool"},"prometheus":{"serviceMonitor":{"enabled":false}},"hubble":{"tls":{"enabled":false}}}}]'
     alm-examples-metadata: '{"cilium-openshift-default":{"description":"Default CiliumConfig CR for OpenShift"}}'
     capabilities: Basic Install
     categories: Networking,Security
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
-  name: cilium.v1.10.0-x12289b9
-  namespace: placeholder
+  name: cilium.v1.10.1-x6ba6d0a
+  namespace: cilium
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
@@ -168,7 +168,7 @@ spec:
                   valueFrom:
                     fieldRef:
                       fieldPath: metadata.namespace
-                image: registry.connect.redhat.com/isovalent/cilium-olm:ea0e7bc814709d62610ffa514b4efb962da04886-v1.10.0
+                image: registry.connect.redhat.com/isovalent/cilium-olm:f84c774e00d42a3d17ed7e608e20f69d5a4666f3-v1.10.1
                 name: operator
                 ports:
                 - containerPort: 9443
@@ -291,4 +291,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.10.0+x12289b9
+  version: 1.10.1+x6ba6d0a

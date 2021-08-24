@@ -8,7 +8,7 @@ metadata:
     categories: Networking,Security
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
-  name: cilium.v1.9.8-xae8c967
+  name: cilium.v1.9.8-xbcbc487
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -161,6 +161,8 @@ spec:
                 - --enable-leader-election
                 - --leader-election-id=cilium-olm
                 - --zap-devel
+                - --metrics-addr=localhost:8082
+                - --health-probe-bind-address=localhost:8081
                 env:
                 - name: WATCH_NAMESPACE
                   valueFrom:
@@ -289,4 +291,4 @@ spec:
   maturity: stable
   provider:
     name: Isovalent
-  version: 1.9.8+xae8c967
+  version: 1.9.8+xbcbc487
