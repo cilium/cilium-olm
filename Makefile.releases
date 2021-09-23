@@ -93,3 +93,16 @@ images.operator.v1.10.3 images.operator-bundle.v1.10.3 generate.configs.v1.10.3 
 
 images.operator-bundle.v1.10.3: generate.configs.v1.10.3
 validate.bundles.v1.10.3: images.operator-bundle.v1.10.3
+
+# Cilium v1.8.12
+
+images.all: images.operator.v1.8.12 images.operator-bundle.v1.8.12
+
+images.operator.all: images.operator.v1.8.12
+images.operator-bundle.all: images.operator-bundle.v1.8.12
+generate.configs.all: generate.configs.v1.8.12
+
+images.operator.v1.8.12 images.operator-bundle.v1.8.12 generate.configs.v1.8.12 validate.bundles.v1.8.12: cilium_version=1.8.12
+
+images.operator-bundle.v1.8.12: generate.configs.v1.8.12
+validate.bundles.v1.8.12: images.operator-bundle.v1.8.12
