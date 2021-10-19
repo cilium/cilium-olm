@@ -70,7 +70,7 @@ if [ -n "${GOPATH+x}" ] ; then
   export PATH="${PATH}:${GOPATH}/bin"
 fi
 
-kg -input-directory ./config/operator -output-directory ./
+kuegen -input-directory ./config/operator -output-directory ./
 
 cp ./config/crd/cilium.io_cilumconfigs.yaml "manifests/cilium.v${cilium_version}/cluster-network-03-cilium-ciliumconfigs-crd.yaml"
 

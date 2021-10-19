@@ -9,13 +9,11 @@ PUSH ?= false
 GOBIN = $(shell go env GOPATH)/bin
 
 IMAGINE ?= $(GOBIN)/imagine
-KG ?= $(GOBIN)/kg
 
 OPM ?= $(GOBIN)/opm
 
 ifeq ($(MAKER_CONTAINER),true)
   IMAGINE=imagine
-  KG=kg
 endif
 
 images.all: lint

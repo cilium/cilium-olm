@@ -24,9 +24,9 @@ Default CR specs for each release are sourced from top-level manifest (e.g. [`ci
 ### Cofiguration source code
 
 Since configuration for OLM was fairly complex to manage in static YAML format, it was written in [CUE](http://cuelang.org/).
-CUE is not very easy to use on its own, so a simple opinionated utility called [`kg`][kg] is being used to execute CUE templates and write out YAML files.
+CUE is not very easy to use on its own, so a simple opinionated utility called [`kuegen`][kuegen] is being used to execute CUE templates and write out YAML files.
 
-The CUE templates can be found in [`config/operator/`](config/operator/). `kg` is invoked with [a helper script](scripts/generate-configs.sh), which is typically driven by `make`, e.g. `make generate.configs.v1.9.6`.
+The CUE templates can be found in [`config/operator/`](config/operator/). `kuegen` is invoked with [a helper script](scripts/generate-configs.sh), which is typically driven by `make`, e.g. `make generate.configs.v1.9.6`.
 
 ### Generated configuration
 
@@ -61,16 +61,16 @@ The metadata bundle image contains just YAML files and no software as such, howe
 
 [okd-gsg]: https://docs.cilium.io/en/v1.10/gettingstarted/k8s-install-openshift-okd
 [olm]: https://docs.openshift.com/container-platform/4.7/operators/understanding/olm/olm-understanding-olm.html
-[kg]: https://github.com/errordeveloper/kue/blob/209ddfde99c57e533eae750aa7aaa16c0efeab04/cmd/kg/main.go
+[kuegen]: https://github.com/errordeveloper/kuegen
 
 ## Common Workflows
 
 To work with this repository, a maintainer should have Docker with latest version of [`buildx` plugin](https://github.com/docker/buildx) installed, as well as Go toolchain.
 
-To install `kg`, `imagine` and `opm` utilities to `GOPATH`, run:
+To install `kuegen`, `imagine` and `opm` utilities to `GOPATH`, run:
 
 ```
-(cd tools ; go install github.com/errordeveloper/imagine github.com/errordeveloper/kue/cmd/kg github.com/operator-framework/operator-registry/cmd/opm)
+(cd tools ; go install github.com/errordeveloper/imagine github.com/errordeveloper/kuegen github.com/operator-framework/operator-registry/cmd/opm)
 ```
 
 ### Adding Cilium release
