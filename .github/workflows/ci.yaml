@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v1
-      - uses: docker://quay.io/cilium/image-maker:68cf0628c7a77124319cb8c33434b8cdb42a3865
+      - uses: docker://quay.io/cilium/image-maker:e8f1fa622dfad4250723d55bc6a3dd6d1f0f13cd
         name: Run make lint
         with:
           entrypoint: make
@@ -24,7 +24,7 @@ jobs:
     needs: lint
     steps:
       - uses: actions/checkout@v1
-      - uses: docker://quay.io/cilium/image-maker:68cf0628c7a77124319cb8c33434b8cdb42a3865
+      - uses: docker://quay.io/cilium/image-maker:e8f1fa622dfad4250723d55bc6a3dd6d1f0f13cd
         name: Run make images.operator.all
         env:
           QUAY_USERNAME: ${{ secrets.QUAY_USERNAME_OLM }}
@@ -36,7 +36,7 @@ jobs:
         with:
           entrypoint: make
           args: images.operator.all PUSH=true
-      - uses: docker://quay.io/cilium/image-maker:68cf0628c7a77124319cb8c33434b8cdb42a3865
+      - uses: docker://quay.io/cilium/image-maker:e8f1fa622dfad4250723d55bc6a3dd6d1f0f13cd
         name: Run make images.operator-bundle.all
         env:
           QUAY_USERNAME: ${{ secrets.QUAY_USERNAME_OLM }}
