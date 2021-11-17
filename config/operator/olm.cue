@@ -72,7 +72,8 @@ _alm_examples: [
 				config: _example_config_opts_ipam_mode
 				global: _example_config_opts_common
 			}
-			if strings.HasPrefix(parameters.ciliumVersion, "1.9") || strings.HasPrefix(parameters.ciliumVersion, "1.10") {
+			if strings.HasPrefix(parameters.ciliumVersion, "1.9") || strings.HasPrefix(parameters.ciliumVersion, "1.10") ||
+				strings.HasPrefix(parameters.ciliumVersion, "1.11") {
 				_example_config_opts_common & _example_config_opts_ipam_mode & {
 					hubble: tls: enabled: false
 				}
