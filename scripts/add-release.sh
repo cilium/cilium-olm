@@ -6,11 +6,22 @@
 set -o errexit
 set -o pipefail
 set -o nounset
+set -x
 
 if [ "$#" -ne 1 ] ; then
   echo "$0 supports exactly 1 argument"
   echo "example: '$0 1.9.1'"
   exit 1
+fi
+
+if ! command -v yq &> /dev/null ; then
+    echo "\"yq\" must be installed to create an offline \
+    deployment. https://github.com/mikefarah/yq/releases"
+fi
+
+if ! command -v jq &> /dev/null ; then
+    echo "\"jq\" must be installed to create an offline \
+    deployment."
 fi
 
 cilium_version="${1}"
@@ -45,6 +56,19 @@ cat > "${operator_dir}/watches.yaml" << EOF
   version: v1alpha1
   kind: CiliumConfig
   chart: helm-charts/cilium
+  overrideValues:
+    image.override: \$RELATED_IMAGE_CILIUM
+    hubble.relay.image.override: \$RELATED_IMAGE_HUBBLE_RELAY
+    operator.image.override: \$RELATED_IMAGE_OPERATOR
+    preflight.image.override: \$RELATED_IMAGE_PREFLIGHT
+    clustermesh.apiserver.image.override: \$RELATED_IMAGE_CLUSTERMESH
+    certgen.image.override: \$RELATED_IMAGE_CERTGEN
+    hubble.ui.backend.image.override: \$RELATED_IMAGE_HUBBLE_UI_BE
+    hubble.ui.frontend.image.override: \$RELATED_IMAGE_HUBBLE_UI_FE
+    hubble.ui.proxy.image.override: \$RELATED_IMAGE_HUBBLE_UI_PROXY
+    etcd.image.override: \$RELATED_IMAGE_ETCD_OPERATOR
+    nodeinit.image.override: \$RELATED_IMAGE_NODEINIT
+    clustermesh.apiserver.etcd.image.override: \$RELATED_IMAGE_CLUSTERMESH_ETCD
 EOF
 
 cat > "${operator_dir}/Dockerfile" << EOF
@@ -125,6 +149,42 @@ images.operator.v${cilium_version} images.operator-bundle.v${cilium_version} gen
 images.operator-bundle.v${cilium_version}: generate.configs.v${cilium_version}
 validate.bundles.v${cilium_version}: images.operator-bundle.v${cilium_version}
 EOF
+
+template_dir="${operator_dir}/cilium/templates"
+
+if [[ ${cilium_version} == 1.10.* ]]; then
+    # certgen
+    sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.certgen.image.override }}"|' "${template_dir}/_clustermesh-apiserver-generate-certs-job-spec.tpl"
+    sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.certgen.image.override }}"|' "${template_dir}/_hubble-generate-certs-job-spec.tpl"
+
+    # cilium
+    sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.image.override }}"|' "${template_dir}/cilium-agent-daemonset.yaml"
+
+    # etcd-operator
+    sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.etcd.image.override }}"|' "${template_dir}/cilium-etcd-operator-deployment.yaml"
+
+    # nodeinit
+    sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.nodeinit.image.override }}"|' "${template_dir}/cilium-nodeinit-daemonset.yaml"
+
+    # operator
+    sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.operator.image.override }}"|' "${template_dir}/cilium-operator-deployment.yaml"
+
+    # preflight
+    sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.preflight.image.override }}"|' "${template_dir}/cilium-preflight-daemonset.yaml"
+    sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.preflight.image.override }}"|' "${template_dir}/cilium-preflight-deployment.yaml"
+
+    # clustermesh
+    sed -i 's|^\([[:blank:]]*\)image: {{ \.Values\.clustermesh\.apiserver\.etcd.*$|\1image: "{{ .Values.clustermesh.apiserver.etcd.image.override }}"|' "${template_dir}/clustermesh-apiserver-deployment.yaml"
+    sed -i 's|^\([[:blank:]]*\)image: "{{ \.Values\.clustermesh\.apiserver\.image.*$|\1image: "{{ .Values.clustermesh.apiserver.image.override }}"|' "${template_dir}/clustermesh-apiserver-deployment.yaml"
+
+    # hubble-relay
+    sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.hubble.relay.image.override }}"|' "${template_dir}/hubble-relay-deployment.yaml"
+
+    # hubble-ui
+    sed -i 's|^\([[:blank:]]*\)image: "{{ \.Values\.hubble\.ui\.frontend.*$|\1image: "{{ .Values.hubble.ui.frontend.image.override }}"|' "${template_dir}/hubble-ui-deployment.yaml"
+    sed -i 's|^\([[:blank:]]*\)image: "{{ \.Values\.hubble\.ui\.backend.*$|\1image: "{{ .Values.hubble.ui.backend.image.override }}"|' "${template_dir}/hubble-ui-deployment.yaml"
+    sed -i 's|^\([[:blank:]]*\)image: "{{ \.Values\.hubble\.ui\.proxy.*$|\1image: "{{ .Values.hubble.ui.proxy.image.override }}"|' "${template_dir}/hubble-ui-deployment.yaml"
+fi
 
 git add Makefile.releases "${operator_dir}" "${bundle_dir}"
 
