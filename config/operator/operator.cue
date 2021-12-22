@@ -41,6 +41,54 @@ _workloadSpec: {
 				env: [{
 					name: "WATCH_NAMESPACE"
 					valueFrom: fieldRef: fieldPath: "metadata.namespace"
+				},
+                                {
+					name: "RELATED_IMAGE_CILIUM"
+					valueFrom: parameters.ciliumImage
+				},
+                                {
+					name: "RELATED_IMAGE_HUBBLE_RELAY"
+					valueFrom: parameters.hubbleRelayImage
+				},
+                                {
+					name: "RELATED_IMAGE_OPERATOR"
+					valueFrom: parameters.operatorImage
+				},
+                                {
+					name: "RELATED_IMAGE_PREFLIGHT"
+					valueFrom: parameters.preflightImage
+				},
+                                {
+					name: "RELATED_IMAGE_CLUSTERMESH"
+					valueFrom: parameters.clustermeshImage
+				},
+                                {
+					name: "RELATED_IMAGE_CERTGEN"
+					valueFrom: parameters.certgenImage
+				},
+                                {
+					name: "RELATED_IMAGE_HUBBLE_UI_BE"
+					valueFrom: parameters.hubbleUIBackendImage
+				},
+                                {
+					name: "RELATED_IMAGE_HUBBLE_UI_FE"
+					valueFrom: parameters.hubbleUIFrontendImage
+				},
+                                {
+					name: "RELATED_IMAGE_HUBBLE_UI_PROXY"
+					valueFrom: parameters.hubbleUIProxyImage
+				},
+                                {
+					name: "RELATED_IMAGE_ETCD_OPERATOR"
+					valueFrom: parameters.etcdOperatorImage
+				},
+                                {
+					name: "RELATED_IMAGE_NODEINIT"
+					valueFrom: parameters.nodeInitImage
+				},
+                                {
+					name: "RELATED_IMAGE_CLUSTERMESH_ETCD"
+					valueFrom: parameters.clustermeshEtcdImage
 				}]
 				volumeMounts: [{
 					name:      "tmp"
@@ -192,12 +240,24 @@ _core_items: namespace + [
 }
 
 #WorkloadParameters: {
-	image:               string
-	test:                bool
-	ciliumVersion:       string
-	onlyCSV:             bool
-	namespace:           string | *"cilium"
-	configVersionSuffix: string
+	image:                 string
+	test:                  bool
+	ciliumVersion:         string
+	onlyCSV:               bool
+	namespace:             string | *"cilium"
+	configVersionSuffix:   string
+        ciliumImage:           string | *""
+        hubbleRelayImage:      string | *""
+        operatorImage:         string | *""
+        preflightImage:        string | *""
+        clustermeshImage:      string | *""
+        certgenImage:          string | *""
+        hubbleUIBackendImage:  string | *""
+        hubbleUIFrontendImage: string | *""
+        hubbleUIProxyImage:    string | *""
+        etcdOperatorImage:     string | *""
+        nodeInitImage:         string | *""
+        clustermeshEtcdImage:  string | *""
 }
 
 parameters: #WorkloadParameters

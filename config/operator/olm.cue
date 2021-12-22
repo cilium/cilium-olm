@@ -83,13 +83,14 @@ _alm_examples: [
 ]
 
 _csv_annotations: {
-	categories:              "Networking,Security"
-	support:                 "support@isovalent.com"
-	#certified:              "true"
-	capabilities:            "Basic Install"
-	repository:              "http://github.com/cilium/cilium"
-	"alm-examples-metadata": json.Marshal(_alm_examples_metadata)
-	"alm-examples":          json.Marshal(_alm_examples)
+	categories:                                       "Networking,Security"
+	support:                                          "support@isovalent.com"
+	#certified:                                       "true"
+	capabilities:                                     "Basic Install"
+	repository:                                       "http://github.com/cilium/cilium"
+	"alm-examples-metadata":                          json.Marshal(_alm_examples_metadata)
+	"alm-examples":                                   json.Marshal(_alm_examples)
+	"operators.openshift.io/infrastructure-features": "[\"disconnected\"]"
 }
 
 _logoString: """
@@ -121,6 +122,57 @@ _logoString: """
 
 _logoEncoded: base64.Encode(null, _logoString)
 
+_related_images: [
+	{
+		name: "cilium"
+		image: parameters.ciliumImage
+	},
+        {
+		name: "hubble-relay"
+		image: parameters.hubbleRelayImage
+	},
+	{
+		name: "operator"
+		image: parameters.operatorImage
+	},
+	{
+		name: "preflight"
+		image: parameters.preflightImage
+	},
+	{
+		name: "clustermesh"
+		image: parameters.clustermeshImage
+	},
+	{
+		name: "certgen"
+		image: parameters.certgenImage
+	},
+	{
+		name: "hubble-ui-backend"
+		image: parameters.hubbleUIBackendImage
+	},
+	{
+		name: "hubble-ui-frontend"
+		image: parameters.hubbleUIFrontendImage
+	},
+	{
+		name: "hubble-ui-proxy"
+		image: parameters.hubbleUIProxyImage
+	},
+	{
+		name: "etcd-operator"
+		image: parameters.etcdOperatorImage
+	},
+	{
+		name: "nodeinit"
+		image: parameters.nodeInitImage
+	},
+	{
+		name: "clustermesh-etcd"
+		image: parameters.clustermeshEtcdImage
+	}
+]
+
 #CSVWorkloadTemplate: {
 	apiVersion: "operators.coreos.com/v1alpha1"
 	kind:       "ClusterServiceVersion"
@@ -130,6 +182,7 @@ _logoEncoded: base64.Encode(null, _logoString)
 		namespace:   parameters.namespace
 	}
 	spec: {
+		relatedImages: _related_images
 		apiservicedefinitions: {}
 		customresourcedefinitions: owned: [{
 			name:    "ciliumconfigs.cilium.io"
