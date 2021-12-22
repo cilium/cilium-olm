@@ -82,6 +82,13 @@ To add a Cilium release, run:
 ```
 scripts/add-release.sh 1.10.0
 ```
+---
+**NOTE**
+To make the release an "offline" release add the suffix "-ol" to the version slug.
+```
+scripts/add-release.sh 1.10.0-ol
+```
+---
 
 This will do the following:
 

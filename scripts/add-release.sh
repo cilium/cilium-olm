@@ -14,8 +14,15 @@ if [ "$#" -ne 1 ] ; then
 fi
 
 cilium_version="${1}"
+tag_version="${1}"
+offline=false
 
-chart_url="https://github.com/cilium/charts/raw/master/cilium-${cilium_version}.tgz"
+if [[ "${tag_version}" == *-ol ]] ; then
+    offline=true
+    tag_version="${tag_version:0:-3}"
+fi
+
+chart_url="https://github.com/cilium/charts/raw/master/cilium-${tag_version}.tgz"
 operator_dir="operator/cilium.v${cilium_version}"
 bundle_dir="bundles/cilium.v${cilium_version}"
 
@@ -136,3 +143,12 @@ make "generate.configs.v${cilium_version}" WITHOUT_TAG_SUFFIX=true
 git add "manifests/cilium.v${cilium_version}" "${bundle_dir}"
 
 git commit --amend --all --message "Add Cilium v${cilium_version}"
+
+if [ "${offline}" = true ] ; then
+    SCRIPT_DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
+    "$SCRIPT_DIR"/offline_update.sh "${operator_dir}" "${bundle_dir}"
+fi
+
+git add "manifests/cilium.v${cilium_version}" "${bundle_dir}"
+
+git commit --amend --all --message "Modify Cilium v${cilium_version} for offline release"
