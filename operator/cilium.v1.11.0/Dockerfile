@@ -15,7 +15,7 @@ COPY LICENSE /licenses/LICENSE.cilium-olm
 
 # Required OpenShift Labels
 LABEL name="Cilium" \
-      version="v1.11.0-rc1" \
+      version="v1.11.0" \
       vendor="Isovalent" \
       release="1" \
       summary="Cilium OLM operator" \

@@ -82,11 +82,11 @@ rollOutCiliumPods: false
 # -- Agent container image.
 image:
   repository: quay.io/cilium/cilium
-  tag: v1.11.0-rc1
+  tag: v1.11.0
   pullPolicy: IfNotPresent
   # cilium-digest
-  digest: ""
-  useDigest: false
+  digest: "sha256:ea677508010800214b0b5497055f38ed3bff57963fa2399bcb1c69cf9476453a"
+  useDigest: true
 
 # -- Pod affinity for cilium-agent.
 affinity:
@@ -277,7 +277,7 @@ bpf:
   lbExternalClusterIP: false
 
   # -- Enable native IP masquerade support in eBPF
-  #masquerade: true
+  #masquerade: false
 
   # -- Configure whether direct routing mode should route traffic via
   # host stack (true) or directly and more efficiently out of BPF (false) if
@@ -383,7 +383,8 @@ customCalls:
   enabled: false
 
 # -- Configure which datapath mode should be used for configuring container
-# connectivity. Valid options are "veth" or "ipvlan".
+# connectivity. Valid options are "veth" or "ipvlan". Deprecated, to be removed
+# in v1.12.
 datapathMode: veth
 
 daemon:
@@ -679,10 +680,10 @@ hubble:
     # -- Hubble-relay container image.
     image:
       repository: quay.io/cilium/hubble-relay
-      tag: v1.11.0-rc1
+      tag: v1.11.0
        # hubble-relay-digest
-      digest: ""
-      useDigest: false
+      digest: "sha256:306ce38354a0a892b0c175ae7013cf178a46b79f51c52adb5465d87f14df0838"
+      useDigest: true
       pullPolicy: IfNotPresent
 
     # -- Specifies the resources for the hubble-relay pods
@@ -805,7 +806,7 @@ hubble:
       # -- Hubble-ui backend image.
       image:
         repository: quay.io/cilium/hubble-ui-backend
-        tag: v0.8.2@sha256:43c1e824751639b1df9460e5c5d5a3fd732f834bb96b3012a4164eeee457cbb6
+        tag: v0.8.3@sha256:13a16ed3ae9749682c817d3b834b2f2de901da6fb41de7753d7dce16650982b3
         pullPolicy: IfNotPresent
       # [Example]
       # resources:
@@ -822,7 +823,7 @@ hubble:
       # -- Hubble-ui frontend image.
       image:
         repository: quay.io/cilium/hubble-ui
-        tag: v0.8.2@sha256:a6f80b0517a5266783d619ae14d846d4fbb692f6aaff37804fc8851bf1095a30
+        tag: v0.8.3@sha256:018ed122968de658d8874e2982fa6b3a8ae64b43d2356c05f977004176a89310
         pullPolicy: IfNotPresent
       # [Example]
       # resources:
@@ -926,12 +927,18 @@ ipam:
   # ref: https://docs.cilium.io/en/stable/concepts/networking/ipam/
   mode: "cluster-pool"
   operator:
-    # -- IPv4 CIDR range to delegate to individual nodes for IPAM.
+    # -- Deprecated in favor of ipam.operator.clusterPoolIPv4PodCIDRList.
+    # IPv4 CIDR range to delegate to individual nodes for IPAM.
     clusterPoolIPv4PodCIDR: "10.0.0.0/8"
+    # -- IPv4 CIDR list range to delegate to individual nodes for IPAM.
+    clusterPoolIPv4PodCIDRList: []
     # -- IPv4 CIDR mask size to delegate to individual nodes for IPAM.
     clusterPoolIPv4MaskSize: 24
-    # -- IPv6 CIDR range to delegate to individual nodes for IPAM.
+    # -- Deprecated in favor of ipam.operator.clusterPoolIPv6PodCIDRList.
+    # IPv6 CIDR range to delegate to individual nodes for IPAM.
     clusterPoolIPv6PodCIDR: "fd00::/104"
+     # -- IPv6 CIDR list range to delegate to individual nodes for IPAM.
+    clusterPoolIPv6PodCIDRList: []
     # -- IPv6 CIDR mask size to delegate to individual nodes for IPAM.
     clusterPoolIPv6MaskSize: 120
 
@@ -951,7 +958,7 @@ ipv6:
   enabled: false
 
 ipvlan:
-  # -- Enable the IPVLAN datapath
+  # -- Enable the IPVLAN datapath (deprecated)
   enabled: false
 
   # -- masterDevice is the name of the device to use to attach secondary IPVLAN
@@ -1079,6 +1086,10 @@ monitor:
   # -- dsrDispatch configures whether IP option or IPIP encapsulation is
   # used to pass a service IP and port to remote backend
   # dsrDispatch: opt
+
+  # -- serviceTopology enables K8s Topology Aware Hints -based service
+  # endpoints filtering
+  # serviceTopology: false
 
 # -- Configure N-S k8s service loadbalancing
 nodePort:
@@ -1298,16 +1309,16 @@ operator:
   # -- cilium-operator image.
   image:
     repository: quay.io/cilium/operator
-    tag: v1.11.0-rc1
+    tag: v1.11.0
     # operator-generic-digest
-    genericDigest: ""
+    genericDigest: "sha256:b522279577d0d5f1ad7cadaacb7321d1b172d8ae8c8bc816e503c897b420cfe3"
     # operator-azure-digest
-    azureDigest: ""
+    azureDigest: "sha256:c1b41e6cbf6f1e0bb417170ac79eb6d78a7e39b775f1131a1104546fd18d745f"
     # operator-aws-digest
-    awsDigest: ""
+    awsDigest: "sha256:5f60a4e17ab33a3dcd2a942802b15f9e7be3d18f24464f31bba81a65a117e094"
     # operator-alibabacloud-digest
-    alibabacloudDigest: ""
-    useDigest: false
+    alibabacloudDigest: "sha256:e61929869d59c5093c6d129ca1c21386338e1387051779d499a988545680b00a"
+    useDigest: true
     pullPolicy: IfNotPresent
     suffix: ""
 
@@ -1514,10 +1525,10 @@ preflight:
   # -- Cilium pre-flight image.
   image:
     repository: quay.io/cilium/cilium
-    tag: v1.11.0-rc1
+    tag: v1.11.0
     # cilium-digest
-    digest: ""
-    useDigest: false
+    digest: "sha256:ea677508010800214b0b5497055f38ed3bff57963fa2399bcb1c69cf9476453a"
+    useDigest: true
     pullPolicy: IfNotPresent
 
   # -- The priority class to use for the preflight pod.
@@ -1621,10 +1632,10 @@ clustermesh:
     # -- Clustermesh API server image.
     image:
       repository: quay.io/cilium/clustermesh-apiserver
-      tag: v1.11.0-rc1
+      tag: v1.11.0
       # clustermesh-apiserver-digest
-      digest: ""
-      useDigest: false
+      digest: "sha256:361942671ce067cc7f3e97c2114512283148bcee5ec29e4f0a828869aedd4ced"
+      useDigest: true
       pullPolicy: IfNotPresent
 
     etcd:
