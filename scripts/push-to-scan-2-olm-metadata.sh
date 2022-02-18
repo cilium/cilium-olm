@@ -7,7 +7,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-MAKER_IMAGE="${MAKER_IMAGE:-quay.io/cilium/image-maker:e8f1fa622dfad4250723d55bc6a3dd6d1f0f13cd}"
+MAKER_IMAGE="${MAKER_IMAGE:-quay.io/cilium/image-maker:9e2e7ad1a524cf714d491945e90fe650125cd60a}"
 
 if [ "$#" -ne 1 ] ; then
   echo "$0 supports exactly 1 argument"
