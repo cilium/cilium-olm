@@ -47,3 +47,10 @@ olm_operator_scan_image="${olm_operator_scan_registry}${olm_operator_source_imag
 echo "will copy ${olm_operator_source_image}@${olm_operator_digest} to ${olm_operator_scan_image}"
 
 crane copy "${olm_operator_source_image}" "${olm_operator_scan_image}" 
+
+tmp_dir="$(mktemp -d)"
+
+crane pull "${olm_operator_scan_image}" "${tmp_dir}/tmp.tar"
+
+rm -rf "${tmp_dir}"
+
