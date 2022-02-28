@@ -6,7 +6,6 @@
 set -o errexit
 set -o pipefail
 set -o nounset
-set -x
 
 if [ "$#" -ne 1 ] ; then
   echo "$0 supports exactly 1 argument"
@@ -185,6 +184,12 @@ if [[ ${cilium_version} == 1.10.* ]]; then
     sed -i 's|^\([[:blank:]]*\)image: "{{ \.Values\.hubble\.ui\.backend.*$|\1image: "{{ .Values.hubble.ui.backend.image.override }}"|' "${template_dir}/hubble-ui-deployment.yaml"
     sed -i 's|^\([[:blank:]]*\)image: "{{ \.Values\.hubble\.ui\.proxy.*$|\1image: "{{ .Values.hubble.ui.proxy.image.override }}"|' "${template_dir}/hubble-ui-deployment.yaml"
 fi
+
+echo "If you need to make any changes to the operator directory
+helm manifests for this release you can do that now. When you
+are done press enter."
+
+read -r
 
 git add Makefile.releases "${operator_dir}" "${bundle_dir}"
 
