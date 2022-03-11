@@ -8,7 +8,7 @@
   overrideValues:
     image.override: $RELATED_IMAGE_CILIUM
     hubble.relay.image.override: $RELATED_IMAGE_HUBBLE_RELAY
-    operator.image.override: $RELATED_IMAGE_OPERATOR
+    operator.image.override: $RELATED_IMAGE_CILIUM_OPERATOR
     preflight.image.override: $RELATED_IMAGE_PREFLIGHT
     clustermesh.apiserver.image.override: $RELATED_IMAGE_CLUSTERMESH
     certgen.image.override: $RELATED_IMAGE_CERTGEN

@@ -10,7 +10,7 @@ metadata:
     operators.openshift.io/infrastructure-features: '["disconnected"]'
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
-  name: cilium.v1.10.8-x2ca7b2e
+  name: cilium.v1.10.8-x1fb2d17
   namespace: cilium
 spec:
   apiservicedefinitions: {}
@@ -174,7 +174,7 @@ spec:
                   value: quay.io/cilium/cilium@sha256:e6147e39a03c685e5f1225c5642e1358dcd4899bbd94e8a043bb4be52cd2f008
                 - name: RELATED_IMAGE_HUBBLE_RELAY
                   value: quay.io/cilium/hubble-relay@sha256:4d2ee6b41475f6d74855d77b018f508ba978d964528f903c8e3e7be8dd275b31
-                - name: RELATED_IMAGE_OPERATOR
+                - name: RELATED_IMAGE_CILIUM_OPERATOR
                   value: quay.io/cilium/operator-generic@sha256:a77dff6103d047d8810ea5e80067b2fade6d099771c8dda197bdba5e4e2f0255
                 - name: RELATED_IMAGE_PREFLIGHT
                   value: quay.io/cilium/cilium@sha256:e6147e39a03c685e5f1225c5642e1358dcd4899bbd94e8a043bb4be52cd2f008
@@ -194,7 +194,7 @@ spec:
                   value: quay.io/cilium/startup-script@sha256:72db9d6d9b319e36d68ad3a4cd9c43e3f8ded80694972dc458afacd34e73eb46
                 - name: RELATED_IMAGE_CLUSTERMESH_ETCD
                   value: quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017
-                image: registry.connect.redhat.com/isovalent/cilium-olm:d7e3b02b0eed5dcea2c99f6da3ea7b33518165a8-v1.10.8
+                image: registry.connect.redhat.com/isovalent/cilium-olm:3759affb90de5082a4098bae0b9e82a9037b2de6-v1.10.8
                 name: operator
                 ports:
                 - containerPort: 9443
@@ -323,7 +323,7 @@ spec:
   - image: quay.io/cilium/hubble-relay@sha256:4d2ee6b41475f6d74855d77b018f508ba978d964528f903c8e3e7be8dd275b31
     name: hubble-relay
   - image: quay.io/cilium/operator-generic@sha256:a77dff6103d047d8810ea5e80067b2fade6d099771c8dda197bdba5e4e2f0255
-    name: operator
+    name: cilium-operator
   - image: quay.io/cilium/cilium@sha256:e6147e39a03c685e5f1225c5642e1358dcd4899bbd94e8a043bb4be52cd2f008
     name: preflight
   - image: quay.io/cilium/clustermesh-apiserver@sha256:c675830b9f87596680d2a45cd78c2d64ab1ceb8707629e8da71217f64e5e72e1
@@ -342,4 +342,4 @@ spec:
     name: nodeinit
   - image: quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017
     name: clustermesh-etcd
-  version: 1.10.8+x2ca7b2e
+  version: 1.10.8+x1fb2d17
