@@ -20,18 +20,16 @@ case "${cilium_version}" in
     ;;
 esac
 
-cd "${root_dir}"
-
-rm -rf "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}/manifests" "bundles/cilium.v${cilium_version}/metadata" "bundles/cilium.v${cilium_version}/tests"
-
-
-# Modify operator and bundle for offline deployment
 function get_image() {
     local image="$1"
     local tag="$2"
     docker pull "$image:$tag" > /dev/null
     echo "$image""@$(docker inspect "$image:$tag" | jq -r '.[0].RepoDigests[0]' | cut -d'@' -f2)"
 }
+
+cd "${root_dir}"
+
+rm -rf "manifests/cilium.v${cilium_version}" "bundles/cilium.v${cilium_version}/manifests" "bundles/cilium.v${cilium_version}/metadata" "bundles/cilium.v${cilium_version}/tests"
 
 values_file="operator/cilium.v${cilium_version}/cilium/values.yaml"
 
@@ -79,7 +77,7 @@ instances: [
     }
   },
   {
-    output: "bundles/cilium.v${cilium_version}/manifests/cilium-olm.csv.yaml"
+    output: "bundles/cilium.v${cilium_version}/manifests/cilium.clusterserviceversion.yaml"
     parameters: {
       namespace: "placeholder"
       image: "${operator_image}"
@@ -146,7 +144,7 @@ esac
 
 cp "${ciliumconfig}" "manifests/cilium.v${cilium_version}/cluster-network-07-cilium-ciliumconfig.yaml"
 
-cp ./config/crd/cilium.io_cilumconfigs.yaml "bundles/cilium.v${cilium_version}/manifests/ciliumconfigs.crd.yaml"
+cp ./config/crd/cilium.io_cilumconfigs.yaml "bundles/cilium.v${cilium_version}/manifests/cilium.operator.cilium.io.crd.yaml"
 mkdir -p "bundles/cilium.v${cilium_version}/metadata"
 cat > "bundles/cilium.v${cilium_version}/metadata/annotations.yaml" << EOF
 annotations:
@@ -159,9 +157,5 @@ annotations:
   operators.operatorframework.io.metrics.builder: operator-sdk-v1.0.1
   operators.operatorframework.io.metrics.mediatype.v1: metrics+v1
   operators.operatorframework.io.metrics.project_layout: helm.sdk.operatorframework.io/v1
-  operators.operatorframework.io.test.config.v1: tests/scorecard/
-  operators.operatorframework.io.test.mediatype.v1: scorecard+v1
+  com.redhat.openshift.versions: "=v4.9"
 EOF
-
-mkdir -p "bundles/cilium.v${cilium_version}/tests/scorecard"
-cp scorecard-config.yaml "bundles/cilium.v${cilium_version}/tests/scorecard/config.yaml"

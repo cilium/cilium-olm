@@ -132,7 +132,7 @@ _related_images: [
 		image: parameters.hubbleRelayImage
 	},
 	{
-		name: "operator"
+		name: "cilium-operator"
 		image: parameters.operatorImage
 	},
 	{

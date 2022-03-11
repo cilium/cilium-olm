@@ -51,7 +51,7 @@ _workloadSpec: {
 					value: parameters.hubbleRelayImage
 				},
                                 {
-					name: "RELATED_IMAGE_OPERATOR"
+					name: "RELATED_IMAGE_CILIUM_OPERATOR"
 					value: parameters.operatorImage
 				},
                                 {

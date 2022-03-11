@@ -49,27 +49,5 @@ images.operator.v%: .buildx_builder
 		--without-tag-suffix=$(WITHOUT_TAG_SUFFIX) \
 		> image-cilium-olm-v$(cilium_version).tag
 
-images.operator-bundle.v%: .buildx_builder
-	$(IMAGINE) build \
-		--builder=$$(cat .buildx_builder) \
-		--base=./bundles/cilium.v$(cilium_version) \
-		--name=cilium-olm-metadata \
-		--custom-tag-suffix=v$(cilium_version) \
-		--registry=$(REGISTRY) \
-		--without-tag-suffix=$(WITHOUT_TAG_SUFFIX) \
-		--push=$(PUSH)
-	$(IMAGINE) image \
-		--base=./bundles/cilium.v$(cilium_version) \
-		--name=cilium-olm-metadata \
-		--custom-tag-suffix=v$(cilium_version) \
-		--registry=$(REGISTRY) \
-		--without-tag-suffix=$(WITHOUT_TAG_SUFFIX) \
-		> image-cilium-olm-metadata-v$(cilium_version).tag
-
 generate.configs.v%:
 	scripts/generate-configs.sh "image-cilium-olm-v$(cilium_version).tag" "$(cilium_version)"
-
-validate.bundles.v%:
-	$(OPM) alpha bundle validate --tag "$$(cat image-cilium-olm-metadata-v$(cilium_version).tag | head -1)"
-	operator-sdk bundle validate "$$(cat image-cilium-olm-metadata-v$(cilium_version).tag | head -1)"
-	operator-sdk scorecard "$$(cat image-cilium-olm-metadata-v$(cilium_version).tag | head -1)"
