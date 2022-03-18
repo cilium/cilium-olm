@@ -144,3 +144,15 @@ generate.configs.all: generate.configs.v1.10.8
 images.operator.v1.10.8 images.operator-bundle.v1.10.8 generate.configs.v1.10.8 validate.bundles.v1.10.8: cilium_version=1.10.8
 
 images.operator-bundle.v1.10.8: generate.configs.v1.10.8
+
+# Cilium v1.11.2
+
+images.all: images.operator.v1.11.2 images.operator-bundle.v1.11.2
+
+images.operator.all: images.operator.v1.11.2
+images.operator-bundle.all: images.operator-bundle.v1.11.2
+generate.configs.all: generate.configs.v1.11.2
+
+images.operator.v1.11.2 images.operator-bundle.v1.11.2 generate.configs.v1.11.2 validate.bundles.v1.11.2: cilium_version=1.11.2
+
+images.operator-bundle.v1.11.2: generate.configs.v1.11.2
