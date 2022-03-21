@@ -95,13 +95,9 @@ _workloadSpec: {
 					mountPath: "/tmp"
 				}]
 				resources: {
-					limits: {
-						cpu:    "100m"
-						memory: "150Mi"
-					}
 					requests: {
 						cpu:    "100m"
-						memory: "150Mi"
+						memory: "512Mi"
 					}
 				}
 			}]
