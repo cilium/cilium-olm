@@ -332,6 +332,18 @@ _helmOperatorRules: [
 			"*",
 		]
 	},
+	{
+		// Operator needs to manage servicemonitors if prometheus is enabled
+		apiGroups: [
+			"monitoring.coreos.com",
+		]
+		resources: [
+			"servicemonitors",
+		]
+		verbs: [
+			"*",
+		]
+	},
 ]
 
 _commonSubjects: [{
