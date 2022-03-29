@@ -6,6 +6,7 @@
 set -o errexit
 set -o pipefail
 set -o nounset
+set -x
 
 cilium_version="${2}"
 
@@ -23,8 +24,14 @@ esac
 function get_image() {
     local image="$1"
     local tag="$2"
-    docker pull "$image:$tag" > /dev/null
-    echo "$image""@$(docker inspect "$image:$tag" | jq -r '.[0].RepoDigests[0]' | cut -d'@' -f2)"
+    local manifest="$(docker manifest inspect "$image:$tag" -v)"
+    local hash="$(echo "$manifest" | jq -r '.Descriptor.digest' 2>/dev/null || echo "$manifest" | jq -r '.[0].Descriptor.digest' > /dev/null || "")"
+    if [[ "$hash" ]]; then
+        echo "$image""@$hash"
+    else
+        docker pull "$image:$tag" > /dev/null
+        echo "$image""@$(docker inspect "$image:$tag" | jq -r '.[0].RepoDigests[0]' | cut -d'@' -f2)"
+    fi
 }
 
 cd "${root_dir}"
