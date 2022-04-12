@@ -121,7 +121,7 @@ EOF
 
 template_dir="${operator_dir}/cilium/templates"
 
-if [[ ${cilium_version} == 1.10.* ]]; then
+if [[ ${cilium_version} == 1.9.* ]]; then
     # certgen
     sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.certgen.image.override }}"|' "${template_dir}/_clustermesh-apiserver-generate-certs-job-spec.tpl"
     sed -i 's|^\([[:blank:]]*\)image:.*$|\1image: "{{ .Values.certgen.image.override }}"|' "${template_dir}/_hubble-generate-certs-job-spec.tpl"
