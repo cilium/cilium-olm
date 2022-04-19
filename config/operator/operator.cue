@@ -239,6 +239,7 @@ _core_items: namespace + [
 	image:                 string
 	test:                  bool
 	ciliumVersion:         string
+	ciliumMajorMinor:      string
 	onlyCSV:               bool
 	namespace:             string | *"cilium"
 	configVersionSuffix:   string

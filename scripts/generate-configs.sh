@@ -57,6 +57,8 @@ etcd_operator_image="$(get_image "$(yq e '.etcd.image.repository' "$values_file"
 nodeinit_image="$(get_image "$(yq e '.nodeinit.image.repository' "$values_file")" "$(yq e '.nodeinit.image.tag' "$values_file")")"
 clustermesh_etcd_image="$(get_image "$(yq e '.clustermesh.apiserver.etcd.image.repository' "$values_file")" "$(yq e '.clustermesh.apiserver.etcd.image.tag' "$values_file")")"
 
+cilium_major_minor="$(echo "${cilium_version}" | cut -d . -f -2)"
+
 generate_instaces_cue() {
 cat << EOF
 package operator
@@ -69,6 +71,7 @@ instances: [
       test: false
       onlyCSV: false
       ciliumVersion: "${cilium_version}"
+      ciliumMajorMinor: "${cilium_major_minor}"
       configVersionSuffix: "${1:-}"
       ciliumVersion: "${cilium_version}"
       ciliumImage: "${cilium_image}"
@@ -93,6 +96,7 @@ instances: [
       test: false
       onlyCSV: true
       ciliumVersion: "${cilium_version}"
+      ciliumMajorMinor: "${cilium_major_minor}"
       configVersionSuffix: "${1:-}"
       ciliumImage: "${cilium_image}"
       hubbleRelayImage: "${hubble_relay_image}"
@@ -157,8 +161,8 @@ cp ./config/crd/cilium.io_cilumconfigs.yaml "bundles/cilium.v${cilium_version}/m
 mkdir -p "bundles/cilium.v${cilium_version}/metadata"
 cat > "bundles/cilium.v${cilium_version}/metadata/annotations.yaml" << EOF
 annotations:
-  operators.operatorframework.io.bundle.channel.default.v1: "stable"
-  operators.operatorframework.io.bundle.channels.v1: stable
+  operators.operatorframework.io.bundle.channel.default.v1: "${cilium_major_minor}"
+  operators.operatorframework.io.bundle.channels.v1: "${cilium_major_minor}"
   operators.operatorframework.io.bundle.manifests.v1: manifests/
   operators.operatorframework.io.bundle.mediatype.v1: registry+v1
   operators.operatorframework.io.bundle.metadata.v1: metadata/
@@ -166,5 +170,5 @@ annotations:
   operators.operatorframework.io.metrics.builder: operator-sdk-v1.0.1
   operators.operatorframework.io.metrics.mediatype.v1: metrics+v1
   operators.operatorframework.io.metrics.project_layout: helm.sdk.operatorframework.io/v1
-  com.redhat.openshift.versions: "=v4.9"
+  com.redhat.openshift.versions: "v4.9"
 EOF

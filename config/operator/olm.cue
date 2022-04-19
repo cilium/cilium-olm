@@ -27,10 +27,10 @@ _olm_items: [
 			namespace: parameters.namespace
 		}
 		spec: {
-			channel:             "stable"
+			channel:             parameters.ciliumMajorMinor
 			name:                "cilium"
 			startingCSV:         "cilium.v\(parameters.ciliumVersion)-x\(parameters.configVersionSuffix)"
-			installPlanApproval: "Automatic"
+			installPlanApproval: "Manual"
 			source:              "certified-operators"
 			sourceNamespace:     "openshift-marketplace"
 		}
