@@ -182,6 +182,7 @@ _related_images: [
 		namespace:   parameters.namespace
 	}
 	spec: {
+		replaces: parameters.replaces
 		relatedImages: _related_images
 		apiservicedefinitions: {}
 		customresourcedefinitions: owned: [{

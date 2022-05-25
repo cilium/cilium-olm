@@ -236,6 +236,7 @@ _core_items: namespace + [
 }
 
 #WorkloadParameters: {
+	replaces:              string
 	image:                 string
 	test:                  bool
 	ciliumVersion:         string
