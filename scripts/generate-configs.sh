@@ -58,6 +58,13 @@ nodeinit_image="$(get_image "$(yq e '.nodeinit.image.repository' "$values_file")
 clustermesh_etcd_image="$(get_image "$(yq e '.clustermesh.apiserver.etcd.image.repository' "$values_file")" "$(yq e '.clustermesh.apiserver.etcd.image.tag' "$values_file")")"
 
 cilium_major_minor="$(echo "${cilium_version}" | cut -d . -f -2)"
+#shellcheck disable=SC2003
+previous_version="${cilium_major_minor}.$(expr "$(echo "${cilium_version}" | cut -d . -f 3)" - 1)"
+#shellcheck disable=SC2003
+previous_version="${cilium_major_minor}.$(expr "$(echo "${cilium_version}" | cut -d . -f 3)" - 1)"
+if [[ -d "bundles/cilium.v${previous_version}" ]]; then
+    previous_name="$(yq .metadata.name "bundles/cilium.v${previous_version}/manifests/cilium.clusterserviceversion.yaml")"
+fi
 
 generate_instaces_cue() {
 cat << EOF
@@ -67,6 +74,7 @@ instances: [
   {
     output: "manifests/cilium.v${cilium_version}/cluster-network-06-cilium-%s.yaml"
     parameters: {
+      replaces: "${previous_name:-nothing}"
       image: "${operator_image}"
       test: false
       onlyCSV: false
@@ -91,6 +99,7 @@ instances: [
   {
     output: "bundles/cilium.v${cilium_version}/manifests/cilium.clusterserviceversion.yaml"
     parameters: {
+      replaces: "${previous_name:-nothing}"
       namespace: "placeholder"
       image: "${operator_image}"
       test: false
