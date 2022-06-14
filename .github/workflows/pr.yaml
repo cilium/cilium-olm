@@ -1,14 +1,10 @@
 name: PR
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Define version to be built and tested'
-        required: true
+  pull_request: {}
 
 jobs:
   lint:
-    if: github.repository == 'cilium/cilium-olm'
+    if: github.repository == 'cilium/cilium-olm' && github.event_name == 'pull_request'
     name: Lint Image Build Logic
     runs-on: ubuntu-20.04
     steps:
@@ -18,13 +14,29 @@ jobs:
         with:
           entrypoint: make
           args: lint
+  set-version:
+    runs-on: ubuntu-20.04
+    needs: lint
+    outputs:
+      version: ${{ steps.set.outputs.VERSION }}
+    steps:
+      - id: set
+        name: Set Version
+        run: |
+          version=$(echo ${{ github.head_ref }} | rev | cut -d '/' -f 1 | rev)
+          if ! [[ $version =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+              version=nothing
+          fi
+          echo "::set-output name=VERSION::${version}"
   build-and-validate:
+    if: needs.set-version.outputs.version != 'nothing'
     env:
       PREFLIGHT_VERSION: 1.2.1
       PFLT_DOCKERCONFIG: ~/.docker/config.json
+      VERSION: ${{ needs.set-version.outputs.version }}
     name: Build Images and Validate Images
     runs-on: ubuntu-20.04
-    needs: lint
+    needs: set-version
     steps:
       - uses: actions/checkout@v1
       - name: Set up QEMU
@@ -40,17 +52,18 @@ jobs:
       - name: Push to Quay.io
         uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8
         with:
-          context: ./operator/cilium.v${{ github.event.inputs.version }}/
+          context: ./operator/cilium.${{ env.VERSION }}/
           push: true
-          tag: cilium/cilium-olm:ci-${{ github.event.inputs.version }}-${{ github.sha }}
+          tags: quay.io/cilium/cilium-olm:ci-${{ env.VERSION }}-${{ github.sha }}
       - name: Install Preflight
         run: |
-          curl -sSL https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/${{ env.PREFLIGHT_VERSION }}/preflight-linux-amd64
+          curl https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/${{ env.PREFLIGHT_VERSION }}/preflight-linux-amd64 -o preflight-linux-amd64
           sha256sum --check .github_workflow_assets/preflight-linux-amd64.sha256sum
+          sudo chmod +x preflight-linux-amd64
           sudo mv preflight-linux-amd64 /usr/local/bin/preflight
       - name: Run Preflight
         run: |
           preflight check container \
           --pyxis-api-token=${{ secrets.RHCP_PREFLIGHT_API_KEY }} \
           --certification-project-id=5fbe31ec8b7d4976604cbde0 \
-          quay.io/cilium/cilium-olm:ci-${{ github.event.inputs.version }}-${{ github.sha }}
+          quay.io/cilium/cilium-olm:ci-${{ env.VERSION }}-${{ github.sha }}
