@@ -1,10 +1,6 @@
 name: PR
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Define version to be built and tested'
-        required: true
+  pull_request: {}
 
 jobs:
   lint:
@@ -18,14 +14,33 @@ jobs:
         with:
           entrypoint: make
           args: lint
+  set-version:
+    needs: lint:
+    outputs:
+      version: ${{ steps.set.outputs.VERSION }}
+    steps:
+      - id: set
+        name: Set Version
+        run: |
+          version=$(echo ${{ github.ref_name }} | rev | cut -d '/' -f 1 | rev)
+          if ! [[ $version =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+              version=nothing
+          fi
+          echo "::set-output name=VERSION::${version}"
   build-and-validate:
+    if: needs.set-version.outputs.version != 'nothing'
     env:
       PREFLIGHT_VERSION: 1.2.1
       PFLT_DOCKERCONFIG: ~/.docker/config.json
+      VERSION: ${{ needs.set-version.outputs.version }}
     name: Build Images and Validate Images
     runs-on: ubuntu-20.04
-    needs: lint
+    needs: set-version
     steps:
+      - name: Set Version
+        run: |
+         echo VERSION=$(echo ${{ github.ref_name }} | rev | cut -d '/' -f 1) >> $GITHUB_ENV
+      - 
       - uses: actions/checkout@v1
       - name: Set up QEMU
         uses: docker/setup-qemu-action@8b122486cedac8393e77aa9734c3528886e4a1a8
@@ -40,9 +55,9 @@ jobs:
       - name: Push to Quay.io
         uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8
         with:
-          context: ./operator/cilium.v${{ github.event.inputs.version }}/
+          context: ./operator/cilium.v${{ env.VERSION }}/
           push: true
-          tag: cilium/cilium-olm:ci-${{ github.event.inputs.version }}-${{ github.sha }}
+          tag: cilium/cilium-olm:ci-${{ VERSION }}-${{ github.sha }}
       - name: Install Preflight
         run: |
           curl -sSL https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/${{ env.PREFLIGHT_VERSION }}/preflight-linux-amd64
