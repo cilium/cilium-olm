@@ -108,15 +108,13 @@ cat >> Makefile.releases << EOF
 
 # Cilium v${cilium_version}
 
-images.all: images.operator.v${cilium_version} images.operator-bundle.v${cilium_version}
+images.all: images.operator.v${cilium_version}
 
-images.operator.all: images.operator.v${cilium_version}
-images.operator-bundle.all: images.operator-bundle.v${cilium_version}
+images.operator.all: images.operator.v${cilium_version} generate.configs.v${cilium_version}
 generate.configs.all: generate.configs.v${cilium_version}
 
-images.operator.v${cilium_version} images.operator-bundle.v${cilium_version} generate.configs.v${cilium_version} validate.bundles.v${cilium_version}: cilium_version=${cilium_version}
+images.operator.v${cilium_version} generate.configs.v${cilium_version}: cilium_version=${cilium_version}
 
-images.operator-bundle.v${cilium_version}: generate.configs.v${cilium_version}
 EOF
 
 template_dir="${operator_dir}/cilium/templates"
