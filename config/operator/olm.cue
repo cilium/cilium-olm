@@ -156,10 +156,6 @@ _related_images: [
 		image: parameters.hubbleUIFrontendImage
 	},
 	{
-		name: "hubble-ui-proxy"
-		image: parameters.hubbleUIProxyImage
-	},
-	{
 		name: "etcd-operator"
 		image: parameters.etcdOperatorImage
 	},
@@ -172,6 +168,13 @@ _related_images: [
 		image: parameters.clustermeshEtcdImage
 	}
 ]
+
+if parameters.hubbleUIProxyImage != "nothing" {
+	_related_images: _related_images + [{
+		name: "hubble-ui-proxy"
+		image: parameters.hubbleUIProxyImage
+	}]
+}
 
 #CSVWorkloadTemplate: {
 	apiVersion: "operators.coreos.com/v1alpha1"
