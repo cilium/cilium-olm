@@ -18,6 +18,58 @@ _workload: {
 	spec:     _workloadSpec
 }
 
+_related_images_env_vars: [{
+		name: "RELATED_IMAGE_CILIUM"
+		value: parameters.ciliumImage
+	},
+	{
+		name: "RELATED_IMAGE_HUBBLE_RELAY"
+		value: parameters.hubbleRelayImage
+	},
+	{
+		name: "RELATED_IMAGE_CILIUM_OPERATOR"
+		value: parameters.operatorImage
+	},
+	{
+		name: "RELATED_IMAGE_PREFLIGHT"
+		value: parameters.preflightImage
+	},
+	{
+		name: "RELATED_IMAGE_CLUSTERMESH"
+		value: parameters.clustermeshImage
+	},
+	{
+		name: "RELATED_IMAGE_CERTGEN"
+		value: parameters.certgenImage
+	},
+	{
+		name: "RELATED_IMAGE_HUBBLE_UI_BE"
+		value: parameters.hubbleUIBackendImage
+	},
+	{
+		name: "RELATED_IMAGE_HUBBLE_UI_FE"
+		value: parameters.hubbleUIFrontendImage
+	},
+	{
+		name: "RELATED_IMAGE_ETCD_OPERATOR"
+		value: parameters.etcdOperatorImage
+	},
+	{
+		name: "RELATED_IMAGE_NODEINIT"
+		value: parameters.nodeInitImage
+	},
+	{
+		name: "RELATED_IMAGE_CLUSTERMESH_ETCD"
+		value: parameters.clustermeshEtcdImage
+	}]
+
+if parameters.hubbleUIProxyImage != "nothing" {
+	_related_images_env_vars: _related_images_env_vars + [{
+		name: "RELATED_IMAGE_HUBBLE_UI_PROXY"
+		value: parameters.hubbleUIProxyImage
+	}]
+}
+
 _workloadSpec: {
 	template: {
 		metadata: labels: _commonMetadata.labels
@@ -41,55 +93,7 @@ _workloadSpec: {
 				env: [{
 					name: "WATCH_NAMESPACE"
 					valueFrom: fieldRef: fieldPath: "metadata.namespace"
-				},
-                                {
-					name: "RELATED_IMAGE_CILIUM"
-					value: parameters.ciliumImage
-				},
-                                {
-					name: "RELATED_IMAGE_HUBBLE_RELAY"
-					value: parameters.hubbleRelayImage
-				},
-                                {
-					name: "RELATED_IMAGE_CILIUM_OPERATOR"
-					value: parameters.operatorImage
-				},
-                                {
-					name: "RELATED_IMAGE_PREFLIGHT"
-					value: parameters.preflightImage
-				},
-                                {
-					name: "RELATED_IMAGE_CLUSTERMESH"
-					value: parameters.clustermeshImage
-				},
-                                {
-					name: "RELATED_IMAGE_CERTGEN"
-					value: parameters.certgenImage
-				},
-                                {
-					name: "RELATED_IMAGE_HUBBLE_UI_BE"
-					value: parameters.hubbleUIBackendImage
-				},
-                                {
-					name: "RELATED_IMAGE_HUBBLE_UI_FE"
-					value: parameters.hubbleUIFrontendImage
-				},
-                                {
-					name: "RELATED_IMAGE_HUBBLE_UI_PROXY"
-					value: parameters.hubbleUIProxyImage
-				},
-                                {
-					name: "RELATED_IMAGE_ETCD_OPERATOR"
-					value: parameters.etcdOperatorImage
-				},
-                                {
-					name: "RELATED_IMAGE_NODEINIT"
-					value: parameters.nodeInitImage
-				},
-                                {
-					name: "RELATED_IMAGE_CLUSTERMESH_ETCD"
-					value: parameters.clustermeshEtcdImage
-				}]
+				}] + _related_images_env_vars
 				volumeMounts: [{
 					name:      "tmp"
 					mountPath: "/tmp"
