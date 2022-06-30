@@ -86,7 +86,7 @@ _csv_annotations: {
 	categories:                                       "Networking,Security"
 	support:                                          "support@isovalent.com"
 	#certified:                                       "true"
-	capabilities:                                     "Basic Install"
+	capabilities:                                     "Seamless Upgrades"
 	repository:                                       "http://github.com/cilium/cilium"
 	"alm-examples-metadata":                          json.Marshal(_alm_examples_metadata)
 	"alm-examples":                                   json.Marshal(_alm_examples)
