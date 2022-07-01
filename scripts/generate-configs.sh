@@ -52,7 +52,7 @@ clustermesh_image="$(yq e '.clustermesh.apiserver.image.repository' "$values_fil
 certgen_image="$(get_image "$(yq e '.certgen.image.repository' "$values_file")" "$(yq e '.certgen.image.tag' "$values_file")")"
 hubble_ui_be_image="$(get_image "$(yq e '.hubble.ui.backend.image.repository' "$values_file")" "$(yq e '.hubble.ui.backend.image.tag' "$values_file")")"
 hubble_ui_fe_image="$(get_image "$(yq e '.hubble.ui.frontend.image.repository' "$values_file")" "$(yq e '.hubble.ui.frontend.image.tag' "$values_file")")"
-if [[ "${cilium_version}" == 1.9.* || "${cilium_version}" == 1.10.* ]]; then
+if [[ "${cilium_version}" == 1.9.* ]]; then
     hubble_ui_proxy_image="$(get_image "$(yq e '.hubble.ui.proxy.image.repository' "$values_file")" "$(yq e '.hubble.ui.proxy.image.tag' "$values_file")")"
 fi
 etcd_operator_image="$(get_image "$(yq e '.etcd.image.repository' "$values_file")" "$(yq e '.etcd.image.tag' "$values_file")")"
