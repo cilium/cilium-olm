@@ -1,10 +1,10 @@
 # Copyright 2017-2021 Authors of Cilium
 # SPDX-License-Identifier: Apache-2.0
 
-REGISTRY ?= quay.io/cilium
+REGISTRY ?= docker.io/spc35771
 
 WITHOUT_TAG_SUFFIX ?= false
-PUSH ?= false
+PUSH ?= true
 
 GOBIN = $(shell go env GOPATH)/bin
 
