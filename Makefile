@@ -34,6 +34,9 @@ lint:
 
 images.operator.v%: .buildx_builder
 	$(IMAGINE) build \
+		--args http_proxy=http://snapp-mirror:TmfBZb68qjGGF6feBdqX@mirror-fra-1.snappcloud.io:30128 \
+		--args https_proxy=http://snapp-mirror:TmfBZb68qjGGF6feBdqX@mirror-fra-1.snappcloud.io:30128 \
+		--args no_proxy=localhost,127.0.0.1,.svc,.cluster,.local,.snappcloud.io,.staging-snappcloud.io \
 		--builder=$$(cat .buildx_builder) \
 		--base=./operator/cilium.v$(cilium_version) \
 		--name=cilium-olm \
