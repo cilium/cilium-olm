@@ -54,7 +54,7 @@ jobs:
         with:
           context: ./operator/cilium.${{ env.VERSION }}/
           push: true
-          tags: ghcr.io/cilium/cilium-olm:ci-${{ env.VERSION }}-${{ github.sha }}
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository }}
       - name: Install Preflight
         run: |
           curl https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/${{ env.PREFLIGHT_VERSION }}/preflight-linux-amd64 -o preflight-linux-amd64
