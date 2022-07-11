@@ -1,7 +1,7 @@
 name: PR
 on:
   pull_request: {}
-
+  push: {}
 jobs:
   lint:
     if: github.repository == 'cilium/cilium-olm' && github.event_name == 'pull_request'
