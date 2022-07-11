@@ -4,7 +4,6 @@ on:
   push: {}
 jobs:
   lint:
-    if: github.repository == 'cilium/cilium-olm' && github.event_name == 'pull_request'
     name: Lint Image Build Logic
     runs-on: ubuntu-20.04
     steps:
