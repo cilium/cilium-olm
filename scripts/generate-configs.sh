@@ -160,6 +160,9 @@ case "${cilium_version}" in
   1.11.*)
     ciliumconfig="ciliumconfig.v1.11.yaml"
     ;;
+  1.12.*)
+    ciliumconfig="ciliumconfig.v1.12.yaml"
+    ;;
   *)
   echo "ciliumconfig example missing for ${cilium_version}"
   exit 1
