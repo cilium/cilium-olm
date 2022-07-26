@@ -9,4 +9,4 @@ spec:
   name: cilium
   source: certified-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: cilium.v1.10.13-x3c3d05d
+  startingCSV: cilium.v1.10.13-xa8bb1e5
