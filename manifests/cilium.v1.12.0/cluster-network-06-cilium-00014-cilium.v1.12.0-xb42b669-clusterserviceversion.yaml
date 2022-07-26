@@ -10,7 +10,7 @@ metadata:
     operators.openshift.io/infrastructure-features: '["disconnected"]'
     repository: http://github.com/cilium/cilium
     support: support@isovalent.com
-  name: cilium.v1.12.0-x9bd273e
+  name: cilium.v1.12.0-xb42b669
   namespace: cilium
 spec:
   apiservicedefinitions: {}
@@ -192,7 +192,7 @@ spec:
                   value: quay.io/cilium/startup-script@sha256:c263d1678fb426842c0836358c1da7628d771126211694a3776c4b8500cbb215
                 - name: RELATED_IMAGE_CLUSTERMESH_ETCD
                   value: quay.io/coreos/etcd@sha256:a67fb152d4c53223e96e818420c37f11d05c2d92cf62c05ca5604066c37295e9
-                image: registry.connect.redhat.com/isovalent/cilium-olm:bdafe00fe3b70687fc99ab374336b4dba4e2f23a-v1.12.0
+                image: registry.connect.redhat.com/isovalent/cilium-olm:190c342490f96cdfa3d454f90babe12747e8b7b0-v1.12.0
                 name: operator
                 ports:
                 - containerPort: 9443
@@ -341,4 +341,4 @@ spec:
     name: nodeinit
   - image: quay.io/coreos/etcd@sha256:a67fb152d4c53223e96e818420c37f11d05c2d92cf62c05ca5604066c37295e9
     name: clustermesh-etcd
-  version: 1.12.0+x9bd273e
+  version: 1.12.0+xb42b669
