@@ -73,7 +73,7 @@ To install `kuegen`, `imagine` and `opm` utilities to `GOPATH`, run:
 (cd tools ; go install github.com/errordeveloper/imagine github.com/errordeveloper/kuegen github.com/operator-framework/operator-registry/cmd/opm)
 ```
 
-### Adding Cilium release
+### Publishing a Cilium release
 
 All releases and release candidates should be added to this repo for testing, albeit only latest stable release should be published in the RedHat Catalog.
 
@@ -89,42 +89,100 @@ This will do the following:
 - download Helm chart tarball and unpack it to 
 - create a local commit that has all the changes that can be pushed to the repo
 
-Now push changes to a branch and open a PR. Once changes are on the master branch of this repo, new images will be built in [GitHub Actions][].
+Now push changes to a named branch that ends with the version number you are trying to publish (e.g. "pr/myghhandle/oss/v1.10").
+This will create development images, which can be inspeted in the github actions output.
 
-Next, images need to be copied from Quay to RedHat Partner Connect registry. This is a two-step process.
+Validate that the release works by [creating an Openshift cluster and installing the new operator](https://docs.cilium.io/en/latest/installation/k8s-install-openshift-okd/#k8s-install-openshift-okd), by modifying the OLM manifests to use the CI generated images.
+Also, make sure that the CiliumConfig ([v1.12.0](https://github.com/cilium/cilium-olm/blob/master/manifests/cilium.v1.12.0/cluster-network-07-cilium-ciliumconfig.yaml), for example) has the following values (this ensures that the K8s networking e2e tests will pass):
 
-For this you will need to access [RedHat Partner Connect][] registry and obtain credential for each of the images. Export the following environment variables using the credentials from RedHat Partner Connect:
+```yaml
+apiVersion: cilium.io/v1alpha1
+kind: CiliumConfig
+metadata:
+  name: cilium
+  namespace: cilium
+spec:
+  debug:
+    enabled: true
+  k8s:
+    requireIPv4PodCIDR: true
+  pprof:
+    enabled: true
+  logSystemLoad: true
+  bpf:
+    preallocateMaps: true
+  etcd:
+    leaseTTL: 30s
+  ipv4:
+    enabled: true
+  ipv6:
+    enabled: true
+  identityChangeGracePeriod: 0s
+  ipam:
+    mode: "cluster-pool"
+    operator:
+      clusterPoolIPv4PodCIDR: "10.128.0.0/14"
+      clusterPoolIPv4MaskSize: "23"
+  nativeRoutingCIDR: "10.128.0.0/14"
+  endpointRoutes: {enabled: true}
+  kubeProxyReplacement: "probe"
+  clusterHealthPort: 9940
+  tunnelPort: 4789
+  cni:
+    binPath: "/var/lib/cni/bin"
+    confPath: "/var/run/multus/cni/net.d"
+    chainingMode: portMap
+  prometheus:
+    serviceMonitor: {enabled: false}
+  hubble:
+    tls: {enabled: false}
+```
+
+Run the Network Conformance tests [according to these instructions](https://redhat-connect.gitbook.io/openshift-badges/badges/container-network-interface-cni/workflow/running-the-cni-tests) to ensure that Cilium functions as expected. There are 3 exepected failures in these conformance tests. They are:
+
+```
+NetworkPolicy between server and client should not allow access by TCP when a policy specifies only SCTP
+NetworkPolicy between server and client should allow egress access to server in CIDR block
+NetworkPolicy between server and client should ensure an IP overlapping both IPBlock.CIDR and IPBlock.Except is allowed
+```
+Once these conformance tests are passed it is safe to assume that the generated manifests are working correctly.
+The branch PR can then be merged into master.
+
+Once the branch PR is merged into master, run [the publish action](https://github.com/cilium/cilium-olm/actions/workflows/publish.yaml) on the
+master branch, defining the version to be published ("1.10.0" for example).
+
+Once the action has completed successfully, you can now submit the image conformance tests to Redhat.
+For this you will need to access [RedHat Partner Connect][] registry and obtain credentials for logging
+into the regsitry and setting the preflight API key.
+
+Export the following environment variables using the credentials from RedHat Partner Connect:
 
 - `export RHPC_PASSWORD_FOR_OLM_OPERATOR_IMAGE="_____"`
-- `export RHPC_PASSWORD_FOR_OLM_METADATA_IMAGE="_____"`
-- `export RHPC_USERNAME_FOR_PUBLISHED_IMAGES="_____"`
-- `export RHPC_PASSWORD_FOR_PUBLISHED_IMAGES="_____"`
+- `export RHCP_PREFLIGHT_API_KEY="_____"`
 
-The first step is to "promote" the operator application image from Quay to RedHat Partner Connect, for this run:
+Next, login to the registry:
 
-```
-scripts/push-to-scan-1-olm-operator.sh 1.10.0
+```sh
+podman login -u unused scan.connect.redhat.com -p $RHPC_PASSWORD_FOR_OLM_OPERATOR_IMAGE
 ```
 
-Access OLM operator project in [RedHat Partner Connect][rhcp-projects] portal and observe the scan results for the newly pushed image. Upon successful scan, publish the image. Do not create `latest` tag when publishing.
+Next, run the preflight checks on the image:
 
-All releases and release candidates should be published at this stage, but the metadata bundles will not yet be published as that will be handled in the second step below.
-
-It can take some time, but often just a few hours. Sometimes the image doesn't show up in UI right away, you will need to check back every couple of hours.
-
-If an image scan fails, file an issue in this repository and work to address the issue. Once the chages are in master and [GitHub Actions][] build finished, re-run `scripts/push-to-scan-1-olm-operator.sh` and monitor the scan results.
-
-Now it's time for the second step. Once operator application image has passed certification scan successfully and had been published, the metadata bundle can be pushed RedHat Partner Connect Registry also. To "promote" the metadata bundle run:
-
-```
-scripts/push-to-scan-2-olm-metadata.sh 1.10.0
+```sh
+PFLT_DOCKERCONFIG=~/.docker/config.json preflight check container --pyxis-api-token=$RHCP_PREFLIGHT_API_KEY --submit --certification-project-id=ospid-104ec1da-384c-4d7c-bd27-9dbfd8377f5b scan.connect.redhat.com/ospid-104ec1da-384c-4d7c-bd27-9dbfd8377f5b/cilium-olm:v1.10.0
 ```
 
-Next, access the OLM bundle project in [RedHat Partner Connect][rhcp-projects] portal and observe scan results. This often takes much longer, as it results in much more testing, i.e. a test cluster gets created to run the tests. By comparison it's not just a couple of hours, but more likely 6 hours or so.
+Next, login to [Redhat Parnter Connect][] and click "Publish" on the image (once the vulnerability scanning is done).
 
-Any scan failures should be logged as issues and addressed. Once the chages are in master and [GitHub Actions][] build finished, re-run `scripts/push-to-scan-2-olm-metadata.sh` and monitor the scan results.
+Once the image is published open a new PR in the [cilium/certified-operators](https://github.com/cilium/certified-operators), by adding the
+new manifests to the appropriately named new directory under `operators/cilium` (`operators/cilium/v1.10.0`, for example).
+Before commiting your changes make sure to modify the `image` reference in the `manifests/cilium.clusterserviceversion.yaml` so that
+the sha256 tag of the image is used (rather than the semantic tag).
 
-If the certification tests pass, and if the bundle is for latest stable release and not a release candidate or older release, publish the images for the release. In the [RedHat Partner Connect] UI, two images will show up: `*-cert-*` and `*-mktpl-*`. Only `*-cert-*` images should be published. Do not create `latest` tag when publishing.
+Create a new PR against the official [Openshift certified operators repository](https://github.com/redhat-openshift-ecosystem/certified-operators).
+If the CI tests against the PR fails and you can't figure out why you can file a support case on [Redhat Partner Connect][]. After the CI tests
+succeed the PR will automatically be merged and the verstion will be officially certified.
+
 
 ## Updating helm-operator base image
 
