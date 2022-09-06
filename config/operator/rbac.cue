@@ -344,6 +344,18 @@ _helmOperatorRules: [
 			"*",
 		]
 	},
+	{
+		// Operator needs to manage ingresses if ingress for hubble-ui is enabled
+		apiGroups: [
+			"networking.k8s.io",
+		]
+		resources: [
+			"ingresses",
+		]
+		verbs: [
+			"*",
+		]
+	},
 ]
 
 _commonSubjects: [{
