@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: cilium-olm
+  name: cilium-olm
+  namespace: cilium
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: cilium-olm
+  template:
+    metadata:
+      labels:
+        name: cilium-olm
+    spec:
+      containers:
+      - command:
+        - /usr/local/bin/helm-operator
+        - run
+        - --watches-file=watches.yaml
+        - --enable-leader-election
+        - --leader-election-id=cilium-olm
+        - --zap-devel
+        - --metrics-addr=localhost:8082
+        - --health-probe-bind-address=localhost:8081
+        env:
+        - name: WATCH_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: RELATED_IMAGE_CILIUM
+          value: quay.io/cilium/cilium@sha256:adbb60f9d19d641a5496fcfc4769ebb55c1d4cd7699fef752f7c94754194cf83
+        - name: RELATED_IMAGE_HUBBLE_RELAY
+          value: quay.io/cilium/hubble-relay@sha256:67a9183fd1febd9e51f4d02bd35092b81c8612a1716015988f69fffba79d999a
+        - name: RELATED_IMAGE_CILIUM_OPERATOR
+          value: quay.io/cilium/operator-generic@sha256:7f2f7b59b541e4f660d65ed0a21d25ab69e49022172529771dd1134315e95c82
+        - name: RELATED_IMAGE_PREFLIGHT
+          value: quay.io/cilium/cilium@sha256:adbb60f9d19d641a5496fcfc4769ebb55c1d4cd7699fef752f7c94754194cf83
+        - name: RELATED_IMAGE_CLUSTERMESH
+          value: quay.io/cilium/clustermesh-apiserver@sha256:e73151c3295589de00dccae75819aabdff8fd907260817020f9e8fe3738e78b2
+        - name: RELATED_IMAGE_CERTGEN
+          value: quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9
+        - name: RELATED_IMAGE_HUBBLE_UI_BE
+          value: quay.io/cilium/hubble-ui-backend@sha256:a07e13df3e9d7ec0dcc3b158f243cda5a08f6eca38a25a5aa3171f6b3ec491ed
+        - name: RELATED_IMAGE_HUBBLE_UI_FE
+          value: quay.io/cilium/hubble-ui@sha256:dec6e7e541cac91ab859245dd2a7fa02de5363b75caa3509a79cf76d4f622550
+        - name: RELATED_IMAGE_ETCD_OPERATOR
+          value: quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc
+        - name: RELATED_IMAGE_NODEINIT
+          value: quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84
+        - name: RELATED_IMAGE_CLUSTERMESH_ETCD
+          value: quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017
+        image: registry.connect.redhat.com/isovalent/cilium-olm:970b1d74dbe2b87c28e8dc1c68936de33123a4df-v1.10.15
+        name: operator
+        ports:
+        - containerPort: 9443
+          name: https
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+      hostNetwork: true
+      serviceAccount: cilium-olm
+      terminationGracePeriodSeconds: 10
+      tolerations:
+      - operator: Exists
+      volumes:
+      - emptyDir: {}
+        name: tmp
