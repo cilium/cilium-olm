@@ -36,15 +36,15 @@ jobs:
       - name: Login to scan.connect.redhat.com
         uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b
         with:
-          registry: scan.connect.redhat.com
-          username: unused
+          registry: quay.io
+          username: redhat-isv-containers+5fbe31ec8b7d4976604cbde0-robot
           password: ${{ secrets.RHCP_OLM_REGISTRY_PASSWORD }}
-      - name: Push to scan.connect.redhat.com
+      - name: Push to Quay.io
         uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8
         with:
           context: ./operator/cilium.v${{ github.event.inputs.version }}/
           push: true
-          tags: scan.connect.redhat.com/ospid-104ec1da-384c-4d7c-bd27-9dbfd8377f5b/cilium-olm:${{ env.OLM_TAG }}
+          tags: quay.io/redhat-isv-containers/5fbe31ec8b7d4976604cbde0:${{ env.OLM_TAG }}
       - name: Install Preflight
         run: |
           curl https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/${{ env.PREFLIGHT_VERSION }}/preflight-linux-amd64 -o preflight-linux-amd64
@@ -57,4 +57,4 @@ jobs:
           --pyxis-api-token=${{ secrets.RHCP_PREFLIGHT_API_KEY }} \
           --submit \
           --certification-project-id=5fbe31ec8b7d4976604cbde0 \
-          scan.connect.redhat.com/ospid-104ec1da-384c-4d7c-bd27-9dbfd8377f5b/cilium-olm:${{ env.OLM_TAG }}
+          quay.io/redhat-isv-containers/5fbe31ec8b7d4976604cbde0:${{ env.OLM_TAG }}
