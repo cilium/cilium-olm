@@ -77,22 +77,38 @@ To install `kuegen`, `imagine` and `opm` utilities to `GOPATH`, run:
 
 All releases and release candidates should be added to this repo for testing, albeit only latest stable release should be published in the RedHat Catalog.
 
-To add a Cilium release, run:
+To prepare a new Cilium release candidate, manually trigger the [`prepare-test-rc` GitHub Actions workflow](https://github.com/cilium/cilium-olm/actions/workflows/prepare-test-rc.yaml), passing in the version number (e.g. `1.12.3`).
 
-```
-scripts/add-release.sh 1.10.0
-```
+The workflow will take care of the following:
 
-This will do the following:
+- Create the RC branch by running `scripts/add-release.sh ${VERSION}`, which will:
+  - Create new dirs `{operator,manifests,bundles}/cilium.v{VERSION}` populate these with generated configs.
+  - Download the Helm chart tarball for `${VERSION}` and unpack it.
+  - Create a commit that has all the changes.
+  - Push it to a new branch `rc/v${VERSION}`.
+- Linting / building / validating the RC branch.
+  - This pushes an image with the corresponding commit SHA to `quay.io/cilium/cilium-olm`, which can be used for manual testing.
+- Set up an OpenShift cluster on AWS using the manifests from the RC branch, tweaked as required in order to run conformance tests, and run the conformance tests.
+  - In case of failure, the OpenShift log bundle is uploaded as an artifact for manual inspection.
 
-- create new dirs `{operator,manifests,bundles}/cilium.v1.10.0` populate these with generated configs
-- download Helm chart tarball and unpack it to 
-- create a local commit that has all the changes that can be pushed to the repo
+At this point, you can open a PR from the RC branch and iterate on it, re-triggering tests via the `prepare-test-rc` workflow as necessary.
 
-Now push changes to a named branch that ends with the version number you are trying to publish (e.g. "pr/myghhandle/oss/v1.10").
-This will create development images, which can be inspeted in the github actions output.
+After the RC branch is merged into `master`, run [the `publish` GitHub Actions workflow](https://github.com/cilium/cilium-olm/actions/workflows/publish.yaml) on the `master` branch, passing in the version number (e.g. `1.12.3`).
 
-Validate that the release works by [creating an Openshift cluster and installing the new operator](https://docs.cilium.io/en/latest/installation/k8s-install-openshift-okd/#k8s-install-openshift-okd), by modifying the OLM manifests to use the CI generated images.
+After the workflow run is completed, login to [RedHat Partner Connect][] and click "Publish" on the image (once the vulnerability scanning is done).
+
+Once the image is published, use the fork at [cilium/certified-operators](https://github.com/cilium/certified-operators), by adding the
+new manifests to the appropriately named new directory under `operators/cilium` (`operators/cilium/v1.10.0`, for example) in a branch.
+Before committing your changes make sure to modify the `image` reference in the `manifests/cilium.clusterserviceversion.yaml` so that
+the sha256 tag of the image is used (rather than the semantic tag).
+
+Create a new PR against the official [OpenShift certified operators repository](https://github.com/redhat-openshift-ecosystem/certified-operators).
+If the CI tests against the PR fails and you can't figure out why you can file a support case on [RedHat Partner Connect][]. After the CI tests
+succeed the PR will automatically be merged and the version will be officially certified.
+
+#### Manual testing
+
+To manually test a release candidate (e.g. you want to iterate on manifests on a live cluster, without using the automation), you need to [create an Openshift cluster and install the new operator](https://docs.cilium.io/en/latest/installation/k8s-install-openshift-okd/#k8s-install-openshift-okd), by modifying the OLM manifests to use the CI generated images.
 Also, make sure that the CiliumConfig ([v1.12.0](https://github.com/cilium/cilium-olm/blob/master/manifests/cilium.v1.12.0/cluster-network-07-cilium-ciliumconfig.yaml), for example) has the following values (this ensures that the K8s networking e2e tests will pass):
 
 ```yaml
@@ -138,7 +154,7 @@ spec:
     tls: {enabled: false}
 ```
 
-Run the Network Conformance tests [according to these instructions](https://redhat-connect.gitbook.io/openshift-badges/badges/container-network-interface-cni/workflow/running-the-cni-tests) to ensure that Cilium functions as expected. There are 3 exepected failures in these conformance tests. They are:
+Run the Network Conformance tests [according to these instructions](https://redhat-connect.gitbook.io/openshift-badges/badges/container-network-interface-cni/workflow/running-the-cni-tests) to ensure that Cilium functions as expected. There are 3 expected failures in these conformance tests. They are:
 
 ```
 NetworkPolicy between server and client should not allow access by TCP when a policy specifies only SCTP
@@ -146,43 +162,6 @@ NetworkPolicy between server and client should allow egress access to server in 
 NetworkPolicy between server and client should ensure an IP overlapping both IPBlock.CIDR and IPBlock.Except is allowed
 ```
 Once these conformance tests are passed it is safe to assume that the generated manifests are working correctly.
-The branch PR can then be merged into master.
-
-Once the branch PR is merged into master, run [the publish action](https://github.com/cilium/cilium-olm/actions/workflows/publish.yaml) on the
-master branch, defining the version to be published ("1.10.0" for example).
-
-Once the action has completed successfully, you can now submit the image conformance tests to Redhat.
-For this you will need to access [RedHat Partner Connect][] registry and obtain credentials for logging
-into the regsitry and setting the preflight API key.
-
-Export the following environment variables using the credentials from RedHat Partner Connect:
-
-- `export RHPC_PASSWORD_FOR_OLM_OPERATOR_IMAGE="_____"`
-- `export RHCP_PREFLIGHT_API_KEY="_____"`
-
-Next, login to the registry:
-
-```sh
-podman login -u unused scan.connect.redhat.com -p $RHPC_PASSWORD_FOR_OLM_OPERATOR_IMAGE
-```
-
-Next, run the preflight checks on the image:
-
-```sh
-PFLT_DOCKERCONFIG=~/.docker/config.json preflight check container --pyxis-api-token=$RHCP_PREFLIGHT_API_KEY --submit --certification-project-id=ospid-104ec1da-384c-4d7c-bd27-9dbfd8377f5b scan.connect.redhat.com/ospid-104ec1da-384c-4d7c-bd27-9dbfd8377f5b/cilium-olm:v1.10.0
-```
-
-Next, login to [Redhat Parnter Connect][] and click "Publish" on the image (once the vulnerability scanning is done).
-
-Once the image is published open a new PR in the [cilium/certified-operators](https://github.com/cilium/certified-operators), by adding the
-new manifests to the appropriately named new directory under `operators/cilium` (`operators/cilium/v1.10.0`, for example).
-Before commiting your changes make sure to modify the `image` reference in the `manifests/cilium.clusterserviceversion.yaml` so that
-the sha256 tag of the image is used (rather than the semantic tag).
-
-Create a new PR against the official [Openshift certified operators repository](https://github.com/redhat-openshift-ecosystem/certified-operators).
-If the CI tests against the PR fails and you can't figure out why you can file a support case on [Redhat Partner Connect][]. After the CI tests
-succeed the PR will automatically be merged and the verstion will be officially certified.
-
 
 ## Updating helm-operator base image
 
