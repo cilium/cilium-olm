@@ -60,12 +60,14 @@ nodeinit_image="$(get_image "$(yq e '.nodeinit.image.repository' "$values_file")
 clustermesh_etcd_image="$(get_image "$(yq e '.clustermesh.apiserver.etcd.image.repository' "$values_file")" "$(yq e '.clustermesh.apiserver.etcd.image.tag' "$values_file")")"
 
 cilium_major_minor="$(echo "${cilium_version}" | cut -d . -f -2)"
-#shellcheck disable=SC2003
-previous_version="${cilium_major_minor}.$(expr "$(echo "${cilium_version}" | cut -d . -f 3)" - 1)"
-#shellcheck disable=SC2003
-previous_version="${cilium_major_minor}.$(expr "$(echo "${cilium_version}" | cut -d . -f 3)" - 1)"
-if [[ -d "bundles/cilium.v${previous_version}" ]]; then
-    previous_name="$(yq .metadata.name "bundles/cilium.v${previous_version}/manifests/cilium.clusterserviceversion.yaml")"
+cilium_patch="$(echo "${cilium_version}" | cut -d . -f 3)"
+
+if [[ "${cilium_patch}" =~ ^[0-9]+$ ]]; then
+    #shellcheck disable=SC2003
+    previous_version="${cilium_major_minor}.$(expr "${cilium_patch}" - 1)"
+    if [[ -d "bundles/cilium.v${previous_version}" ]]; then
+        previous_name="$(yq .metadata.name "bundles/cilium.v${previous_version}/manifests/cilium.clusterserviceversion.yaml")"
+    fi
 fi
 
 generate_instaces_cue() {
@@ -162,6 +164,9 @@ case "${cilium_version}" in
     ;;
   1.12.*)
     ciliumconfig="ciliumconfig.v1.12.yaml"
+    ;;
+  1.13.*)
+    ciliumconfig="ciliumconfig.v1.13.yaml"
     ;;
   *)
   echo "ciliumconfig example missing for ${cilium_version}"
