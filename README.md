@@ -89,7 +89,7 @@ This will do the following:
 - download Helm chart tarball and unpack it to 
 - create a local commit that has all the changes that can be pushed to the repo
 
-Now push changes to a named branch that ends with the version number you are trying to publish (e.g. "pr/myghhandle/oss/v1.10").
+Now push changes to a named branch that ends with the version number you are trying to publish (e.g. "pr/myghhandle/oss/v1.10.0").
 This will create development images, which can be inspeted in the github actions output.
 
 Validate that the release works by [creating an Openshift cluster and installing the new operator](https://docs.cilium.io/en/latest/installation/k8s-install-openshift-okd/#k8s-install-openshift-okd), by modifying the OLM manifests to use the CI generated images.
