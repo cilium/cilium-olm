@@ -93,49 +93,11 @@ Now push changes to a named branch that ends with the version number you are try
 This will create development images, which can be inspeted in the github actions output.
 
 Validate that the release works by [creating an Openshift cluster and installing the new operator](https://docs.cilium.io/en/latest/installation/k8s-install-openshift-okd/#k8s-install-openshift-okd), by modifying the OLM manifests to use the CI generated images.
-Also, make sure that the CiliumConfig ([v1.12.0](https://github.com/cilium/cilium-olm/blob/master/manifests/cilium.v1.12.0/cluster-network-07-cilium-ciliumconfig.yaml), for example) has the following values (this ensures that the K8s networking e2e tests will pass):
+Also, make sure to copy the custom CiliumConfig to ensure that the K8s networking e2e tests will pass. For example,
+assuming that you are releasing `v1.12.0`:
 
-```yaml
-apiVersion: cilium.io/v1alpha1
-kind: CiliumConfig
-metadata:
-  name: cilium
-  namespace: cilium
-spec:
-  debug:
-    enabled: true
-  k8s:
-    requireIPv4PodCIDR: true
-  pprof:
-    enabled: true
-  logSystemLoad: true
-  bpf:
-    preallocateMaps: true
-  etcd:
-    leaseTTL: 30s
-  ipv4:
-    enabled: true
-  ipv6:
-    enabled: true
-  identityChangeGracePeriod: 0s
-  ipam:
-    mode: "cluster-pool"
-    operator:
-      clusterPoolIPv4PodCIDR: "10.128.0.0/14"
-      clusterPoolIPv4MaskSize: "23"
-  nativeRoutingCIDR: "10.128.0.0/14"
-  endpointRoutes: {enabled: true}
-  kubeProxyReplacement: "probe"
-  clusterHealthPort: 9940
-  tunnelPort: 4789
-  cni:
-    binPath: "/var/lib/cni/bin"
-    confPath: "/var/run/multus/cni/net.d"
-    chainingMode: portMap
-  prometheus:
-    serviceMonitor: {enabled: false}
-  hubble:
-    tls: {enabled: false}
+```bash
+cp ciliumconfig.conformance.yaml manifests/cilium.v1.12.0/cluster-network-07-cilium-ciliumconfig.yaml
 ```
 
 Run the Network Conformance tests [according to these instructions](https://redhat-connect.gitbook.io/openshift-badges/badges/container-network-interface-cni/workflow/running-the-cni-tests) to ensure that Cilium functions as expected. There are 3 exepected failures in these conformance tests. They are:
