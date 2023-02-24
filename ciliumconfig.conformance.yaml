@@ -8,8 +8,6 @@ spec:
     enabled: true
   k8s:
     requireIPv4PodCIDR: true
-  pprof:
-    enabled: true
   logSystemLoad: true
   bpf:
     preallocateMaps: true
