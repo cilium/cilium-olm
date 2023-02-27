@@ -52,7 +52,7 @@ spec:
           value: quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84
         - name: RELATED_IMAGE_CLUSTERMESH_ETCD
           value: quay.io/coreos/etcd@sha256:a17abff8fa908eb6aaecd0367c0154b73a8a66e484100e91202319bc1d9a7cd3
-        image: registry.connect.redhat.com/isovalent/cilium-olm:4714c804808245f72a26ee126f753d00b3d2eaff-v1.11.14
+        image: registry.connect.redhat.com/isovalent/cilium-olm@sha256:d7490a73c5f7861ae13af5e5770a8a7cf8a0477fe250a97f0ea8ee673969fd11
         name: operator
         ports:
         - containerPort: 9443
