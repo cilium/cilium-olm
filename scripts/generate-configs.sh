@@ -147,27 +147,13 @@ kuegen -input-directory ./config/operator -output-directory ./
 
 cp ./config/crd/cilium.io_cilumconfigs.yaml "manifests/cilium.v${cilium_version}/cluster-network-03-cilium-ciliumconfigs-crd.yaml"
 
-case "${cilium_version}" in
-  1.8.*)
-    ciliumconfig="ciliumconfig.v1.8.yaml"
-    ;;
-  1.9.*)
-    ciliumconfig="ciliumconfig.v1.9.yaml"
-    ;;
-  1.10.*)
-    ciliumconfig="ciliumconfig.v1.10.yaml"
-    ;;
-  1.11.*)
-    ciliumconfig="ciliumconfig.v1.11.yaml"
-    ;;
-  1.12.*)
-    ciliumconfig="ciliumconfig.v1.12.yaml"
-    ;;
-  *)
-  echo "ciliumconfig example missing for ${cilium_version}"
+cilium_minor_version=$(cut -d '.' -f 1,2 <<< "$cilium_version")
+ciliumconfig="ciliumconfig.v${cilium_minor_version}.yaml"
+if [ ! -f "${ciliumconfig}" ]
+then
+  echo "ERROR: You need to create ${ciliumconfig} first"
   exit 1
-  ;;
-esac
+fi
 
 cp "${ciliumconfig}" "manifests/cilium.v${cilium_version}/cluster-network-07-cilium-ciliumconfig.yaml"
 
