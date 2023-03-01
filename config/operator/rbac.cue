@@ -70,6 +70,8 @@ _helmOperatorClusterRules: [
 			"rbac.authorization.k8s.io",
 		]
 		resources: [
+			"roles",
+			"rolebindings",
 			"clusterroles",
 			"clusterrolebindings",
 		]
@@ -88,6 +90,19 @@ _helmOperatorClusterRules: [
 		//  "hubble-relay",
 		//  "hubble-ui",
 		// ]
+	},
+	{
+		// Write access to services/status (needed for BGP as of Cilium 1.10.0)
+		apiGroups: [
+			"",
+		]
+		resources: [
+			"services/status",
+		]
+		verbs: [
+			"patch",
+			"update",
+		]
 	},
 ]
 
@@ -147,6 +162,7 @@ _ciliumClusterRules: [
 			"services/status",
 		]
 		verbs: [
+			"patch",
 			"update",
 		]
 	},

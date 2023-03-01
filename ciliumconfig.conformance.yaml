@@ -25,7 +25,6 @@ spec:
       clusterPoolIPv4MaskSize: "23"
   nativeRoutingCIDR: "10.128.0.0/14"
   endpointRoutes: {enabled: true}
-  kubeProxyReplacement: "probe"
   clusterHealthPort: 9940
   tunnelPort: 4789
   cni:
