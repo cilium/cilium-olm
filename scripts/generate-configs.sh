@@ -172,3 +172,12 @@ annotations:
   operators.operatorframework.io.metrics.project_layout: helm.sdk.operatorframework.io/v1
   com.redhat.openshift.versions: "v4.9"
 EOF
+
+# We use yq to modify bundle and manifest files as a part of the release process.
+# It produces large diffs because these yaml files are indented differently than
+# how yq indents them. Run bundle and manifest yaml files through yq here so that
+# using yq later on these files doesn't produce unnecessary diffs.
+#
+# Ref: https://github.com/mikefarah/yq/issues/825
+find "bundles/cilium.v${cilium_version}" -name "*.yaml" -exec yq e -i {} \;
+find "manifests/cilium.v${cilium_version}" -name "*.yaml" -exec yq e -i {} \;
