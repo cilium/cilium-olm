@@ -35,3 +35,4 @@ spec:
     serviceMonitor: {enabled: false}
   hubble:
     tls: {enabled: false}
+  sessionAffinity: true
