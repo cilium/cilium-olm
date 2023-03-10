@@ -7,6 +7,9 @@ set -o errexit
 set -o pipefail
 set -o nounset
 set -x
+shopt -s expand_aliases
+
+alias yq='docker run --rm -v "${PWD}":/workdir --user "$(id -u):$(id -g)" mikefarah/yq:4.27.3'
 
 cilium_version="${2}"
 

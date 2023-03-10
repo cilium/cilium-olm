@@ -6,6 +6,9 @@
 set -o errexit
 set -o pipefail
 set -o nounset
+shopt -s expand_aliases
+
+alias yq='docker run --rm -v "${PWD}":/workdir --user "$(id -u):$(id -g)" mikefarah/yq:4.27.3'
 
 if [ "$#" -ne 1 ] ; then
   echo "$0 supports exactly 1 argument"
@@ -13,10 +16,6 @@ if [ "$#" -ne 1 ] ; then
   exit 1
 fi
 
-if ! command -v yq &> /dev/null ; then
-    echo "\"yq\" must be installed to create an offline \
-    deployment. https://github.com/mikefarah/yq/releases"
-fi
 
 if ! command -v jq &> /dev/null ; then
     echo "\"jq\" must be installed to create an offline \
