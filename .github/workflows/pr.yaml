@@ -54,7 +54,7 @@ jobs:
         with:
           context: ./operator/cilium.${{ env.VERSION }}/
           push: true
-          tags: quay.io/isovalent-dev/cilium-olm-ci:${{ env.VERSION }}-${{ github.sha }}
+          tags: quay.io/isovalent-dev/cilium-olm-ci:${{ env.VERSION }}-${{ github.event.pull_request.head.sha }}
       - name: Install Preflight
         run: |
           curl https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/${{ env.PREFLIGHT_VERSION }}/preflight-linux-amd64 -o preflight-linux-amd64
@@ -66,4 +66,4 @@ jobs:
           preflight check container \
           --pyxis-api-token=${{ secrets.RHCP_PREFLIGHT_API_KEY }} \
           --certification-project-id=5fbe31ec8b7d4976604cbde0 \
-          quay.io/isovalent-dev/cilium-olm-ci:${{ env.VERSION }}-${{ github.sha }}
+          quay.io/isovalent-dev/cilium-olm-ci:${{ env.VERSION }}-${{ github.event.pull_request.head.sha }}
