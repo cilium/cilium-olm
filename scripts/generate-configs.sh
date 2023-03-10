@@ -7,6 +7,9 @@ set -o errexit
 set -o pipefail
 set -o nounset
 set -x
+shopt -s expand_aliases
+
+alias yq='docker run --rm -v "${PWD}":/workdir --user "$(id -u):$(id -g)" mikefarah/yq:4.27.3'
 
 cilium_version="${2}"
 
@@ -179,5 +182,5 @@ EOF
 # using yq later on these files doesn't produce unnecessary diffs.
 #
 # Ref: https://github.com/mikefarah/yq/issues/825
-find "bundles/cilium.v${cilium_version}" -name "*.yaml" -exec yq e -i {} \;
-find "manifests/cilium.v${cilium_version}" -name "*.yaml" -exec yq e -i {} \;
+find "bundles/cilium.v${cilium_version}" -name "*.yaml" -exec sh -c 'yq e -i "$1"' sh {} \;
+find "manifests/cilium.v${cilium_version}" -name "*.yaml" -exec sh -c 'yq e -i "$1"' sh {} \;

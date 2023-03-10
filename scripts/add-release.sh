@@ -13,11 +13,6 @@ if [ "$#" -ne 1 ] ; then
   exit 1
 fi
 
-if ! command -v yq &> /dev/null ; then
-    echo "\"yq\" must be installed to create an offline \
-    deployment. https://github.com/mikefarah/yq/releases"
-fi
-
 if ! command -v jq &> /dev/null ; then
     echo "\"jq\" must be installed to create an offline \
     deployment."
