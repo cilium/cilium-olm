@@ -54,6 +54,7 @@ jobs:
       - name: Run Preflight
         run: |
           ls ~/.docker
+          cat ~/.docker/config.json
           preflight check container \
           --pyxis-api-token=${{ secrets.RHCP_PREFLIGHT_API_KEY }} \
           --submit \
