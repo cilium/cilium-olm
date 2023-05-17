@@ -3,7 +3,7 @@
 > **Warning**
 > This repository has been deprecated. Please see the list of vendors that maintain
 > OLM to install Cilium on Openshift.
-> - [Isovalent](https://github.com/isovalent/cilium-olm)
+> - [Isovalent](https://github.com/isovalent/olm-for-cilium)
 
 > NOTE: this documentation is for Cilium maintainers, the user guide for OpenShift is part of [Cilium documentation][okd-gsg]
 
